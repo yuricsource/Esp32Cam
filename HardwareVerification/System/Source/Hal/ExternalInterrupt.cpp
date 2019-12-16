@@ -1,9 +1,3 @@
-/*
- * ExternalInterrupt.cpp
- *
- *  Created on: 17 Jun 2019
- *      Author: yuri
- */
 
 #include <ExternalInterrupt.h>
 #include "Hardware.h"

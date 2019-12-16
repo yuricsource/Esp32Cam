@@ -1,9 +1,3 @@
-/*
- * Gpio.cpp
- *
- *  Created on: 21 May 2019
- *      Author: yuri
- */
 
 #include "Gpio.h"
 #include "string.h"

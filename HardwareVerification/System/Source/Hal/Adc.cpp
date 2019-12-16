@@ -1,9 +1,4 @@
-/*
- * Adc.cpp
- *
- *  Created on: 1 Jun 2019
- *      Author: yuri
- */
+
 #include "Adc.h"
 #include <stdio.h>
 #include <stdlib.h>

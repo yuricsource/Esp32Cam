@@ -1,9 +1,3 @@
-/*
- * HalCommon.h
- *
- *  Created on: 21 May 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_HALCOMMON_H_
 #define INCLUDE_HAL_HALCOMMON_H_

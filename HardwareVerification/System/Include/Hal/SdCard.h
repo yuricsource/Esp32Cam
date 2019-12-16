@@ -1,9 +1,3 @@
-/*
- * SdCard.h
- *
- *  Created on: 24 Nov 2019
- *      Author: yuri
- */
 
 #ifndef MAIN_INCLUDE_HAL_SDCARD_H_
 #define MAIN_INCLUDE_HAL_SDCARD_H_

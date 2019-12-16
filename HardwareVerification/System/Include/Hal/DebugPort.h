@@ -1,9 +1,3 @@
-/*
- * DebugPort.h
- *
- *  Created on: 26 Jun 2019
- *      Author: yuri
- */
 
 #ifndef HAL_DEBUGPORT_H_
 #define HAL_DEBUGPORT_H_

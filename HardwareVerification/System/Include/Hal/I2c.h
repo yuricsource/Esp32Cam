@@ -1,9 +1,3 @@
-/*
- * I2c.h
- *
- *  Created on: 27 May 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_I2C_H_
 #define INCLUDE_HAL_I2C_H_

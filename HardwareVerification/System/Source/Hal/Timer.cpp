@@ -1,9 +1,3 @@
-/*
- * Timer.cpp
- *
- *  Created on: 25 May 2019
- *      Author: yuri
- */
 
 #include "Timer.h"
 //#define DEBUG_TIMER

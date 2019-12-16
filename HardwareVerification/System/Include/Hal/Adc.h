@@ -1,9 +1,3 @@
-/*
- * Adc.h
- *
- *  Created on: 1 Jun 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_ADC_H_
 #define INCLUDE_HAL_ADC_H_

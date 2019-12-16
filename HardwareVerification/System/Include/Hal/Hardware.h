@@ -1,9 +1,3 @@
-/*
- * System.h
- *
- *  Created on: 19 May 2019
- *      Author: Yuri A. Rodrigues
- */
 
 #ifndef HAL_SYSTEM_H_
 #define HAL_SYSTEM_H_

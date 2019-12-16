@@ -1,9 +1,3 @@
-/*
- * SdCard.cpp
- *
- *  Created on: 24 Nov 2019
- *      Author: yuri
- */
 
 #include "SdCard.h"
 #include <stdio.h>

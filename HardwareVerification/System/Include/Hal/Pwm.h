@@ -1,9 +1,3 @@
-/*
- * Pwm.h
- *
- *  Created on: 20 Jun 2019
- *      Author: yuri
- */
 
 #ifndef HAL_PWM_H_
 #define HAL_PWM_H_

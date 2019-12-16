@@ -1,9 +1,3 @@
-/*
- * Rtc.h
- *
- *  Created on: 2 Jul 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_RTC_H_
 #define INCLUDE_HAL_RTC_H_

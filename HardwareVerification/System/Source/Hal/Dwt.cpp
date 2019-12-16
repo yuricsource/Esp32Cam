@@ -1,9 +1,4 @@
-/*
- * Dwt.cpp
- *
- *  Created on: 1 Jun 2019
- *      Author: yuri
- */
+
 #include "Dwt.h"
 #include "Hardware.h"
 #include <sys/time.h>

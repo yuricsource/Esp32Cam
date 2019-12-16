@@ -1,9 +1,3 @@
-/*
- * TimeLimit.cpp
- *
- *  Created on: 1 Jun 2019
- *      Author: yuri
- */
 
 #include "TimeLimit.h"
 #include "Hardware.h"

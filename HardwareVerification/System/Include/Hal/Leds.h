@@ -1,9 +1,3 @@
-/*
- * Leds.h
- *
- *  Created on: 19 May 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_LEDS_H_
 #define INCLUDE_HAL_LEDS_H_

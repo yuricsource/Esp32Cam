@@ -1,9 +1,3 @@
-/*
- * InterruptHandler.h
- *
- *  Created on: 25 May 2019
- *      Author: yuri
- */
 
 #include <TimerInterruptHandler.h>
 #include "driver/timer.h"

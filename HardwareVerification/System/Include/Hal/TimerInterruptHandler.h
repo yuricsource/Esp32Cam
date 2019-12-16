@@ -1,9 +1,3 @@
-/*
- * InterruptHandler.h
- *
- *  Created on: 25 May 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_INTERRUPTHANDLER_H_
 #define INCLUDE_HAL_INTERRUPTHANDLER_H_

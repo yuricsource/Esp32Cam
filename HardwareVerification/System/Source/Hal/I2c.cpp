@@ -1,10 +1,3 @@
-/*
-	Gpio* _gpio;
- * I2c.cpp
- *
- *  Created on: 27 May 2019
- *      Author: yuri
- */
 
 #include "I2c.h"
 #include "driver/i2c.h"

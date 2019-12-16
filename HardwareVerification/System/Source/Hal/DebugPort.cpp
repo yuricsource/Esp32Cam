@@ -1,9 +1,3 @@
-/*
- * DebugPort.cpp
- *
- *  Created on: 26 Jun 2019
- *      Author: yuri
- */
 
 #include "DebugPort.h"
 #include "driver/uart.h"

@@ -1,9 +1,3 @@
-/*
- * I2s.h
- *
- *  Created on: 3 Jul 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_I2S_H_
 #define INCLUDE_HAL_I2S_H_

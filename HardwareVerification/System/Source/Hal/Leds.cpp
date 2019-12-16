@@ -1,9 +1,3 @@
-/*
- * Leds.cpp
- *
- *  Created on: 19 May 2019
- *      Author: yuri
- */
 
 #include "HalCommon.h"
 #include "Leds.h"

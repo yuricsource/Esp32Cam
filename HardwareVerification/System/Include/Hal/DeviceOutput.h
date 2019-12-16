@@ -1,9 +1,3 @@
-/*
- * DeviceInput.h
- *
- *  Created on: 17 Jun 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_DEVICEOUTPUT_H_
 #define INCLUDE_HAL_DEVICEOUTPUT_H_

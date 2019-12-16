@@ -1,9 +1,3 @@
-/*
- * Rtc.cpp
- *
- *  Created on: 2 Jul 2019
- *      Author: yuri
- */
 
 #include "Rtc.h"
 #include <cstring>

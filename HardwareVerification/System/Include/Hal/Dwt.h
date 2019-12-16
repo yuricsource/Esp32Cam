@@ -1,9 +1,3 @@
-/*
- * Dwt.h
- *
- *  Created on: 1 Jun 2019
- *      Author: yuri
- */
 
 #ifndef HAL_DWT_H
 #define HAL_DWT_H

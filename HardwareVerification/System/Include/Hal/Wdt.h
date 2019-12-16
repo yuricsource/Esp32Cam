@@ -1,9 +1,3 @@
-/*
- * Wdt.h
- *
- *  Created on: 3 Jul 2019
- *      Author: yuri
- */
 
 #ifndef INCLUDE_HAL_WDT_H_
 #define INCLUDE_HAL_WDT_H_

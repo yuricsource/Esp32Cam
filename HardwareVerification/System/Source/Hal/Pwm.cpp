@@ -1,9 +1,3 @@
-/*
- * Pwm.cpp
- *
- *  Created on: 20 Jun 2019
- *      Author: yuri
- */
 
 #include "Pwm.h"
 

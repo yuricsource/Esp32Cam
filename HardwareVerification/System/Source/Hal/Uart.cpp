@@ -1,9 +1,3 @@
-/*
- * Uart.cpp
- *
- *  Created on: 26 Jun 2019
- *      Author: yuri
- */
 
 #include "Uart.h"
 #include "driver/uart.h"

@@ -1,9 +1,3 @@
-/*
- * TimeLimit.h
- *
- *  Created on: 1 Jun 2019
- *      Author: yuri
- */
 
 #ifndef HAL_TIMELIMIT_H
 #define HAL_TIMELIMIT_H

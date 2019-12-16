@@ -1,9 +1,3 @@
-/*
- * Tests.h
- *
- *  Created on: 24 May 2019
- *      Author: yuri
- */
 
 #ifndef TESTS_H_
 #define TESTS_H_

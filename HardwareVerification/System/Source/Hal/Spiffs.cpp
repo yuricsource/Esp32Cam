@@ -1,9 +1,3 @@
-/*
- * Wdt.cpp
- *
- *  Created on: 3 Jul 2019
- *      Author: yuri
- */
 
 #include <Spiffs.h>
 

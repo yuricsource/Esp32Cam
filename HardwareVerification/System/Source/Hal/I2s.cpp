@@ -1,9 +1,3 @@
-/*
- * I2s.cpp
- *
- *  Created on: 3 Jul 2019
- *      Author: yuri
- */
 
 #include "Hardware.h"
 #include "I2s.h"

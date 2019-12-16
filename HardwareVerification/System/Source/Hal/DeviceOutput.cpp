@@ -1,9 +1,3 @@
-/*
- * DeviceInput.cpp
- *
- *  Created on: 17 Jun 2019
- *      Author: yuri
- */
 
 #include "HalCommon.h"
 #include "DeviceOutput.h"

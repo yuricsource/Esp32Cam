@@ -1,9 +1,3 @@
-/*
- * Tests.cpp
- *
- *  Created on: 24 May 2019
- *      Author: yuri
- */
 
 #include "Tests.h"
 #include <cstring>
