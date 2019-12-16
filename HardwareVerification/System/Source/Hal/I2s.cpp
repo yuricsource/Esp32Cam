@@ -5,7 +5,7 @@
  *      Author: yuri
  */
 
-#include "System.h"
+#include "Hardware.h"
 #include "I2s.h"
 #include "driver/adc.h"
 

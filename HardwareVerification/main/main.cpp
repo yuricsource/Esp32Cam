@@ -23,7 +23,7 @@
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <esp_log.h>
-#include "System.h"
+#include "Hardware.h"
 #include "Tests.h"
 #include <cstring>
 
@@ -153,19 +153,19 @@ void executetMenu(char Test)
 }
 extern "C" void app_main(void)
 {
-	Hal::System::Instance();
+	Hal::Hardware::Instance();
 	printf("\n");
 	printf("Hardware Verification for ESP8266\n");
 	printf("\n");
-	Hal::System::Instance()->GetAdc().InitAdc(Hal::Adc::AdcIndex::Adc1Channel6);
+	Hal::Hardware::Instance()->GetAdc().InitAdc(Hal::Adc::AdcIndex::Adc1Channel6);
 	char test = 0;
 
-	if (Hal::System::Instance()->GetResetReason() == Hal::ResetReason::DeepSleep)
+	if (Hal::Hardware::Instance()->GetResetReason() == Hal::ResetReason::DeepSleep)
 	{
 		int len = strlen(GetTestPhrase());
 		uint8_t test[len];
 
-		Hal::System::Instance()->GetRtc().Read(0, test, len);
+		Hal::Hardware::Instance()->GetRtc().Read(0, test, len);
 		//const char * phrase =
 		if (strncmp((const char *)test, GetTestPhrase(), len) == 0)
 		{

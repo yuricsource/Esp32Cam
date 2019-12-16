@@ -8,7 +8,7 @@
 #ifndef TESTS_H_
 #define TESTS_H_
 
-#include "System.h"
+#include "Hardware.h"
 #include "audio_example_file.h"
 
 void BlinkStatusLed();
@@ -41,7 +41,7 @@ public:
 	static void InterruptCallback2(void *arg)
 	{
 		//printf("External interrupt activated, Gpio: \n");
-		Hal::System::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::GreenLed);
+		Hal::Hardware::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::GreenLed);
 	}
 
 	void Start()

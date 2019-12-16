@@ -7,16 +7,16 @@
 
 #include "stdio.h"
 #include "wchar.h"
-#include "System.h"
+#include "Hardware.h"
 #include "soc/rtc.h"
 
 namespace Hal
 {
 
 // Singleton class
-System *System::_pSystem;
+Hardware *Hardware::_pHardware;
 
-System::System() : _gpio(),
+Hardware::Hardware() : _gpio(),
 				   _debugPort(&_gpio, UartPort::Uart0, 115200, Gpio::GpioIndex::Gpio1, Gpio::GpioIndex::Gpio3),
 				   _leds(&_gpio), _deviceInput(&_gpio),
 				   _deviceOutput(&_gpio), _interruptHandler(),
@@ -50,8 +50,8 @@ System::System() : _gpio(),
 	printf("Reset Reason        : %s\n", GetResetReasonAsString());
 	printf("\n");
 
-	if (_pSystem == nullptr)
-		_pSystem = this;
+	if (_pHardware == nullptr)
+		_pHardware = this;
 	else
 		printf("!!! Error: Only one instance of System can be created !!!\n");
 
@@ -61,35 +61,35 @@ System::System() : _gpio(),
 	_timer.AddCallback(this);
 }
 
-uint32_t System::GetSystemClockBase()
+uint32_t Hardware::GetSystemClockBase()
 {
 	return rtc_clk_apb_freq_get(); // @suppress("Invalid arguments")
 }
 
-void System::SoftwareReset()
+void Hardware::SoftwareReset()
 {
 	system_restart();
 }
 
-uint32_t System::GetRandomNumber()
+uint32_t Hardware::GetRandomNumber()
 {
 	return esp_random();
 }
 
-void System::DeepSleep(uint32_t uSeconds)
+void Hardware::DeepSleep(uint32_t uSeconds)
 {
 	esp_sleep_enable_timer_wakeup(uSeconds);
 	vTaskDelay(20);
 	esp_deep_sleep_start();
 }
 
-ResetReason System::GetResetReason()
+ResetReason Hardware::GetResetReason()
 {
 	esp_reset_reason_t info = esp_reset_reason();
 	return static_cast<ResetReason>(info);
 }
 
-char *System::GetResetReasonAsString()
+char *Hardware::GetResetReasonAsString()
 {
 	switch (GetResetReason())
 	{
@@ -120,16 +120,16 @@ char *System::GetResetReasonAsString()
 	}
 }
 
-System::~System()
+Hardware::~Hardware()
 {
 }
 
-void System::TimerCallback()
+void Hardware::TimerCallback()
 {
 	_leds.Toggle(Hal::Leds::LedIndex::GreenLed);
 }
 
-uint32_t System::Milliseconds()
+uint32_t Hardware::Milliseconds()
 {
 	return xTaskGetTickCount() * portTICK_PERIOD_MS;
 }

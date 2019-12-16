@@ -38,11 +38,11 @@
 namespace Hal
 {
 
-class System : Timer::Callback
+class Hardware : Timer::Callback
 {
 public:
-	System();
-	~System();
+	Hardware();
+	~Hardware();
 	Gpio &GetGpio() { return _gpio; };
 	Adc &GetAdc() { return _adc; };
 	Leds &GetLeds() { return _leds; };
@@ -68,17 +68,17 @@ public:
 	uint32_t GetSystemClockBase();
 	void DeepSleep(uint32_t uSeconds);
 
-	static inline System *Instance()
+	static inline Hardware *Instance()
 	{
-		if (_pSystem == nullptr)
+		if (_pHardware == nullptr)
 		{
-			_pSystem = new System();
+			_pHardware = new Hardware();
 		}
-		return _pSystem;
+		return _pHardware;
 	}
 
 private:
-	static System *_pSystem;
+	static Hardware *_pHardware;
 	Gpio _gpio;
 	DebugPort _debugPort;
 	Leds _leds;

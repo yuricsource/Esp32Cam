@@ -10,7 +10,7 @@
 using Hal::DeviceInput;
 using Hal::Dwt;
 using Hal::Leds;
-using Hal::System;
+using Hal::Hardware;
 using Hal::TimeLimit;
 
 const char *testPhrase = "RTC holds the memory with low power";
@@ -22,7 +22,7 @@ const char *GetTestPhrase()
 
 void TestSdCard()
 {
-	System *system = Hal::System::Instance();
+	Hardware *system = Hal::Hardware::Instance();
 	if (system->GetSdCard().Mount())
 	{
 		printf("Opening file\n");
@@ -75,7 +75,7 @@ void TestSdCard()
 
 void BlinkStatusLed()
 {
-	System *system = Hal::System::Instance();
+	Hardware *system = Hal::Hardware::Instance();
 #ifdef LED_AS_GPIO
 	_system->GetGpio().SetMode(Hal::Gpio::GpioIndex::Gpio2, Hal::Gpio::Mode::Output);
 #else
@@ -103,8 +103,8 @@ void BlinkStatusLed()
 
 void ReadAdcValue()
 {
-	printf("\nAdc value: %d, Voltage: %d\n", System::Instance()->GetAdc().GetAdcValue(Hal::Adc::AdcIndex::Adc1Channel6),
-		   System::Instance()->GetAdc().GetAdcVoltage(Hal::Adc::AdcIndex::Adc1Channel6));
+	printf("\nAdc value: %d, Voltage: %d\n", Hardware::Instance()->GetAdc().GetAdcValue(Hal::Adc::AdcIndex::Adc1Channel6),
+		   Hardware::Instance()->GetAdc().GetAdcVoltage(Hal::Adc::AdcIndex::Adc1Channel6));
 }
 
 void TestTimer0(bool start)
@@ -112,19 +112,19 @@ void TestTimer0(bool start)
 	if (start)
 	{
 		printf("\nStarting Timer 0 with 5Hz\n");
-		System::Instance()->GetTimer().SetTimer(5);
-		System::Instance()->GetTimer().Start();
+		Hardware::Instance()->GetTimer().SetTimer(5);
+		Hardware::Instance()->GetTimer().Start();
 	}
 	else
 	{
 		printf("\nStoping Timer 0\n");
-		System::Instance()->GetTimer().Stop();
+		Hardware::Instance()->GetTimer().Stop();
 	}
 }
 
 void SoftwareResetTest()
 {
-	System::Instance()->SoftwareReset();
+	Hardware::Instance()->SoftwareReset();
 }
 
 void DwtTest()
@@ -132,14 +132,14 @@ void DwtTest()
 	for (uint8_t i = 0; i < 5; i++)
 	{
 		printf("\n%d Sec Delay...\n", i + 1);
-		System::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::RedLed);
+		Hardware::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::RedLed);
 		Dwt::DelayMilliseconds(1000);
 	}
 }
 
 void ReadButton()
 {
-	if (System::Instance()->GetDeviceInput().GetInput(DeviceInput::InputIndex::UserButton))
+	if (Hardware::Instance()->GetDeviceInput().GetInput(DeviceInput::InputIndex::UserButton))
 		printf("\nButton Not Pressed\n");
 	else
 		printf("\nButton Pressed\n");
@@ -150,27 +150,27 @@ void TestDeviceOutput()
 	for (uint8_t i = 0; i < 5; i++)
 	{
 		printf("\n%d Sec Delay...\n", i + 1);
-		System::Instance()->GetDeviceOutput().Toggle(Hal::DeviceOutput::OutputIndex::Output1);
+		Hardware::Instance()->GetDeviceOutput().Toggle(Hal::DeviceOutput::OutputIndex::Output1);
 		Dwt::DelayMilliseconds(1000);
 	}
 }
 void StartWdt()
 {
 	printf("\nStarting Watch Dog Timer with 3 Seconds\n");
-	System::Instance()->GetWdt().Start(3, true);
+	Hardware::Instance()->GetWdt().Start(3, true);
 }
 
 void FeedWdt()
 {
 	printf("\nFeeding Watch Dog Timer with 3 Seconds\n");
-	System::Instance()->GetWdt().Feed();
+	Hardware::Instance()->GetWdt().Feed();
 }
 
 void TestSpiffs()
 {
-	if (System::Instance()->GetSpiffs().IsMounted() == false)
+	if (Hardware::Instance()->GetSpiffs().IsMounted() == false)
 	{
-		if (System::Instance()->GetSpiffs().Mount() == false)
+		if (Hardware::Instance()->GetSpiffs().Mount() == false)
 		{
 			printf("\n\nSPIFFS failed!\n\n");
 			return;
@@ -240,8 +240,8 @@ static char musicBuffer[1024 * 16];
 
 void TestPlaySound()
 {
-	System::Instance()->GetI2s().Start();
-	System::Instance()->GetI2s().UpdateChannelClock(Hal::I2sBitSample::Sample16Bits, Hal::I2sChannelMode::ChannelStereo, 22000);
+	Hardware::Instance()->GetI2s().Start();
+	Hardware::Instance()->GetI2s().UpdateChannelClock(Hal::I2sBitSample::Sample16Bits, Hal::I2sChannelMode::ChannelStereo, 22000);
 
 	FILE *f = fopen("/spiffs/sample.wav", "r");
 
@@ -255,16 +255,16 @@ void TestPlaySound()
 	do
 	{
 		length = fread(musicBuffer, 1, sizeof(musicBuffer), f);
-		System::Instance()->GetI2s().Play((uint8_t *)musicBuffer, length);
+		Hardware::Instance()->GetI2s().Play((uint8_t *)musicBuffer, length);
 	} while (length != 0);
 
 	fclose(f);
-	System::Instance()->GetI2s().Stop();
+	Hardware::Instance()->GetI2s().Stop();
 }
 
 void TestSerial()
 {
-	System::Instance()->GetUart().Write("Hello Yuri's World\n", sizeof("Hello Yuri's World\n"));
+	Hardware::Instance()->GetUart().Write("Hello Yuri's World\n", sizeof("Hello Yuri's World\n"));
 }
 
 void ExternalInterruptTest(bool enable)
@@ -282,7 +282,7 @@ void ExternalInterruptTest(bool enable)
 
 void TestPwm()
 {
-	System *system = Hal::System::Instance();
+	Hardware *system = Hal::Hardware::Instance();
 	Hal::Pwm &pwm = system->GetPwm();
 
 	pwm.SetPin(Hal::Pwm::PwmIndex::PWM0, Hal::Gpio::GpioIndex::Gpio2);
@@ -329,9 +329,9 @@ void TestRtcMemory()
 		mem[i] = i;
 	}
 
-	System::Instance()->GetRtc().Write(0, mem, 512);
+	Hardware::Instance()->GetRtc().Write(0, mem, 512);
 
-	System::Instance()->GetRtc().Read(0, mem, 512);
+	Hardware::Instance()->GetRtc().Read(0, mem, 512);
 
 	for (int i = 0; i <= 511; ++i)
 	{
@@ -353,9 +353,9 @@ void PutCpuToSleep()
 {
 	printf("\n\nI'm going to bed and I will be back in 5 seconds. BYE :)\n\n");
 
-	System::Instance()->GetRtc().Write(0, (uint8_t *)testPhrase, (uint32_t)strlen((const char *)testPhrase));
+	Hardware::Instance()->GetRtc().Write(0, (uint8_t *)testPhrase, (uint32_t)strlen((const char *)testPhrase));
 
-	System::Instance()->DeepSleep(5 * 1000 * 1000);
+	Hardware::Instance()->DeepSleep(5 * 1000 * 1000);
 }
 
 void TimeLimitTest()
@@ -370,7 +370,7 @@ void TimeLimitTest()
 			i++;
 		}
 		//vTaskDelay(10);
-		System::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::BlueLed);
+		Hardware::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::BlueLed);
 	}
 }
 
@@ -378,7 +378,7 @@ void ScanI2c()
 {
 	for (int i = 1; i < 128; i++)
 	{
-		if (System::Instance()->GetI2c().IsDeviceConnected(i))
+		if (Hardware::Instance()->GetI2c().IsDeviceConnected(i))
 			printf("\nFound device at address: 0x%x\n", i);
 		else
 			printf(".");

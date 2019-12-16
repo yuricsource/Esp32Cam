@@ -6,14 +6,14 @@
  */
 
 #include <ExternalInterrupt.h>
-#include "System.h"
+#include "Hardware.h"
 
 namespace Hal
 {
 
 /*--- InterruptHandler Class ---------------------------------------------------------------------------------*/
 
-ExternalInterrupt::ExternalInterrupt(Gpio::GpioIndex gpio, ExternalInterrupt::InterruptType interruptType) : _gpioInterrupt(gpio), _gpio(System::Instance()->GetGpio()), _interruptType(interruptType)
+ExternalInterrupt::ExternalInterrupt(Gpio::GpioIndex gpio, ExternalInterrupt::InterruptType interruptType) : _gpioInterrupt(gpio), _gpio(Hardware::Instance()->GetGpio()), _interruptType(interruptType)
 {
 	//install gpio isr service
 	gpio_install_isr_service(0);

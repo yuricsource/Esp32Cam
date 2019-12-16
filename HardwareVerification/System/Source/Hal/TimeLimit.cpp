@@ -6,29 +6,29 @@
  */
 
 #include "TimeLimit.h"
-#include "System.h"
+#include "Hardware.h"
 
 namespace Hal
 {
 
 TimeLimit::TimeLimit()
-	: startTicks(System::Instance()->Milliseconds())
+	: startTicks(Hardware::Instance()->Milliseconds())
 {
 }
 
 void TimeLimit::Reset()
 {
-	startTicks = System::Instance()->Milliseconds();
+	startTicks = Hardware::Instance()->Milliseconds();
 }
 
 bool TimeLimit::IsTimeUp(uint32_t time) const
 {
-	return (System::Instance()->Milliseconds() - startTicks) >= time;
+	return (Hardware::Instance()->Milliseconds() - startTicks) >= time;
 }
 
 uint32_t TimeLimit::ElapsedTime() const
 {
-	return (System::Instance()->Milliseconds() - startTicks);
+	return (Hardware::Instance()->Milliseconds() - startTicks);
 }
 
 } // namespace Hal
