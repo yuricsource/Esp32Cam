@@ -6,7 +6,7 @@
 # in the build directory. This behaviour is entirely configurable,
 # please read the ESP-IDF documents if you need to do this.
 #
-COMPONENT_SRCDIRS           +=  ./Source/Hal               \
-                                ./Source/Hal/Camera
-COMPONENT_ADD_INCLUDEDIRS   +=  ./Include/Hal               \
-                                ./Include/Hal/Camera
+COMPONENT_SRCDIRS           +=  ../System/Source/Hal               \
+                                ../System/Source/Hal/Camera
+COMPONENT_ADD_INCLUDEDIRS   +=  ../System/Include/Hal               \
+                                ../System/Include/Hal/Camera

@@ -9,7 +9,7 @@
 #define TESTS_H_
 
 #include "System.h"
-#include "../../audio_example_file.h"
+#include "audio_example_file.h"
 
 void BlinkStatusLed();
 void ReadAdcValue();
