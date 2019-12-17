@@ -1,9 +1,3 @@
-/*
- * Camera.cpp
- *
- *  Created on: 5 Dec 2019
- *      Author: yuri
- */
 
 #include "Camera/Camera.h"
 #include "Camera/camera.h"
@@ -24,6 +18,7 @@
 #include "bitmap.h"
 #include "led.h"
 #include "qr_recoginize.h"
+#include "string.h"
 #include "../../components/camera/include/bitmap.h"
 
 

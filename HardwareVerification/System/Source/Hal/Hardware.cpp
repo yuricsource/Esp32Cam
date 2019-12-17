@@ -10,16 +10,7 @@ namespace Hal
 // Singleton class
 Hardware *Hardware::_pHardware;
 
-Hardware::Hardware() : _gpio(),
-				   _debugPort(&_gpio, UartPort::Uart0, 115200, Gpio::GpioIndex::Gpio1, Gpio::GpioIndex::Gpio3),
-				   _leds(&_gpio), _deviceInput(&_gpio),
-				   _deviceOutput(&_gpio), _interruptHandler(),
-				   _timer(&_interruptHandler, TimerSelect::Timer0),
-				   _pwm(&_interruptHandler, TimerSelect::Timer1, &_gpio),
-				   _i2c(&_gpio, I2cPort::I2c0, Gpio::GpioIndex::Gpio26, Gpio::GpioIndex::Gpio27),
-				   _uart(&_gpio, UartPort::Uart1, 115200, Gpio::GpioIndex::Gpio13, Gpio::GpioIndex::Gpio12),
-				   _adc(&_gpio), _spiffs(),
-				   _i2s(&_gpio, I2sBus::Bus_0, I2sBitSample::Sample16Bits, I2sChannelMode::ChannelStereo),
+Hardware::Hardware() : _gpio(),_spiffs(),
 				   _sdCard(&_gpio),
 				   _camera(&_gpio)
 {
@@ -27,7 +18,7 @@ Hardware::Hardware() : _gpio(),
 	esp_base_mac_addr_get(_macAdrress);
 	printf("SDK Version         : %s\n", (char *)system_get_sdk_version());
 	printf("CPU Cores           : %d\n", _mcuInfo.cores);
-	printf("CPU Clock           : %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get())); // @suppress("Invalid arguments")
+	printf("CPU Clock           : %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get()));
 	printf("APB Clock           : %d MHz\n", GetSystemClockBase());
 	printf("CPU Revision        : %d\n", _mcuInfo.revision);
 	printf("Embedded Flash      : %s\n", (_mcuInfo.features & CHIP_FEATURE_EMB_FLASH) ? "YES" : "NO");
@@ -49,15 +40,12 @@ Hardware::Hardware() : _gpio(),
 	else
 		printf("!!! Error: Only one instance of System can be created !!!\n");
 
-	_i2s.Start();
 	_spiffs.Mount();
-	_timer.Initlialize();
-	_timer.AddCallback(this);
 }
 
 uint32_t Hardware::GetSystemClockBase()
 {
-	return rtc_clk_apb_freq_get(); // @suppress("Invalid arguments")
+	return rtc_clk_apb_freq_get();
 }
 
 void Hardware::SoftwareReset()
@@ -116,11 +104,6 @@ char *Hardware::GetResetReasonAsString()
 
 Hardware::~Hardware()
 {
-}
-
-void Hardware::TimerCallback()
-{
-	_leds.Toggle(Hal::Leds::LedIndex::GreenLed);
 }
 
 uint32_t Hardware::Milliseconds()

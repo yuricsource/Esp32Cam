@@ -3,8 +3,10 @@
 #define INCLUDE_HAL_HALCOMMON_H_
 
 #include "esp_system.h"
+#include "esp_sleep.h"
 #include <stdio.h>
 #include "esp_err.h"
+
 
 namespace Hal
 {
