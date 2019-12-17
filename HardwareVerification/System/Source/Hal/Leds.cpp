@@ -11,6 +11,7 @@ Leds::Leds(Gpio *IoPins) : _gpio(IoPins)
 	for (auto &led : ledsIndex)
 	{
 		_gpio->SetMode(led, Gpio::Mode::Output);
+		_gpio->Reset(led);
 	}
 }
 

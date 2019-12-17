@@ -10,9 +10,11 @@ namespace Hal
 // Singleton class
 Hardware *Hardware::_pHardware;
 
-Hardware::Hardware() : _gpio(),_spiffs(),
-				   _sdCard(&_gpio),
-				   _camera(&_gpio)
+Hardware::Hardware() : _gpio(),
+					   _spiffs(),
+					   _sdCard(&_gpio),
+					   _camera(&_gpio),
+					   _leds(&_gpio)
 {
 	esp_chip_info(&_mcuInfo);
 	esp_base_mac_addr_get(_macAdrress);

@@ -24,6 +24,10 @@ void executetMenu(char Test)
 	switch (Test)
 	{
 
+	case 't':
+	case 'T':
+		ToggleFlashLed();
+		break;
 	case 'r':
 	case 'R':
 		SoftwareResetTest();
@@ -48,12 +52,13 @@ void executetMenu(char Test)
 	printf("\n");
 	printf("Main menu:\n");
 	printf("----------\n");
+	printf("[T] - Toggle Flash Led\n");
 	printf("[R] - Software Reset Test\n");
 	printf("[F] - Deep Sleep for 5 Seconds.\n");
 	printf("[C] - Test SPIFFS\n");
-	printf("[K] - Test Sound [speaker(R)<->GPIO25 and speaker(L)<->GPIO26]\n");
 	printf("[Z] - Test SdCard\n");
 }
+
 extern "C" void app_main(void)
 {
 	Hal::Hardware::Instance();

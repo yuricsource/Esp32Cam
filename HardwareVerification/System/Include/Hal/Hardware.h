@@ -12,6 +12,7 @@
 #include "TimerInterruptHandler.h"
 #include "Gpio.h"
 #include "Dwt.h"
+#include "Leds.h"
 #include "TimeLimit.h"
 #include "SdCard.h"
 #include "Camera/Camera.h"
@@ -25,6 +26,7 @@ public:
 	Hardware();
 	~Hardware();
 	Gpio &GetGpio() { return _gpio; };
+	Leds &GetLeds() { return _leds; };
 	Spiffs &GetSpiffs() { return _spiffs; };
 	SdCard &GetSdCard() { return _sdCard; };
 	Camera &GetCamera() { return _camera; };
@@ -54,6 +56,7 @@ private:
 	MacAddress _macAdrress;
 	SdCard _sdCard;
 	Camera _camera;
+	Leds _leds;
 };
 } // namespace Hal
 

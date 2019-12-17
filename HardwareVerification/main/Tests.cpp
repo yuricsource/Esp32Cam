@@ -150,3 +150,8 @@ void SoftwareResetTest()
 {
 	Hardware::Instance()->SoftwareReset();
 }
+
+void ToggleFlashLed()
+{
+	Hardware::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::FlashLed);
+}
