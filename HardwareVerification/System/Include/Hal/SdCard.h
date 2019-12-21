@@ -19,6 +19,8 @@ public:
 	void Unmount();
 
 private:
+	static constexpr Gpio::Pull SdCardInputConfiguration = Gpio::Pull::Up;
+	static constexpr gpio_num_t PinNotConfigured = gpio_num_t::GPIO_NUM_NC;
 	Gpio *_gpio;
 	bool isMounted = false;
 };

@@ -12,8 +12,8 @@ Hardware *Hardware::_pHardware;
 
 Hardware::Hardware() : _gpio(),
 					   _spiffs(),
-					   _sdCard(&_gpio),
 					   _camera(&_gpio),
+					   _sdCard(&_gpio),
 					   _leds(&_gpio)
 {
 	esp_chip_info(&_mcuInfo);

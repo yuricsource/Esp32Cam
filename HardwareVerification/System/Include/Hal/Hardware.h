@@ -54,8 +54,8 @@ private:
 	Spiffs _spiffs;
 	esp_chip_info_t _mcuInfo;
 	MacAddress _macAdrress;
-	SdCard _sdCard;
 	Camera _camera;
+	SdCard _sdCard;
 	Leds _leds;
 };
 } // namespace Hal

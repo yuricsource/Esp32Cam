@@ -11,58 +11,59 @@
 #include "driver/sdspi_host.h"
 #include "sdmmc_cmd.h"
 
-// This example can use SDMMC and SPI peripherals to communicate with SD card.
-// By default, SDMMC peripheral is used.
-// To enable SPI mode, uncomment the following line:
-
-// #define USE_SPI_MODE
-
-// When testing SD and SPI modes, keep in mind that once the card has been
-// initialized in SPI mode, it can not be reinitialized in SD mode without
-// toggling power to the card.
-
-#ifdef USE_SPI_MODE
-// Pin mapping when using SPI mode.
-// With this mapping, SD card can be used both in SPI and 1-line SD mode.
-// Note that a pull-up on CS line is required in SD mode.
-#define PIN_NUM_MISO 2
-#define PIN_NUM_MOSI 15
-#define PIN_NUM_CLK 14
-#define PIN_NUM_CS 13
-#endif //USE_SPI_MODE
-
 namespace Hal
 {
 
 SdCard::SdCard(Gpio *gpio) : _gpio(gpio)
 {
-	_gpio->SetMode(Gpio::GpioIndex::Gpio15, Gpio::Mode::Input);
-	_gpio->SetPull(Gpio::GpioIndex::Gpio15, Gpio::Pull::Up);
-	_gpio->SetMode(Gpio::GpioIndex::Gpio2, Gpio::Mode::Input);
-	_gpio->SetPull(Gpio::GpioIndex::Gpio2, Gpio::Pull::Up);
-	_gpio->SetMode(Gpio::GpioIndex::Gpio4, Gpio::Mode::Input);
-	_gpio->SetPull(Gpio::GpioIndex::Gpio4, Gpio::Pull::Up);
-	_gpio->SetMode(Gpio::GpioIndex::Gpio12, Gpio::Mode::Input);
-	_gpio->SetPull(Gpio::GpioIndex::Gpio12, Gpio::Pull::Up);
-	_gpio->SetMode(Gpio::GpioIndex::Gpio13, Gpio::Mode::Input);
-	_gpio->SetPull(Gpio::GpioIndex::Gpio13, Gpio::Pull::Up);
 }
 
 bool SdCard::Mount()
 {
+	_gpio->SetMode(Gpio::GpioIndex::Gpio15, Gpio::Mode::Input);
+	_gpio->SetPull(Gpio::GpioIndex::Gpio15, SdCardInputConfiguration);
+	_gpio->SetMode(Gpio::GpioIndex::Gpio2, Gpio::Mode::Input);
+	_gpio->SetPull(Gpio::GpioIndex::Gpio2, SdCardInputConfiguration);
+	_gpio->SetMode(Gpio::GpioIndex::Gpio4, Gpio::Mode::Input);
+	_gpio->SetPull(Gpio::GpioIndex::Gpio4, SdCardInputConfiguration);
+	_gpio->SetMode(Gpio::GpioIndex::Gpio12, Gpio::Mode::Input);
+	_gpio->SetPull(Gpio::GpioIndex::Gpio12, SdCardInputConfiguration);
+	_gpio->SetMode(Gpio::GpioIndex::Gpio13, Gpio::Mode::Input);
+	_gpio->SetPull(Gpio::GpioIndex::Gpio13, SdCardInputConfiguration);
+
 	if (isMounted)
 		return true;
-	sdmmc_host_t host = SDMMC_HOST_DEFAULT();
+	sdmmc_host_t host = {};
 
-	sdmmc_slot_config_t slot_config = SDMMC_SLOT_CONFIG_DEFAULT();
+	host.flags = SDMMC_HOST_FLAG_8BIT | SDMMC_HOST_FLAG_4BIT |
+				 SDMMC_HOST_FLAG_1BIT | SDMMC_HOST_FLAG_DDR;
+	host.slot = SDMMC_HOST_SLOT_1;
+	host.max_freq_khz = SDMMC_FREQ_DEFAULT;
+	host.io_voltage = 3.3f;
+	host.init = &sdmmc_host_init;
+	host.set_bus_width = &sdmmc_host_set_bus_width;
+	host.get_bus_width = &sdmmc_host_get_slot_width;
+	host.set_bus_ddr_mode = &sdmmc_host_set_bus_ddr_mode;
+	host.set_card_clk = &sdmmc_host_set_card_clk;
+	host.do_transaction = &sdmmc_host_do_transaction;
+	host.deinit = &sdmmc_host_deinit;
+	host.io_int_enable = sdmmc_host_io_int_enable;
+	host.io_int_wait = sdmmc_host_io_int_wait;
+	host.command_timeout_ms = 0;
 
-	esp_vfs_fat_sdmmc_mount_config_t mount_config = {
-		.format_if_mount_failed = false,
-		.max_files = 5,
-		.allocation_unit_size = 16 * 1024};
+	sdmmc_slot_config_t slotConfig = {};
+
+	slotConfig.gpio_cd = PinNotConfigured;
+	slotConfig.gpio_wp = PinNotConfigured;
+	slotConfig.width = 0;
+
+	esp_vfs_fat_sdmmc_mount_config_t mountConfig = {};
+	mountConfig.format_if_mount_failed = false;
+	mountConfig.max_files = 5;
+	mountConfig.allocation_unit_size = 16 * 1024;
 
 	sdmmc_card_t *card;
-	esp_err_t ret = esp_vfs_fat_sdmmc_mount("/sdcard", &host, &slot_config, &mount_config, &card);
+	esp_err_t ret = esp_vfs_fat_sdmmc_mount("/sdcard", &host, &slotConfig, &mountConfig, &card);
 
 	if (ret != ESP_OK)
 	{

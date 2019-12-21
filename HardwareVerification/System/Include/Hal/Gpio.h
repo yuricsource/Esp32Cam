@@ -91,7 +91,7 @@ public:
 		Spi,
 		I2c,
 		Can,
-		Sdio,
+		SdCard,
 		Analog,
 		Uart
 	};

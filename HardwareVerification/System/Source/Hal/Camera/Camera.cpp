@@ -345,8 +345,8 @@ Camera::Camera(Gpio *IoPins)
 
     wifi_config_t wifi_config = {};
     // wifi_config.sta.ssid = "Android Rules";
-    strcpy((char *)wifi_config.sta.ssid, "Android Rules");
-    strcpy((char *)wifi_config.sta.password, "android11");
+    strcpy((char *)wifi_config.sta.ssid, "Yuri_Duda");
+    strcpy((char *)wifi_config.sta.password, "Australia2us");
     // wifi_config.sta.password = "android11";
 
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
