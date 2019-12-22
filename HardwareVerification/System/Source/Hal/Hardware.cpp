@@ -14,7 +14,9 @@ Hardware::Hardware() : _gpio(),
 					   _spiffs(),
 					   _camera(&_gpio),
 					   _sdCard(&_gpio),
-					   _leds(&_gpio)
+					   _leds(&_gpio),
+					   _debugPort(&_gpio, UartPort::Uart0, 115200, Gpio::GpioIndex::Gpio3, Gpio::GpioIndex::Gpio1),
+					   _rng()
 {
 	esp_chip_info(&_mcuInfo);
 	esp_base_mac_addr_get(_macAdrress);
@@ -53,11 +55,6 @@ uint32_t Hardware::GetSystemClockBase()
 void Hardware::SoftwareReset()
 {
 	system_restart();
-}
-
-uint32_t Hardware::GetRandomNumber()
-{
-	return esp_random();
 }
 
 void Hardware::DeepSleep(uint32_t uSeconds)

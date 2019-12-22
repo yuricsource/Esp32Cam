@@ -17,6 +17,7 @@
     "chrono": "cpp",
     "system_error": "cpp",
     "*.contiki": "cpp",
-    "cstring": "cpp"
+    "cstring": "cpp",
+    "*.inc": "cpp"
   }
 }

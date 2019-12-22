@@ -12,10 +12,12 @@
 #include "TimerInterruptHandler.h"
 #include "Gpio.h"
 #include "Dwt.h"
+#include "DebugPort.h"
 #include "Leds.h"
 #include "TimeLimit.h"
 #include "SdCard.h"
 #include "Camera/Camera.h"
+#include "Rng.h"
 
 namespace Hal
 {
@@ -30,6 +32,8 @@ public:
 	Spiffs &GetSpiffs() { return _spiffs; };
 	SdCard &GetSdCard() { return _sdCard; };
 	Camera &GetCamera() { return _camera; };
+	DebugPort &GetDebugPort() { return _debugPort; };
+	Rng &GetRng() { return _rng; };
 	uint32_t Milliseconds();
 	void TimerCallback();
 	ResetReason GetResetReason();
@@ -57,6 +61,8 @@ private:
 	Camera _camera;
 	SdCard _sdCard;
 	Leds _leds;
+	DebugPort _debugPort;
+	Rng _rng;
 };
 } // namespace Hal
 

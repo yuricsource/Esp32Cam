@@ -17,6 +17,8 @@
 #include <esp_log.h>
 #include "Hardware.h"
 #include "Tests.h"
+#include "Logger.h"
+#include "Rng.h"
 #include <cstring>
 
 void executetMenu(char Test)
@@ -63,9 +65,9 @@ extern "C" void app_main(void)
 {
 	Hal::Hardware::Instance();
 	printf("\n");
-	printf("Hardware Verification for ESP8266\n");
+	printf("Hardware Verification for ESP32\n");
 	printf("\n");
-
+ 
 	char test = 0;
 
 	while (1)

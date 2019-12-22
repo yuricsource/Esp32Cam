@@ -22,4 +22,4 @@ public:
 
 } // namespace Hal
 
-#endif /* __SPG_HAL_TIMELIMIT_H */
+#endif /* _HAL_TIMELIMIT_H */

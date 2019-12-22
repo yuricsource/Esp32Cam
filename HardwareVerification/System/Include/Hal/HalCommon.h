@@ -4,6 +4,7 @@
 
 #include "esp_system.h"
 #include "esp_sleep.h"
+#include "freertos/FreeRTOS.h"
 #include <stdio.h>
 #include "esp_err.h"
 
@@ -115,10 +116,11 @@ enum class TimerSelect : uint8_t
 enum class UartPort : uint8_t
 {
 	Uart0 = 0,
-	Uart1 = 1
+	Uart1 = 1,
+	Uart2 = 2
 };
 
-enum class DataBit : uint8_t
+enum class UartBitLength : uint8_t
 {
 	Data5Btis = 0,
 	Data6Btis = 1,
@@ -162,19 +164,19 @@ enum class I2cPort : uint8_t
 
 enum class CameraPixelFormat : uint8_t
 {
-	CameraPixelFormatRGB565 = 0,	//!< RGB, 2 bytes per pixel (not implemented)
-	CameraPixelFormatYUV422 = 1,	//!< YUYV, 2 bytes per pixel (not implemented)
-	CameraPixelFormatGrayScale = 2, //!< 1 byte per pixel
-	CameraPixelFormatJPEG = 3,		//!< JPEG compressed
+	CameraPixelFormatRGB565 = 0,	//RGB, 2 bytes per pixel (not implemented)
+	CameraPixelFormatYUV422 = 1,	//YUYV, 2 bytes per pixel (not implemented)
+	CameraPixelFormatGrayScale = 2, //1 byte per pixel
+	CameraPixelFormatJPEG = 3,		//JPEG compressed
 };
 
 enum class CameraFrameSize : uint8_t
 {
-	CameraFrameSizeQQVGA = 4, //!< 160x120
-	CameraFrameSizeQVGA = 8,  //!< 320x240
-	CameraFrameSizeVGA = 10,  //!< 640x480
-	CameraFrameSizeSVGA = 11, //!< 800x600
-	CameraFrameSizeSXGA = 12, //	1280* 1024
+	CameraFrameSizeQQVGA = 4, //160x120
+	CameraFrameSizeQVGA = 8,  //320x240
+	CameraFrameSizeVGA = 10,  //640x480
+	CameraFrameSizeSVGA = 11, //800x600
+	CameraFrameSizeSXGA = 12, //1280* 1024
 	CameraFrameSizeUXGA = 13, //1600*1200
 };
 
@@ -196,6 +198,8 @@ enum class CameraErrorCode : uint8_t
 using MacAddress = uint8_t[6];
 
 static constexpr uint32_t TimeBaseClock = 80000000;
+
+static constexpr uint32_t UartTimeOut = 20 / portTICK_RATE_MS;
 
 } // namespace Hal
 #endif /* INCLUDE_HAL_HALCOMMON_H_ */
