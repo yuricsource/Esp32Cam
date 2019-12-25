@@ -1,5 +1,5 @@
 
-#include "Camera/Camera.h"
+#include "Camera.h"
 #include "Camera/camera.h"
 #include "nvs_flash.h"
 #include "tcpip_adapter.h"
@@ -19,7 +19,8 @@
 #include "led.h"
 #include "qr_recoginize.h"
 #include "string.h"
-#include "../../components/camera/include/bitmap.h"
+#include "bitmap.h"
+#include "Logger.h"
 
 static const char *STREAM_CONTENT_TYPE =
     "multipart/x-mixed-replace; boundary=123456789000000000000987654321";
@@ -122,8 +123,6 @@ static void handle_rgb_bmp(http_context_t http_ctx, void *ctx)
 
 static void handle_jpg(http_context_t http_ctx, void *ctx)
 {
-    //if(get_light_state())
-    //	led_open();
     esp_err_t err = camera_run();
     if (err != ESP_OK)
     {
@@ -135,7 +134,6 @@ static void handle_jpg(http_context_t http_ctx, void *ctx)
     http_response_set_header(http_ctx, "Content-disposition", "inline; filename=capture.jpg");
     write_frame(http_ctx);
     http_response_end(http_ctx);
-    //led_close();
 }
 
 static void handle_rgb_bmp_stream(http_context_t http_ctx, void *ctx)
@@ -189,8 +187,6 @@ static void handle_rgb_bmp_stream(http_context_t http_ctx, void *ctx)
 static void handle_jpg_stream(http_context_t http_ctx, void *ctx)
 {
     http_response_begin(http_ctx, 200, STREAM_CONTENT_TYPE, HTTP_RESPONSE_SIZE_UNKNOWN);
-    //if(get_light_state())
-    //		led_open();
     while (true)
     {
         esp_err_t err = camera_run();
@@ -217,7 +213,6 @@ static void handle_jpg_stream(http_context_t http_ctx, void *ctx)
         }
     }
     http_response_end(http_ctx);
-    //led_close();
 }
 
 static esp_err_t event_handler(void *ctx, system_event_t *event)
@@ -254,7 +249,10 @@ Camera::Camera(Gpio *IoPins)
         ESP_ERROR_CHECK(nvs_flash_init());
     }
 
-    CameraConfiguration cameraConfig = {};
+#define CAMERA_PIXEL_FORMAT CAMERA_PF_JPEG
+#define CAMERA_FRAME_SIZE CAMERA_FS_UXGA
+
+
     cameraConfig.TimerChannel = LEDC_CHANNEL_0;
     cameraConfig.Timer = LEDC_TIMER_0;
     cameraConfig.PinD0 = 5;
@@ -273,49 +271,48 @@ Camera::Camera(Gpio *IoPins)
     cameraConfig.PinScl = 27;
     cameraConfig.PinReset = 32;
     cameraConfig.XclkFreqHz = 10000000;
-
+    cameraConfig.PixelFormat = static_cast<CameraPixelFormat>(CAMERA_PIXEL_FORMAT);
+   
+   
     camera_config_t camera_config = {};
 
-    camera_config.ledc_channel = LEDC_CHANNEL_0;
-    camera_config.ledc_timer = LEDC_TIMER_0;
-    camera_config.pin_d0 = 5;
-    camera_config.pin_d1 = 18;
-    camera_config.pin_d2 = 19;
-    camera_config.pin_d3 = 21;
-    camera_config.pin_d4 = 36;
-    camera_config.pin_d5 = 39;
-    camera_config.pin_d6 = 34;
-    camera_config.pin_d7 = 35;
-    camera_config.pin_xclk = 0;
-    camera_config.pin_pclk = 22;
-    camera_config.pin_vsync = 25;
-    camera_config.pin_href = 23;
-    camera_config.pin_sscb_sda = 26;
-    camera_config.pin_sscb_scl = 27;
-    camera_config.pin_reset = 32;
-    camera_config.xclk_freq_hz = 10000000;
+    camera_config.ledc_channel = cameraConfig.TimerChannel;
+    camera_config.ledc_timer = cameraConfig.Timer;
+    camera_config.pin_d0 = cameraConfig.PinD0;
+    camera_config.pin_d1 = cameraConfig.PinD1;
+    camera_config.pin_d2 = cameraConfig.PinD2;
+    camera_config.pin_d3 = cameraConfig.PinD3;
+    camera_config.pin_d4 = cameraConfig.PinD4;
+    camera_config.pin_d5 = cameraConfig.PinD5;
+    camera_config.pin_d6 = cameraConfig.PinD6;
+    camera_config.pin_d7 = cameraConfig.PinD7;
+    camera_config.pin_xclk = cameraConfig.PinXclk;
+    camera_config.pin_pclk = cameraConfig.PinPclk;
+    camera_config.pin_vsync = cameraConfig.PinVsync;
+    camera_config.pin_href = cameraConfig.PinHref;
+    camera_config.pin_sscb_sda = cameraConfig.PinSda;
+    camera_config.pin_sscb_scl = cameraConfig.PinScl;
+    camera_config.pin_reset = cameraConfig.PinReset;
+    camera_config.xclk_freq_hz = cameraConfig.XclkFreqHz;
 
-    static camera_pixelformat_t s_pixel_format;
+    camera_pixelformat_t s_pixel_format;
 
-#define CAMERA_PIXEL_FORMAT CAMERA_PF_JPEG
-#define CAMERA_FRAME_SIZE CAMERA_FS_UXGA
 
-    camera_model_t camera_model;
-    err = camera_probe(&camera_config, &camera_model);
+    err = camera_probe(&camera_config, (camera_model_t*)(&cameraConfig.CameraModel));
     if (err != ESP_OK)
     {
         printf("Camera probe failed with error 0x%x", err);
         return;
     }
 
-    if (camera_model == CAMERA_OV7725)
+    if (cameraConfig.CameraModel == CameraModelType::CameraOV7725)
     {
         s_pixel_format = CAMERA_PIXEL_FORMAT;
         camera_config.frame_size = CAMERA_FRAME_SIZE;
         printf("Detected OV7725 camera, using %s bitmap format",
                CAMERA_PIXEL_FORMAT == CAMERA_PF_GRAYSCALE ? "grayscale" : "RGB565");
     }
-    else if (camera_model == CAMERA_OV2640)
+    else if (cameraConfig.CameraModel == CameraModelType::CameraOV2640)
     {
         printf("Detected OV2640 camera, using JPEG format");
         s_pixel_format = CAMERA_PIXEL_FORMAT;
@@ -328,7 +325,7 @@ Camera::Camera(Gpio *IoPins)
         printf("Camera not supported");
         return;
     }
-
+    
     camera_config.pixel_format = s_pixel_format;
     err = camera_init(&camera_config);
     if (err != ESP_OK)
@@ -336,7 +333,7 @@ Camera::Camera(Gpio *IoPins)
         printf("Camera init failed with error 0x%x", err);
         return;
     }
-    //    databuf = (char *) malloc(BUF_SIZE);
+    
     tcpip_adapter_init();
     s_wifi_event_group = xEventGroupCreate();
     ESP_ERROR_CHECK(esp_event_loop_init(event_handler, NULL));
@@ -344,10 +341,8 @@ Camera::Camera(Gpio *IoPins)
     ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 
     wifi_config_t wifi_config = {};
-    // wifi_config.sta.ssid = "Android Rules";
     strcpy((char *)wifi_config.sta.ssid, "Yuri_Duda");
     strcpy((char *)wifi_config.sta.password, "Australia2us");
-    // wifi_config.sta.password = "android11";
 
     ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
     ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));

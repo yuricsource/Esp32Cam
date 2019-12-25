@@ -65,10 +65,8 @@ void executetMenu(char Test)
 extern "C" void app_main(void)
 {
 	Hal::Hardware::Instance();
-	printf("\n");
-	printf("Hardware Verification for ESP32\n");
-	printf("\n");
- 
+ 	Middleware::Logger::LogInfo("Hardware Verification for ESP32\n");
+
 	char test = 0;
 	
 	while (1)

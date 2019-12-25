@@ -21,8 +21,9 @@ unsigned char const severityInfoLen = 1;
 char const *severityError = "E";
 unsigned char const severityErrorLen = 1;
 
-Logger::LogInfos typeInfos[3]{
+Logger::LogInfos typeInfos[4]{
 	{"HAL", 3},
+	{"CAMERA", 6},
 	{"BLE", 3},
 	{"WIFI", 4}};
 

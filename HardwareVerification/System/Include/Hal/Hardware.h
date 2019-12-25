@@ -16,7 +16,7 @@
 #include "Leds.h"
 #include "TimeLimit.h"
 #include "SdCard.h"
-#include "Camera/Camera.h"
+#include "Camera.h"
 #include "Rng.h"
 
 namespace Hal
@@ -55,13 +55,13 @@ public:
 private:
 	static Hardware *_pHardware;
 	Gpio _gpio;
+	DebugPort _debugPort;
 	Spiffs _spiffs;
 	esp_chip_info_t _mcuInfo;
 	MacAddress _macAdrress;
 	Camera _camera;
 	SdCard _sdCard;
 	Leds _leds;
-	DebugPort _debugPort;
 	Rng _rng;
 };
 } // namespace Hal

@@ -9,7 +9,7 @@
 #define MAIN_INCLUDE_HAL_CAMERA_CAMERA_H_
 
 #include "../../components/http_server/my_http_server.h"
-#include "../../components/camera/include/bitmap.h"
+#include "bitmap.h"
 #include "HalCommon.h"
 #include "Gpio.h"
 #include "esp_err.h"
@@ -63,6 +63,8 @@ public:
 		CameraFrameSize FrameSize;
 
 		int JPEGQuality;
+
+		CameraModelType CameraModel;
 	};
 
 	Camera(Gpio *IoPins);
@@ -70,6 +72,7 @@ public:
 
 private:
 
+CameraConfiguration cameraConfig = {};
 
 };
 } // namespace Hal

@@ -16,6 +16,9 @@ public:
 	enum class LogSource : uint8_t
 	{
 		Hal,
+		Camera,
+		Ble,
+		Wifi,
 		Unknown = 255
 	};
 

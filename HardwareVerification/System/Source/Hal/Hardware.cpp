@@ -3,6 +3,7 @@
 #include "wchar.h"
 #include "Hardware.h"
 #include "soc/rtc.h"
+#include "Logger.h"
 
 namespace Hal
 {
@@ -11,11 +12,11 @@ namespace Hal
 Hardware *Hardware::_pHardware;
 
 Hardware::Hardware() : _gpio(),
+					   _debugPort(&_gpio, UartPort::Uart0, 115200, Gpio::GpioIndex::Gpio3, Gpio::GpioIndex::Gpio1),
 					   _spiffs(),
 					   _camera(&_gpio),
 					   _sdCard(&_gpio),
 					   _leds(&_gpio),
-					   _debugPort(&_gpio, UartPort::Uart0, 115200, Gpio::GpioIndex::Gpio3, Gpio::GpioIndex::Gpio1),
 					   _rng()
 {
 	esp_chip_info(&_mcuInfo);

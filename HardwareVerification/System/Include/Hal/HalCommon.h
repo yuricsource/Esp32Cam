@@ -180,7 +180,7 @@ enum class CameraFrameSize : uint8_t
 	CameraFrameSizeUXGA = 13, //1600*1200
 };
 
-enum class CameraModel : uint16_t
+enum class CameraModelType : uint16_t
 {
 	CameraNone = 0,
 	CameraUnknown = 1,
