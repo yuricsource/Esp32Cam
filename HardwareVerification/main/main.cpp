@@ -19,6 +19,7 @@
 #include "Tests.h"
 #include "Logger.h"
 #include "Rng.h"
+#include "CircularBuffer.h"
 #include <cstring>
 
 void executetMenu(char Test)
@@ -69,7 +70,7 @@ extern "C" void app_main(void)
 	printf("\n");
  
 	char test = 0;
-
+	
 	while (1)
 	{
 		executetMenu(test);
