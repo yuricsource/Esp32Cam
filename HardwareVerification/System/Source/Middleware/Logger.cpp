@@ -21,11 +21,14 @@ unsigned char const severityInfoLen = 1;
 char const *severityError = "E";
 unsigned char const severityErrorLen = 1;
 
-Logger::LogInfos typeInfos[4]{
+Logger::LogInfos typeInfos[5] =
+{
 	{"HAL", 3},
 	{"CAMERA", 6},
 	{"BLE", 3},
-	{"WIFI", 4}};
+	{"WIFI", 4},
+	{"WEBSERV", 7},
+};
 
 void Logger::LogInfo(const char *format, ...)
 {

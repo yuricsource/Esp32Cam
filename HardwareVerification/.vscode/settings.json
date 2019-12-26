@@ -18,6 +18,7 @@
     "system_error": "cpp",
     "*.contiki": "cpp",
     "cstring": "cpp",
-    "*.inc": "cpp"
+    "*.inc": "cpp",
+    "*.ipp": "cpp"
   }
 }

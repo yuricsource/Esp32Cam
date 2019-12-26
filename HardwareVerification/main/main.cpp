@@ -20,6 +20,8 @@
 #include "Logger.h"
 #include "Rng.h"
 #include "CircularBuffer.h"
+#include "HttpServer.h"
+#include "esp_http_server.h"
 #include <cstring>
 
 void executetMenu(char Test)
@@ -66,6 +68,8 @@ extern "C" void app_main(void)
 {
 	Hal::Hardware::Instance();
  	Middleware::Logger::LogInfo("Hardware Verification for ESP32\n");
+	//Middleware::HttpServer webserver(80);
+	//webserver.StartServer();
 
 	char test = 0;
 	

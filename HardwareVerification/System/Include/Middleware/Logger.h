@@ -19,6 +19,7 @@ public:
 		Camera,
 		Ble,
 		Wifi,
+		HttpServer,
 		Unknown = 255
 	};
 
