@@ -6,6 +6,7 @@
 #include "mutex.hpp"
 
 using cpp_freertos::MutexStandard;
+using cpp_freertos::LockGuard;
 
 namespace Middleware
 {

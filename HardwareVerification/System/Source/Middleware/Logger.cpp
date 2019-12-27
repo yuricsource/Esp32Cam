@@ -15,6 +15,9 @@ using Hal::Hardware;
 static char const *seperator = " | ";
 unsigned char const seperatorLen = 3;
 
+static char const *newLine = "\r\n";
+unsigned char const newLineLen = 2;
+
 static char const *severityInfo = "I";
 unsigned char const severityInfoLen = 1;
 
@@ -35,7 +38,8 @@ void Logger::LogInfo(const char *format, ...)
 	if (Hardware::Instance()->GetDebugPort().IsEnabled() == false)
 		return;
 
-	_logLock->Lock();
+	LockGuard logGuard(*_logLock);
+
 	do
 	{
 		if (!createPrefix(severityInfo, severityInfoLen, LogSource::Unknown))
@@ -46,8 +50,7 @@ void Logger::LogInfo(const char *format, ...)
 		vfprintf(stdout, format, argptr);
 		va_end(argptr);
 	} while (false);
-
-	_logLock->Unlock();
+	fwrite(newLine, 1, newLineLen, stdout);
 }
 
 void Logger::LogInfo(LogSource source, const char *format, ...)
@@ -55,7 +58,7 @@ void Logger::LogInfo(LogSource source, const char *format, ...)
 	if (Hardware::Instance()->GetDebugPort().IsEnabled() == false)
 		return;
 
-	_logLock->Lock();
+	LockGuard logGuard(*_logLock);
 
 	do
 	{
@@ -67,8 +70,7 @@ void Logger::LogInfo(LogSource source, const char *format, ...)
 		vfprintf(stdout, format, argptr);
 		va_end(argptr);
 	} while (false);
-
-	_logLock->Unlock();
+	fwrite(newLine, 1, newLineLen, stdout);
 }
 
 void Logger::LogError(const char *format, ...)
@@ -76,7 +78,7 @@ void Logger::LogError(const char *format, ...)
 	if (Hardware::Instance()->GetDebugPort().IsEnabled() == false)
 		return;
 
-	_logLock->Lock();
+	LockGuard logGuard(*_logLock);
 
 	do
 	{
@@ -88,8 +90,7 @@ void Logger::LogError(const char *format, ...)
 		vfprintf(stdout, format, argptr);
 		va_end(argptr);
 	} while (false);
-
-	_logLock->Unlock();
+	fwrite(newLine, 1, newLineLen, stdout);
 }
 
 void Logger::LogError(LogSource source, const char *format, ...)
@@ -97,8 +98,7 @@ void Logger::LogError(LogSource source, const char *format, ...)
 	if (Hardware::Instance()->GetDebugPort().IsEnabled() == false)
 		return;
 
-	_logLock->Lock();
-
+	LockGuard logGuard(*_logLock);
 	do
 	{
 		if (!createPrefix(severityError, severityErrorLen, source))
@@ -109,8 +109,7 @@ void Logger::LogError(LogSource source, const char *format, ...)
 		vfprintf(stdout, format, argptr);
 		va_end(argptr);
 	} while (false);
-
-	_logLock->Unlock();
+	fwrite(newLine, 1, newLineLen, stdout);
 }
 
 bool Logger::createPrefix(const char *prefix, const char prefixLen, LogSource source)
