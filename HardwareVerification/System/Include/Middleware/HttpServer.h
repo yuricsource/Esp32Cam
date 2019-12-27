@@ -3,6 +3,11 @@
 #include <cstdint>
 #include <array>
 #include "lwip/sockets.h"
+#include "tcpip_adapter.h"
+
+#include "lwip/err.h"
+#include "lwip/sockets.h"
+#include "lwip/sys.h"
 
 
 namespace Middleware

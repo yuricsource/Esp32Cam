@@ -1,11 +1,5 @@
 #include "HttpServer.h"
 #include "Logger.h"
-#include "lwip/sockets.h"
-#include "tcpip_adapter.h"
-
-#include "lwip/err.h"
-#include "lwip/sockets.h"
-#include "lwip/sys.h"
 #include "Hardware.h"
 
 namespace Middleware

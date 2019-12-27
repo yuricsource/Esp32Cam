@@ -8,7 +8,6 @@
 namespace Hal
 {
 
-// Singleton class
 Hardware *Hardware::_pHardware;
 
 Hardware::Hardware() : _gpio(),

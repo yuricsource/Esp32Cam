@@ -22,6 +22,7 @@
 #include "CircularBuffer.h"
 #include "HttpServer.h"
 #include "esp_http_server.h"
+#include "ApplicationManager.h"
 #include <cstring>
 
 void executetMenu(char Test)
@@ -67,6 +68,9 @@ void executetMenu(char Test)
 extern "C" void app_main(void)
 {
 	Hal::Hardware::Instance();
+	Applications::ApplicationManager::Instance();
+	Applications::ApplicationManager::Instance()->Initialize();
+	Applications::ApplicationManager::Instance()->GetWifi().Start();
  	Middleware::Logger::LogInfo("Hardware Verification for ESP32\n");
 	//Middleware::HttpServer webserver(80);
 	//webserver.StartServer();
