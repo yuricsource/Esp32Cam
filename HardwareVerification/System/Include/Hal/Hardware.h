@@ -18,6 +18,7 @@
 #include "SdCard.h"
 #include "Camera.h"
 #include "Rng.h"
+#include "WifiDriver.h"
 
 namespace Hal
 {
@@ -34,6 +35,8 @@ public:
 	Camera &GetCamera() { return _camera; };
 	DebugPort &GetDebugPort() { return _debugPort; };
 	Rng &GetRng() { return _rng; };
+	WifiDriver &GetWifi() { return _wifiDriver; };
+
 	uint32_t Milliseconds();
 	void TimerCallback();
 	ResetReason GetResetReason();
@@ -63,6 +66,7 @@ private:
 	SdCard _sdCard;
 	Leds _leds;
 	Rng _rng;
+	WifiDriver _wifiDriver;
 };
 } // namespace Hal
 

@@ -125,9 +125,9 @@ bool Logger::createPrefix(const char *prefix, const char prefixLen, LogSource so
 	char timeText[20];
 	uint8_t len = 0;
 	if (ms >= (1000 * 60 * 60 * 24))
-		len = std::snprintf(timeText, 20, "%d:%02d:%02d:%02d.%03d", days, hours, minutes, seconds, milliseconds);
+		len = std::snprintf(timeText, 20, "%d:%02d:%02d:%02d.%02d", days, hours, minutes, seconds, milliseconds);
 	else
-		len = std::snprintf(timeText, 20, "%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
+		len = std::snprintf(timeText, 20, "%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
 	fwrite(timeText, 1, len, stdout);
 	fwrite(seperator, 1, seperatorLen, stdout);
 

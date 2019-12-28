@@ -19,6 +19,8 @@
     "*.contiki": "cpp",
     "cstring": "cpp",
     "*.inc": "cpp",
-    "*.ipp": "cpp"
+    "*.ipp": "cpp",
+    "string": "cpp",
+    "*.lwip": "cpp"
   }
 }

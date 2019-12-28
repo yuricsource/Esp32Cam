@@ -69,7 +69,7 @@ public:
 
 	Camera(Gpio *IoPins);
 	~Camera();
-
+	
 private:
 
 CameraConfiguration cameraConfig = {};

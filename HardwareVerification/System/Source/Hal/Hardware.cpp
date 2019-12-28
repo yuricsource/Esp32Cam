@@ -16,7 +16,8 @@ Hardware::Hardware() : _gpio(),
 					   _camera(&_gpio),
 					   _sdCard(&_gpio),
 					   _leds(&_gpio),
-					   _rng()
+					   _rng(),
+					   _wifiDriver()
 {
 	esp_chip_info(&_mcuInfo);
 	esp_base_mac_addr_get(_macAdrress);

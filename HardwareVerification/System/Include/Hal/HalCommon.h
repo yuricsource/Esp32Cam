@@ -195,11 +195,29 @@ enum class CameraErrorCode : uint8_t
 	CameraNotSupported
 };
 
+enum class WifiConfiguration : uint8_t
+{
+	Client,
+	HotSpot,
+	Mesh
+};
+
+enum class WifiAuthenticationMode : uint8_t
+{
+    Open,
+    Wep,
+    WpaPsk,
+    Wpa2Psk,
+    WpaWpa2Psk,
+    Wpa2Enterprise
+};
+
 using MacAddress = uint8_t[6];
 
 static constexpr uint32_t TimeBaseClock = 80000000;
 
 static constexpr uint32_t UartTimeOut = 20 / portTICK_RATE_MS;
-
+static constexpr uint8_t WifiSsidMaxLength = 32;
+static constexpr uint8_t WifiPasswordMaxLength = 64;
 } // namespace Hal
 #endif /* INCLUDE_HAL_HALCOMMON_H_ */
