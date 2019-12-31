@@ -51,6 +51,10 @@ void executetMenu(char Test)
 	case 'Z':
 		TestSdCard();
 		break;
+	case 'w':
+	case 'W':
+		WifiMenu();
+		break;
 	default:
 		break;
 	}
@@ -63,6 +67,7 @@ void executetMenu(char Test)
 	printf("[F] - Deep Sleep for 5 Seconds.\n");
 	printf("[C] - Test SPIFFS\n");
 	printf("[Z] - Test SdCard\n");
+	printf("[W] - WiFi Menu\n");
 }
 
 extern "C" void app_main(void)
@@ -80,11 +85,6 @@ extern "C" void app_main(void)
 	while (1)
 	{
 		executetMenu(test);
-		test = 0;
-		while (test == 0)
-		{
-			scanf("%c", &test);
-			vTaskDelay(10);
-		}
+		test = ReadKey();
 	}
 }

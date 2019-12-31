@@ -22,16 +22,15 @@ public:
 	inline bool IsEnabled(){return _isEnabled;};
 	bool SetSsid(const char* ssid, uint8_t len);
 	bool SetPassword(const char* passwd, uint8_t len);
-	bool Configure(WifiConfiguration wifiConfiguration);
-	bool SetStaticIp(ip_addr_t ip);
-	bool SetStaticIp(const char* ip, uint8_t len);
-	bool UseDhcp();
+	bool SetMode(WifiConfiguration wifiConfiguration);
+	bool SetAuthentication(WifiAuthenticationMode authentication);
+	bool SetChannel(uint8_t channel);
 private:
 	bool _isEnabled = false;
 	bool _isConnected = false;
 	WifiAuthenticationMode _authentication = WifiAuthenticationMode::Open;
-	WifiConfiguration _wifiConfiguration = WifiConfiguration::Client;
-	uint8_t _channel;
+	WifiConfiguration _wifiConfiguration = WifiConfiguration::HotSpot;
+	uint8_t _channel = 8;
 
 	array<char,WifiSsidMaxLength> _ssid = {};
 	array<char,WifiPasswordMaxLength> _password = {};

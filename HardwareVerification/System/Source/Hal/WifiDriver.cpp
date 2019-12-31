@@ -48,7 +48,7 @@ bool WifiDriver::SetPassword(const char *passwd, uint8_t len)
 	return true;
 }
 
-bool WifiDriver::Configure(WifiConfiguration wifiConfiguration)
+bool WifiDriver::SetMode(WifiConfiguration wifiConfiguration)
 {
 	if (_isEnabled)
 		return false;
@@ -58,9 +58,14 @@ bool WifiDriver::Configure(WifiConfiguration wifiConfiguration)
 	return true;
 }
 
-bool WifiDriver::UseDhcp()
+bool WifiDriver::SetAuthentication(WifiAuthenticationMode authentication)
 {
-	return false;
+	if (_isEnabled)
+		return false;
+
+	_authentication = authentication;
+
+	return true;
 }
 
 void WifiDriver::ResetDriver()
@@ -69,29 +74,54 @@ void WifiDriver::ResetDriver()
 	Enable();
 }
 
+bool WifiDriver::SetChannel(uint8_t channel)
+{
+		if (_isEnabled)
+		return false;
+
+	_channel = channel;
+
+	return true;
+}
+
 bool WifiDriver::Enable()
 {
 	if (_isEnabled)
 		return true;
 
 	wifi_config_t wifi_config = {};
-    strcpy((char *)wifi_config.sta.ssid, _ssid.data());
-    strcpy((char *)wifi_config.sta.password, _password.data());
 
-	if (_wifiConfiguration == WifiConfiguration::Client)
-    	esp_wifi_set_mode(WIFI_MODE_AP);
-    else if (_wifiConfiguration == WifiConfiguration::HotSpot)
-		esp_wifi_set_mode(WIFI_MODE_STA);
-	else if (_wifiConfiguration == WifiConfiguration::Mesh)
-		esp_wifi_set_mode(WIFI_MODE_APSTA);
-		
-	ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
-    ESP_ERROR_CHECK(esp_wifi_start());
-    ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
-	// if (esp_wifi_init(&cfg) == ESP_OK)
-	// 	_isEnabled = true;
-	// else
-	// 	_isEnabled = false;
+	wifi_mode_t wifiMode = static_cast<wifi_mode_t>(_wifiConfiguration);
+	
+	esp_interface_t interface;
+	if (_wifiConfiguration == WifiConfiguration::HotSpot)
+	{
+		interface = esp_interface_t::ESP_IF_WIFI_AP;
+		wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
+		strcpy((char *)wifi_config.ap.ssid, _ssid.data());
+		wifi_config.ap.ssid_len = strlen( _ssid.data());
+		wifi_config.ap.max_connection = 4;
+		wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
+		strcpy((char *)wifi_config.ap.password, _password.data());
+		wifi_config.ap.channel = _channel;
+	}
+	else if (_wifiConfiguration == WifiConfiguration::Client)
+	{
+		interface = esp_interface_t::ESP_IF_WIFI_STA;
+		strcpy((char *)wifi_config.sta.ssid, _ssid.data());
+		strcpy((char *)wifi_config.sta.password, _password.data());
+		wifi_config.sta.channel = _channel;
+	}
+	else
+	{
+		assert(0);
+	}
+	esp_wifi_set_mode(wifiMode);
+	assert(esp_wifi_set_config(interface, &wifi_config) == ESP_OK);
+	assert(esp_wifi_start() == ESP_OK);
+	assert(esp_wifi_set_ps(WIFI_PS_NONE) == ESP_OK);
+
+	_isEnabled = true;
 
 	return _isEnabled;
 }
@@ -101,11 +131,11 @@ bool WifiDriver::Disable()
 	if (_isEnabled == false)
 		return true;
 
-	if (esp_wifi_deinit() == ESP_OK)
-		_isEnabled = false;
-	else
-		_isEnabled = true;
+	esp_wifi_stop();
+	assert(esp_wifi_stop() == ESP_OK);
 
-	return _isEnabled == false;
+	_isEnabled = false;
+
+	return true;
 }
 } // namespace Hal
