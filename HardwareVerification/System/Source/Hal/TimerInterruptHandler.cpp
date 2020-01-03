@@ -127,7 +127,7 @@ void TimerInterruptHandler::SetCallback(TimerInterruptHandler::Callback *handler
 	config.counter_en = TIMER_PAUSE;
 	config.alarm_en = TIMER_ALARM_EN;
 	config.intr_type = TIMER_INTR_LEVEL;
-	config.auto_reload = handler->AutoReload;
+	config.auto_reload = (timer_autoreload_t)handler->AutoReload;
 	timer_init(TIMER_GROUP_0, timer, &config);
 
 	timer_set_counter_value(TIMER_GROUP_0, timer, 0);

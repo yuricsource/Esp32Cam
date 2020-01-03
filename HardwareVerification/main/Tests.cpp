@@ -215,8 +215,8 @@ void WifiMenu()
 		{
 			char mode = 0;
 			printf("\n\nSet the Wifi mode:\n\n");
-			printf("[1] - Access Point\n");
-			printf("[2] - Station\n");
+			printf("[1] - Client\n");
+			printf("[2] - Hotspot\n");
 			printf("[3] - Mesh Network\n");
 			mode = ReadKey();
 			if (mode == '1')

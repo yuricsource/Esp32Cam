@@ -21,9 +21,9 @@ Hardware::Hardware() : _gpio(),
 {
 	esp_chip_info(&_mcuInfo);
 	esp_base_mac_addr_get(_macAdrress);
-	printf("SDK Version         : %s\n", (char *)system_get_sdk_version());
+	printf("SDK Version         : %s\n", (char *)esp_get_idf_version());
 	printf("CPU Cores           : %d\n", _mcuInfo.cores);
-	printf("CPU Clock           : %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get()));
+	// printf("CPU Clock           : %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get()));
 	printf("APB Clock           : %d MHz\n", GetSystemClockBase());
 	printf("CPU Revision        : %d\n", _mcuInfo.revision);
 	printf("Embedded Flash      : %s\n", (_mcuInfo.features & CHIP_FEATURE_EMB_FLASH) ? "YES" : "NO");
@@ -35,7 +35,7 @@ Hardware::Hardware() : _gpio(),
 		   _macAdrress[1],
 		   _macAdrress[2],
 		   _macAdrress[3]);
-	printf("RTC counter         : %d\n", system_get_time());
+	// printf("RTC counter         : %d\n", system_get_time());
 	printf("MCU Free Heap       : %d\n", esp_get_free_heap_size());
 	printf("Reset Reason        : %s\n", GetResetReasonAsString());
 	printf("\n");
@@ -55,7 +55,7 @@ uint32_t Hardware::GetSystemClockBase()
 
 void Hardware::SoftwareReset()
 {
-	system_restart();
+	esp_restart();
 }
 
 void Hardware::DeepSleep(uint32_t uSeconds)
