@@ -8,12 +8,14 @@
 #
 COMPONENT_SRCDIRS           +=  ../System/Source/Hal                                     \
                                 ../System/Source/Hal/Camera                              \
+                                ../System/Source/Hal/Wifi                              \
                                 ../System/Source/Middleware                              \
                                 ../System/Source/Application                              \
                                 ../System/Libraries/freertos-addons/Source
 COMPONENT_ADD_INCLUDEDIRS   +=  ${IDF_PATH}/components/                                  \
                                 ../System/Include/Hal                                    \
-                                ../System/Include/Hal/Camera                             \
+                                ../System/Include/Hal/Camera                                     \
+                                ../System/Include/Hal/Wifi                             \
                                 ../System/Include/Middleware                             \
                                 ../System/Include/Application                             \
                                 ../System/Libraries/freertos-addons/Source/include

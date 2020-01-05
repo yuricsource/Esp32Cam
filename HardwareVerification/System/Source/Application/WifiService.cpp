@@ -10,26 +10,9 @@ using Middleware::Logger;
 void WifiService::Run()
 {
     Hardware *_hardware = Hardware::Instance();
-    int a = 0;
-    //assert(a == 1);
-    //static_assert(sizeof(a) == 4, "Error, 1 is different than 0");
-    // esp_err_t ret = nvs_flash_init();
-    // if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
-    // {
-    //     ESP_ERROR_CHECK(nvs_flash_erase());
-    //     ret = nvs_flash_init();
-    // }
-    // ESP_ERROR_CHECK(ret);
-
-    //  ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-
-
-    // ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
-    // ESP_ERROR_CHECK(esp_wifi_start());
-    // ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
-    // printf("Connecting to \"%s\"\n", wifi_config.sta.ssid);
-    // xEventGroupWaitBits(s_wifi_event_group, CONNECTED_BIT, false, true, portMAX_DELAY);
-    // printf("Connected\n");
+    
+    tcpip_adapter_init();
+    assert(esp_netif_init() == ESP_OK);
 
     Logger::LogInfo(Logger::LogSource::Wifi, "Running Wifi.");
     for (;;)

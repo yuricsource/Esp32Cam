@@ -82,7 +82,8 @@
                 "${IDF_PATH}/components/libsodium/libsodium/test/default/",
                 "${IDF_PATH}/components/libsodium/libsodium/src/libsodium/include/",
                 "${IDF_PATH}/components/libsodium/port_include/",
-                "${IDF_PATH}/components/libsodium/libsodium/test/quirks/"
+                "${IDF_PATH}/components/libsodium/libsodium/test/quirks/",
+                "${IDF_PATH}/components/esp_netif/include/"
             ],
             "defines": [],
             "cStandard": "c11",
