@@ -1,4 +1,5 @@
 #include "esp_err.h"
+#include "esp_wifi.h"
 
 #define ErrorCodeAndName(err)    {err, #err}
 

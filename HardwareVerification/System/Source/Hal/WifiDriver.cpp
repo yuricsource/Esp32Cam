@@ -7,7 +7,9 @@
 #include "nvs.h"
 #include "esp_wifi.h"
 #include "esp_log.h"
+#include "freertos/event_groups.h"
 #include "DebugAssert.h"
+
 #ifdef __cplusplus
 extern "C"
 {
@@ -19,23 +21,49 @@ extern "C"
 
 namespace Hal
 {
-
-static const char *TAG = "wifi softAP";
-
+#define EXAMPLE_ESP_WIFI_SSID      "Yuri_Duda"
+#define EXAMPLE_ESP_WIFI_PASS      "Australia2us"
+#define EXAMPLE_ESP_MAXIMUM_RETRY  5
+#define WIFI_CONNECTED_BIT BIT0
+static int s_retry_num = 0;
+/* FreeRTOS event group to signal when we are connected*/
+static EventGroupHandle_t s_wifi_event_group;
 static void wifi_event_handler(void *arg, esp_event_base_t event_base,
 							   int32_t event_id, void *event_data)
 {
 	if (event_id == WIFI_EVENT_AP_STACONNECTED)
 	{
 		wifi_event_ap_staconnected_t *event = (wifi_event_ap_staconnected_t *)event_data;
-		printf("station " MACSTR " join, AID=%d",
+		printf("station " MACSTR " join, AID=%d\n",
 			   MAC2STR(event->mac), event->aid);
 	}
 	else if (event_id == WIFI_EVENT_AP_STADISCONNECTED)
 	{
 		wifi_event_ap_stadisconnected_t *event = (wifi_event_ap_stadisconnected_t *)event_data;
-		printf("station " MACSTR " leave, AID=%d",
+		printf("station " MACSTR " leave, AID=%d\n",
 			   MAC2STR(event->mac), event->aid);
+	}
+	else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_START)
+	{
+		esp_wifi_connect();
+	}
+	else if (event_base == WIFI_EVENT && event_id == WIFI_EVENT_STA_DISCONNECTED)
+	{
+		if (s_retry_num < EXAMPLE_ESP_MAXIMUM_RETRY)
+		{
+			esp_wifi_connect();
+			xEventGroupClearBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
+			s_retry_num++;
+			printf("retry to connect to the AP");
+		}
+		printf("connect to the AP fail");
+	}
+	else if (event_base == IP_EVENT && event_id == IP_EVENT_STA_GOT_IP)
+	{
+		ip_event_got_ip_t *event = (ip_event_got_ip_t *)event_data;
+		printf("got ip:" IPSTR, IP2STR(&event->ip_info.ip));
+		s_retry_num = 0;
+		xEventGroupSetBits(s_wifi_event_group, WIFI_CONNECTED_BIT);
 	}
 }
 
@@ -48,9 +76,15 @@ WifiDriver::WifiDriver()
 		ret = nvs_flash_init();
 	}
 	DebugAssert(ret, ESP_OK);
+	DebugAssert(esp_netif_init(), ESP_OK);
+	DebugAssert(esp_event_loop_create_default(), ESP_OK);
+	netif_create_default_wifi_ap();
+	DebugAssert(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL), ESP_OK);
 
-	ESP_LOGI(TAG, "ESP_WIFI_MODE_AP");
+	/////////Test//////////
+	strcpy((char *)_ssid.data(), "YuriTest");
 }
+
 WifiDriver::~WifiDriver()
 {
 }
@@ -119,17 +153,10 @@ bool WifiDriver::Enable()
 
 	wifi_config_t wifi_config = {};
 
-	wifi_mode_t wifiMode = static_cast<wifi_mode_t>(_wifiConfiguration);
+	esp_interface_t wifiMode = static_cast<esp_interface_t>(_wifiConfiguration);
 
 	if (_wifiConfiguration == WifiConfiguration::HotSpot)
 	{
-		DebugAssert(esp_netif_init(), ESP_OK);
-		DebugAssert(esp_event_loop_create_default(), ESP_OK);
-		netif_create_default_wifi_ap();
-		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
-
-		DebugAssert(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL), ESP_OK);
 
 		strcpy((char *)wifi_config.ap.ssid, _ssid.data());
 		wifi_config.ap.ssid_len = strlen(_ssid.data());
@@ -137,29 +164,31 @@ bool WifiDriver::Enable()
 		wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
 		strcpy((char *)wifi_config.ap.password, _password.data());
 
+		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
 		DebugAssert(esp_wifi_set_mode(WIFI_MODE_AP), ESP_OK);
-		DebugAssert(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config), ESP_OK);
 		DebugAssert(esp_wifi_start(), ESP_OK);
-
-		ESP_LOGI(TAG, "wifi_init_softap finished. SSID:%s password:%s",
-				 "YuriFlash", "YuriFlash");
 	}
 	else if (_wifiConfiguration == WifiConfiguration::Client)
 	{
 		esp_interface_t interface;
 		interface = esp_interface_t::ESP_IF_WIFI_STA;
+		strcpy((char *)_ssid.data(), "Yuri_Duda");
 		strcpy((char *)wifi_config.sta.ssid, _ssid.data());
+		strcpy((char *)_password.data(), "Australia2us");
 		strcpy((char *)wifi_config.sta.password, _password.data());
-		wifi_config.sta.channel = _channel;
+
+		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
+		DebugAssert(esp_wifi_set_mode(WIFI_MODE_STA), ESP_OK);
+		DebugAssert(esp_wifi_start(), ESP_OK);
 	}
 	else
 	{
 		assert(0);
 	}
-	// esp_wifi_set_mode(wifiMode);
-	// assert(esp_wifi_set_config(interface, &wifi_config) == ESP_OK);
-	// assert(esp_wifi_start() == ESP_OK);
-	// assert(esp_wifi_set_ps(WIFI_PS_NONE) == ESP_OK);
+
+	DebugAssert(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config), ESP_OK);
 
 	_isEnabled = true;
 
@@ -171,17 +200,9 @@ bool WifiDriver::Disable()
 	if (_isEnabled == false)
 		return true;
 
-	if (_wifiConfiguration == WifiConfiguration::HotSpot)
-	{
-	}
-	else if (_wifiConfiguration == WifiConfiguration::Client)
-	{
-	}
-	else
-	{
-		assert(0);
-	}
-	DebugAssert(esp_wifi_stop(), ESP_OK);
+	DebugAssertWithoutAbort(esp_wifi_disconnect(), ESP_OK);
+	DebugAssertWithoutAbort(esp_wifi_stop(), ESP_OK);
+	DebugAssertWithoutAbort(esp_wifi_deinit(), ESP_OK);
 
 	_isEnabled = false;
 
