@@ -7,6 +7,7 @@
 #include "nvs.h"
 #include "esp_wifi.h"
 #include "esp_log.h"
+#include "DebugAssert.h"
 #ifdef __cplusplus
 extern "C"
 {
@@ -27,14 +28,14 @@ static void wifi_event_handler(void *arg, esp_event_base_t event_base,
 	if (event_id == WIFI_EVENT_AP_STACONNECTED)
 	{
 		wifi_event_ap_staconnected_t *event = (wifi_event_ap_staconnected_t *)event_data;
-		ESP_LOGI(TAG, "station " MACSTR " join, AID=%d",
-				 MAC2STR(event->mac), event->aid);
+		printf("station " MACSTR " join, AID=%d",
+			   MAC2STR(event->mac), event->aid);
 	}
 	else if (event_id == WIFI_EVENT_AP_STADISCONNECTED)
 	{
 		wifi_event_ap_stadisconnected_t *event = (wifi_event_ap_stadisconnected_t *)event_data;
-		ESP_LOGI(TAG, "station " MACSTR " leave, AID=%d",
-				 MAC2STR(event->mac), event->aid);
+		printf("station " MACSTR " leave, AID=%d",
+			   MAC2STR(event->mac), event->aid);
 	}
 }
 
@@ -43,10 +44,10 @@ WifiDriver::WifiDriver()
 	esp_err_t ret = nvs_flash_init();
 	if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
 	{
-		ESP_ERROR_CHECK(nvs_flash_erase());
+		DebugAssert(nvs_flash_erase(), ESP_OK);
 		ret = nvs_flash_init();
 	}
-	ESP_ERROR_CHECK(ret);
+	DebugAssert(ret, ESP_OK);
 
 	ESP_LOGI(TAG, "ESP_WIFI_MODE_AP");
 }
@@ -120,14 +121,15 @@ bool WifiDriver::Enable()
 
 	wifi_mode_t wifiMode = static_cast<wifi_mode_t>(_wifiConfiguration);
 
-	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-	ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 	if (_wifiConfiguration == WifiConfiguration::HotSpot)
 	{
-		ESP_ERROR_CHECK(esp_event_loop_create_default());
+		DebugAssert(esp_netif_init(), ESP_OK);
+		DebugAssert(esp_event_loop_create_default(), ESP_OK);
 		netif_create_default_wifi_ap();
+		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
 
-		ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL));
+		DebugAssert(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL), ESP_OK);
 
 		strcpy((char *)wifi_config.ap.ssid, _ssid.data());
 		wifi_config.ap.ssid_len = strlen(_ssid.data());
@@ -135,9 +137,9 @@ bool WifiDriver::Enable()
 		wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
 		strcpy((char *)wifi_config.ap.password, _password.data());
 
-		ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
-		ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config));
-		ESP_ERROR_CHECK(esp_wifi_start());
+		DebugAssert(esp_wifi_set_mode(WIFI_MODE_AP), ESP_OK);
+		DebugAssert(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config), ESP_OK);
+		DebugAssert(esp_wifi_start(), ESP_OK);
 
 		ESP_LOGI(TAG, "wifi_init_softap finished. SSID:%s password:%s",
 				 "YuriFlash", "YuriFlash");
@@ -179,8 +181,7 @@ bool WifiDriver::Disable()
 	{
 		assert(0);
 	}
-	esp_wifi_stop();
-	assert(esp_wifi_stop() == ESP_OK);
+	DebugAssert(esp_wifi_stop(), ESP_OK);
 
 	_isEnabled = false;
 

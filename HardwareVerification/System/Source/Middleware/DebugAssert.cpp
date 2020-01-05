@@ -6,7 +6,7 @@ namespace Middleware
 {
 void DebugAssert::Assert(int rc, const char *file, int line, const char *function, const char *expression)
 {
-    printf("Assert check failed: esp_err_t 0x%x", rc);
+    printf("Assert check failed: 0x%x", rc);
     printf(" (%s)", GetErrorName(rc));
     printf(" at %p\n", __builtin_return_address(0));
     printf("file: \"%s\" line %d\nfunc: %s\nexpression: %s\n", file, line, function, expression);
@@ -16,7 +16,7 @@ void DebugAssert::Assert(int rc, const char *file, int line, const char *functio
 
 void DebugAssert::AssertWithoutBreaking(int rc, const char *file, int line, const char *function, const char *expression)
 {
-    printf("Assert check failed: esp_err_t 0x%x", rc);
+    printf("Assert check failed: 0x%x", rc);
     printf(" (%s)", GetErrorName(rc));
     printf(" at %p\n", __builtin_return_address(0));
     printf("file: \"%s\" line %d\nfunc: %s\nexpression: %s\n", file, line, function, expression);
