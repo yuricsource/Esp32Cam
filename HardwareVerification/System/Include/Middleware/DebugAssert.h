@@ -58,21 +58,6 @@ namespace Middleware
 class DebugAssert
 {
 public:
-	enum class LogSource : uint8_t
-	{
-		Hal,
-		Camera,
-		Ble,
-		Wifi,
-		HttpServer,
-		Unknown = 255
-	};
-
-	struct LogInfos
-	{
-		char const *Type;
-		unsigned char const Length;
-	};
 
 	void Assert();
 

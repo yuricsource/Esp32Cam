@@ -79,8 +79,8 @@ WifiDriver::WifiDriver()
 	DebugAssert(esp_netif_init(), ESP_OK);
 	DebugAssert(esp_event_loop_create_default(), ESP_OK);
 	netif_create_default_wifi_ap();
+	netif_create_default_wifi_sta();
 	DebugAssert(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL), ESP_OK);
-
 	/////////Test//////////
 	strcpy((char *)_ssid.data(), "YuriTest");
 }
@@ -171,11 +171,9 @@ bool WifiDriver::Enable()
 	}
 	else if (_wifiConfiguration == WifiConfiguration::Client)
 	{
-		esp_interface_t interface;
-		interface = esp_interface_t::ESP_IF_WIFI_STA;
-		strcpy((char *)_ssid.data(), "Yuri_Duda");
+		strcpy((char *)_ssid.data(), "Android Rules");
 		strcpy((char *)wifi_config.sta.ssid, _ssid.data());
-		strcpy((char *)_password.data(), "Australia2us");
+		strcpy((char *)_password.data(), "android11");
 		strcpy((char *)wifi_config.sta.password, _password.data());
 
 		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
@@ -188,7 +186,7 @@ bool WifiDriver::Enable()
 		assert(0);
 	}
 
-	DebugAssert(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config), ESP_OK);
+	DebugAssert(esp_wifi_set_config(wifiMode, &wifi_config), ESP_OK);
 
 	_isEnabled = true;
 
