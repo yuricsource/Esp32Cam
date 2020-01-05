@@ -120,47 +120,20 @@ bool WifiDriver::Enable()
 
 	wifi_mode_t wifiMode = static_cast<wifi_mode_t>(_wifiConfiguration);
 
-	esp_interface_t interface;
+	wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+	ESP_ERROR_CHECK(esp_wifi_init(&cfg));
 	if (_wifiConfiguration == WifiConfiguration::HotSpot)
 	{
-		// ESP_ERROR_CHECK(esp_event_loop_create_default());
-		// netif_create_default_wifi_ap();
-
-		// wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-		// ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-
-		// ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL));
-
-		// interface = esp_interface_t::ESP_IF_WIFI_AP;
-		// wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
-		// strcpy((char *)wifi_config.ap.ssid, _ssid.data());
-		// wifi_config.ap.ssid_len = strlen(_ssid.data());
-		// wifi_config.ap.max_connection = 4;
-		// wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
-		// strcpy((char *)wifi_config.ap.password, _password.data());
-		// wifi_config.ap.channel = _channel;
-
-		// ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
-		// ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config));
-		// ESP_ERROR_CHECK(esp_wifi_start());
-		ESP_ERROR_CHECK(esp_netif_init());
 		ESP_ERROR_CHECK(esp_event_loop_create_default());
 		netif_create_default_wifi_ap();
 
-		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-		ESP_ERROR_CHECK(esp_wifi_init(&cfg));
-
 		ESP_ERROR_CHECK(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL));
 
-		wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
 		strcpy((char *)wifi_config.ap.ssid, _ssid.data());
 		wifi_config.ap.ssid_len = strlen(_ssid.data());
 		wifi_config.ap.max_connection = 4;
 		wifi_config.ap.authmode = static_cast<wifi_auth_mode_t>(_authentication);
-		//strcpy((char *)wifi_config.ap.password, _password.data());
-
-		wifi_config.ap.authmode = WIFI_AUTH_OPEN;
-		
+		strcpy((char *)wifi_config.ap.password, _password.data());
 
 		ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_AP));
 		ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config));
@@ -171,6 +144,7 @@ bool WifiDriver::Enable()
 	}
 	else if (_wifiConfiguration == WifiConfiguration::Client)
 	{
+		esp_interface_t interface;
 		interface = esp_interface_t::ESP_IF_WIFI_STA;
 		strcpy((char *)wifi_config.sta.ssid, _ssid.data());
 		strcpy((char *)wifi_config.sta.password, _password.data());

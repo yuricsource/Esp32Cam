@@ -23,6 +23,7 @@
 #include "HttpServer.h"
 #include "esp_http_server.h"
 #include "ApplicationManager.h"
+#include "DebugAssert.h"
 #include <cstring>
 
 void executetMenu(char Test)
