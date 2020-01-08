@@ -1,0 +1,26 @@
+{
+  "terminal.integrated.shell.windows": "cmd.exe",
+  "terminal.integrated.shellArgs.windows": [
+    "/k",
+    "c:\\esp\\esp-idf\\export.bat"
+  ],
+  "terminal.integrated.shell.linux": "/bin/bash",
+  "terminal.integrated.shellArgs.linux": [
+    "--init-file",
+    "~/esp/esp-idf/export.sh",
+    "-i"
+  ],
+  "files.associations": {
+    "*.md": "markdown",
+    "*.mdx": "tdx",
+    "stdio.h": "c",
+    "chrono": "cpp",
+    "system_error": "cpp",
+    "*.contiki": "cpp",
+    "cstring": "cpp",
+    "*.inc": "cpp",
+    "*.ipp": "cpp",
+    "string": "cpp",
+    "*.lwip": "cpp"
+  }
+}
