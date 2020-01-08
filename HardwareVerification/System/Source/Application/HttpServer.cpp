@@ -1,28 +1,12 @@
 #include "HttpServer.h"
-#include "Logger.h"
-#include "Hardware.h"
 
-namespace Middleware
+namespace Applications
 {
-
-HttpServer::HttpServer(uint32_t port) : _port(port)
-{
-	Logger::LogError(Middleware::Logger::LogSource::HttpServer, "Creating Http Server");
-    //nvs_flash_init();
-    tcpip_adapter_init();
-    //esp_event_loop_create_default();
-
-    /* This helper function configures Wi-Fi or Ethernet, as selected in menuconfig.
-     * Read "Establishing Wi-Fi or Ethernet Connection" section in
-     * examples/protocols/README.md for more information about this function.
-     */
-    //example_connect();
-}
 
 HttpServer::~HttpServer()
 {
 }
-void HttpServer::StartServer()
+void HttpServer::Run()
 {
 
 	for (;;)

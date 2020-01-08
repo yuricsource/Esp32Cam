@@ -2,6 +2,7 @@
 
 #include "Hardware.h"
 #include "WifiService.h"
+#include "HttpServer.h"
 
 namespace Applications
 {
@@ -23,10 +24,11 @@ public:
     }
 
     WifiService& GetWifi() {return *_wifiService;};
-
+    HttpServer& GetHttpServer(){return *_httpServer;};
 private:
     static ApplicationManager *_applications;
     WifiService *_wifiService;
+    HttpServer *_httpServer;
 
 private:
     /// @brief	Hide Copy constructor.

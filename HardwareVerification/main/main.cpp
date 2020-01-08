@@ -20,7 +20,7 @@
 #include "Logger.h"
 #include "Rng.h"
 #include "CircularBuffer.h"
-#include "HttpServer.h"
+// #include "HttpServer.h"
 #include "esp_http_server.h"
 #include "ApplicationManager.h"
 #include "DebugAssert.h"
@@ -77,9 +77,10 @@ extern "C" void app_main(void)
 	Applications::ApplicationManager::Instance();
 	Applications::ApplicationManager::Instance()->Initialize();
 	Applications::ApplicationManager::Instance()->GetWifi().Start();
+	Applications::ApplicationManager::Instance()->GetHttpServer().Start();
  	Middleware::Logger::LogInfo("Hardware Verification for ESP32\n");
-	//Middleware::HttpServer webserver(80);
-	//webserver.StartServer();
+	// Middleware::HttpServer webserver(80);
+	// webserver.StartServer();
 
 	char test = 0;
 	

@@ -20,6 +20,7 @@ ApplicationManager::ApplicationManager()
 void ApplicationManager::Initialize()
 {
     _wifiService = new WifiService();
+    _httpServer = new HttpServer(80);
 }
 
 } // namespace Applications
