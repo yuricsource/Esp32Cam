@@ -1,0 +1,15 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"files.associations": {
+			"array": "cpp",
+			"functional": "cpp",
+			"string_view": "cpp",
+			"*.contiki": "cpp"
+		}
+	}
+}

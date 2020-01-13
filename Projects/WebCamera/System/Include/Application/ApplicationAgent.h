@@ -7,18 +7,18 @@
 namespace Applications
 {
 
-class ApplicationManager
+class ApplicationAgent
 {
 public:
-    ApplicationManager();
+    ApplicationAgent();
 
     void Initialize();
 
-    static inline ApplicationManager *Instance()
+    static inline ApplicationAgent *Instance()
     {
         if (_applications == nullptr)
         {
-            _applications = new ApplicationManager();
+            _applications = new ApplicationAgent();
         }
         return _applications;
     }
@@ -26,22 +26,22 @@ public:
     WifiService& GetWifi() {return *_wifiService;};
     HttpServer& GetHttpServer(){return *_httpServer;};
 private:
-    static ApplicationManager *_applications;
+    static ApplicationAgent *_applications;
     WifiService *_wifiService;
     HttpServer *_httpServer;
 
 private:
     /// @brief	Hide Copy constructor.
-    ApplicationManager(const ApplicationManager &) = delete;
+    ApplicationAgent(const ApplicationAgent &) = delete;
 
     /// @brief	Hide Assignment operator.
-    ApplicationManager &operator=(const ApplicationManager &) = delete;
+    ApplicationAgent &operator=(const ApplicationAgent &) = delete;
 
     /// @brief	Hide Move constructor.
-    ApplicationManager(ApplicationManager &&) = delete;
+    ApplicationAgent(ApplicationAgent &&) = delete;
 
     /// @brief	Hide Move assignment operator.
-    ApplicationManager &operator=(ApplicationManager &&) = delete;
+    ApplicationAgent &operator=(ApplicationAgent &&) = delete;
 };
 
 } // namespace Applications

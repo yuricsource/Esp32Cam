@@ -1,5 +1,6 @@
 #include "WifiService.h"
 #include "Logger.h"
+#include "RTOSExtra.h"
 
 namespace Applications
 {
@@ -9,8 +10,6 @@ using Middleware::Logger;
 
 void WifiService::Run()
 {
-    Hardware *_hardware = Hardware::Instance();
-    
     tcpip_adapter_init();
     assert(esp_netif_init() == ESP_OK);
 

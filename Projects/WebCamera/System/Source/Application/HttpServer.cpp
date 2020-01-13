@@ -6,6 +6,7 @@ namespace Applications
 HttpServer::~HttpServer()
 {
 }
+
 void HttpServer::Run()
 {
 

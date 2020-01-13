@@ -4,6 +4,7 @@
 #include "Hardware.h"
 #include "soc/rtc.h"
 #include "Logger.h"
+#include "RTOSExtra.h"
 
 namespace Hal
 {
@@ -13,7 +14,7 @@ Hardware *Hardware::_pHardware;
 Hardware::Hardware() : _gpio(),
 					   _debugPort(&_gpio, UartPort::Uart0, 115200, Gpio::GpioIndex::Gpio3, Gpio::GpioIndex::Gpio1),
 					   _spiffs(),
-					   _camera(&_gpio),
+					   //_camera(&_gpio),
 					   _sdCard(&_gpio),
 					   _leds(&_gpio),
 					   _rng(),
@@ -21,23 +22,24 @@ Hardware::Hardware() : _gpio(),
 {
 	esp_chip_info(&_mcuInfo);
 	esp_base_mac_addr_get(_macAdrress);
-	printf("SDK Version         : %s\n", (char *)esp_get_idf_version());
-	printf("CPU Cores           : %d\n", _mcuInfo.cores);
-	// printf("CPU Clock           : %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get()));
-	printf("APB Clock           : %d MHz\n", GetSystemClockBase());
-	printf("CPU Revision        : %d\n", _mcuInfo.revision);
-	printf("Embedded Flash      : %s\n", (_mcuInfo.features & CHIP_FEATURE_EMB_FLASH) ? "YES" : "NO");
-	printf("Wi-Fi Modle         : %s\n", (_mcuInfo.features & CHIP_FEATURE_WIFI_BGN) ? "YES" : "NO");
-	printf("Bluetooth Classic   : %s\n", (_mcuInfo.features & CHIP_FEATURE_BT) ? "YES" : "NO");
-	printf("Bluetooth LE        : %s\n", (_mcuInfo.features & CHIP_FEATURE_BLE) ? "YES" : "NO");
-	printf("MAC Address         : %02X:%02X:%02X:%02X\n",
+	printf("SDK Version         		: %s\n", (char *)esp_get_idf_version());
+	printf("CPU Cores           		: %d\n", _mcuInfo.cores);
+	// printf("CPU Clock           		: %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get()));
+	printf("APB Clock           		: %d MHz\n", GetSystemClockBase());
+	printf("CPU Revision        		: %d\n", _mcuInfo.revision);
+	printf("Embedded Flash      		: %s\n", (_mcuInfo.features & CHIP_FEATURE_EMB_FLASH) ? "YES" : "NO");
+	printf("Wi-Fi Modle         		: %s\n", (_mcuInfo.features & CHIP_FEATURE_WIFI_BGN) ? "YES" : "NO");
+	printf("Bluetooth Classic   		: %s\n", (_mcuInfo.features & CHIP_FEATURE_BT) ? "YES" : "NO");
+	printf("Bluetooth LE        		: %s\n", (_mcuInfo.features & CHIP_FEATURE_BLE) ? "YES" : "NO");
+	printf("MAC Address         		: %02X:%02X:%02X:%02X\n",
 		   _macAdrress[0],
 		   _macAdrress[1],
 		   _macAdrress[2],
 		   _macAdrress[3]);
-	// printf("RTC counter         : %d\n", system_get_time());
-	printf("MCU Free Heap       : %d\n", esp_get_free_heap_size());
-	printf("Reset Reason        : %s\n", GetResetReasonAsString());
+	// printf("RTC counter         		: %d\n", system_get_time());
+	printf("MCU Free Heap       		: %d\n", esp_get_free_heap_size());
+	printf("MCU Project Heap Allocated	: %d\n", configTOTAL_PROJECT_HEAP_SIZE_ALLOCATED);
+	printf("Reset Reason        		: %s\n", GetResetReasonAsString());
 	printf("\n");
 
 	if (_pHardware == nullptr)

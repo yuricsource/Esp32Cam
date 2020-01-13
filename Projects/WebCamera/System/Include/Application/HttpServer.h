@@ -4,6 +4,7 @@
 #include <array>
 #include "Hardware.h"
 #include "freertos/FreeRTOS.h"
+#include "RTOSExtra.h"
 #include "freertos/task.h"
 #include "thread.hpp"
 #include "esp_err.h"
@@ -12,7 +13,7 @@
 #include "esp_wifi.h"
 #include "Logger.h"
 #include "lwip/sockets.h"
-#include "tcpip_adapter.h"
+#include "esp_netif.h"
 
 namespace Applications
 {
@@ -23,7 +24,7 @@ using std::array;
 class HttpServer : public cpp_freertos::Thread
 {
 public:
-    HttpServer(uint32_t port) : cpp_freertos::Thread("WEBSVC", /*configWIFISVC_STACK_DEPTH*/ 1024 * 2, 3),
+    HttpServer(uint32_t port) : cpp_freertos::Thread("WEBSVC", configHTTPSVC_STACK_DEPTH, 3),
 	_port(port)
     {
     }

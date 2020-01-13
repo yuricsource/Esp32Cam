@@ -1,11 +1,11 @@
-#include "ApplicationManager.h"
+#include "ApplicationAgent.h"
 
 namespace Applications
 {
 
-ApplicationManager *ApplicationManager::_applications;
+ApplicationAgent *ApplicationAgent::_applications;
 
-ApplicationManager::ApplicationManager()
+ApplicationAgent::ApplicationAgent()
 {
     if (_applications == nullptr)
     {
@@ -17,7 +17,7 @@ ApplicationManager::ApplicationManager()
     }
 }
 
-void ApplicationManager::Initialize()
+void ApplicationAgent::Initialize()
 {
     _wifiService = new WifiService();
     _httpServer = new HttpServer(80);

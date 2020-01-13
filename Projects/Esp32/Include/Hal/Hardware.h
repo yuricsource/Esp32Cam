@@ -32,7 +32,7 @@ public:
 	Leds &GetLeds() { return _leds; };
 	Spiffs &GetSpiffs() { return _spiffs; };
 	SdCard &GetSdCard() { return _sdCard; };
-	Camera &GetCamera() { return _camera; };
+	//Camera &GetCamera() { return _camera; };
 	DebugPort &GetDebugPort() { return _debugPort; };
 	Rng &GetRng() { return _rng; };
 	WifiDriver &GetWifi() { return _wifiDriver; };
@@ -62,7 +62,7 @@ private:
 	Spiffs _spiffs;
 	esp_chip_info_t _mcuInfo;
 	MacAddress _macAdrress;
-	Camera _camera;
+	//Camera _camera;
 	SdCard _sdCard;
 	Leds _leds;
 	Rng _rng;

@@ -1,6 +1,8 @@
 #pragma once
+#include "RTOSExtra.h"
 #include "Hardware.h"
 #include "freertos/FreeRTOS.h"
+#include "RTOSExtra.h"
 #include "freertos/task.h"
 #include "thread.hpp"
 #include "esp_err.h"
@@ -14,7 +16,7 @@ namespace Applications
 class WifiService : public cpp_freertos::Thread
 {
 public:
-    WifiService() : cpp_freertos::Thread("WIFISVC", /*configWIFISVC_STACK_DEPTH*/ 1024 * 2, 3)
+    WifiService() : cpp_freertos::Thread("WIFISVC", configWIFISVC_STACK_DEPTH, 3)
     {
     }
 
