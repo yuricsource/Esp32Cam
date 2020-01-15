@@ -19,7 +19,7 @@
 #include "Camera.h"
 #include "Rng.h"
 #include "WifiDriver.h"
-#include "FastDelegate.h"
+#include "BaseConnection.h"
 
 namespace Hal
 {
@@ -45,7 +45,8 @@ public:
 	uint32_t GetRandomNumber();
 	uint32_t GetSystemClockBase();
 	void DeepSleep(uint32_t uSeconds);
-
+	char *GetResetReasonAsString(ResetReason reason);
+	
 	static inline Hardware *Instance()
 	{
 		if (_pHardware == nullptr)
