@@ -4,6 +4,9 @@
 #
 
 PROJECT_NAME := app-web-camera
+
+EXTRA_CFLAGS := -Wno-unused-local-typedefs
+
 include $(IDF_PATH)/make/project.mk
 
 

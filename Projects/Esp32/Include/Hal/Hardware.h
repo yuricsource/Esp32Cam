@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "Rng.h"
 #include "WifiDriver.h"
+#include "FastDelegate.h"
 
 namespace Hal
 {
@@ -40,7 +41,6 @@ public:
 	uint32_t Milliseconds();
 	void TimerCallback();
 	ResetReason GetResetReason();
-	char *GetResetReasonAsString();
 	void SoftwareReset();
 	uint32_t GetRandomNumber();
 	uint32_t GetSystemClockBase();

@@ -23,6 +23,7 @@
                 "${workspaceFolder}/System/Include/Hal/Camera/",
                 "${workspaceFolder}/System/Include/Middleware/Utils",
                 "${workspaceFolder}/System/Include/Middleware/Configuration",
+                "${workspaceFolder}/System/Include/Middleware/Common",
                 "${workspaceFolder}/System/Include/Middleware/Protocol",
                 "${workspaceFolder}/System/Include/Application/",
                 "${workspaceFolder}/System/Libraries/freertos-addons/Source/include",

@@ -5,9 +5,11 @@
 #include "soc/rtc.h"
 #include "Logger.h"
 #include "RTOSExtra.h"
+#include "CommonTypes.h"
 
 namespace Hal
 {
+using Common::GetResetReasonAsString;
 
 Hardware *Hardware::_pHardware;
 
@@ -39,7 +41,7 @@ Hardware::Hardware() : _gpio(),
 	// printf("RTC counter         		: %d\n", system_get_time());
 	printf("MCU Free Heap       		: %d\n", esp_get_free_heap_size());
 	printf("MCU Project Heap Allocated	: %d\n", configTOTAL_PROJECT_HEAP_SIZE_ALLOCATED);
-	printf("Reset Reason        		: %s\n", GetResetReasonAsString());
+	printf("Reset Reason        		: %s\n", GetResetReasonAsString(GetResetReason()));
 	printf("\n");
 
 	if (_pHardware == nullptr)
@@ -73,36 +75,6 @@ ResetReason Hardware::GetResetReason()
 	return static_cast<ResetReason>(info);
 }
 
-char *Hardware::GetResetReasonAsString()
-{
-	switch (GetResetReason())
-	{
-	case ResetReason::Unknown:
-		return (char *)"Unknown";
-	case ResetReason::PowerOn:
-		return (char *)"Power On";
-	case ResetReason::ExternalReset:
-		return (char *)"ExternalReset";
-	case ResetReason::SoftwareReset:
-		return (char *)"Software Reset";
-	case ResetReason::ExceptionPanicReset:
-		return (char *)"Exception/Panic Reset";
-	case ResetReason::IntWatchDog:
-		return (char *)"Internal External WatchDog";
-	case ResetReason::TaskWatchDog:
-		return (char *)"Task WatchDog";
-	case ResetReason::WatchDog:
-		return (char *)"Other WatchDog";
-	case ResetReason::DeepSleep:
-		return (char *)"Deep Sleep";
-	case ResetReason::Brownout:
-		return (char *)"Brownout";
-	case ResetReason::Sdio:
-		return (char *)"Sdio";
-	default:
-		return (char *)"";
-	}
-}
 
 Hardware::~Hardware()
 {
