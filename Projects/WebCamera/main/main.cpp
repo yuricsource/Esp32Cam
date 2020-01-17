@@ -5,13 +5,8 @@
 #include <memory>
 #include <string>
 #include <sstream>
+#include <cstring>
 #include <esp_attr.h>
-#include <freertos/FreeRTOS.h>
-#include <freertos/task.h>
-#include <chrono>
-#include <memory>
-#include <string>
-#include <sstream>
 #include <freertos/FreeRTOS.h>
 #include <freertos/task.h>
 #include <esp_log.h>
@@ -19,18 +14,19 @@
 #include "Logger.h"
 #include "Rng.h"
 #include "CircularBuffer.h"
-#include "esp_http_server.h"
-#include "ApplicationAgent.h"
 #include "DebugAssert.h"
-#include <cstring>
+#include "ApplicationAgent.h"
+#include "ConfigurationAgent.h"
 
 using Applications::ApplicationAgent;
+using Middleware::Configuration::ConfigurationAgent;
 using Middleware::Utilities::Logger;
 using Hal::Hardware;
 
 extern "C" void app_main(void)
 {
 	Hardware::Instance();
+	ConfigurationAgent::Instance();
 	ApplicationAgent::Instance();
 	ApplicationAgent::Instance()->Initialize();
 	ApplicationAgent::Instance()->GetWifi().Start();

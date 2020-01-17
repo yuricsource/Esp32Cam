@@ -4,6 +4,7 @@
 #include "lwip/ip_addr.h"
 #include "ConfigurationCommon.h"
 #include "HalCommon.h"
+#include "BaseConfiguration.h"
 
 namespace Middleware
 {

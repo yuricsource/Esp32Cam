@@ -10,8 +10,13 @@ class BaseConfiguration
 public:
 
     virtual void DefaultConfiguration() = 0;
-    BaseConfiguration();
-    ~BaseConfiguration();
+    BaseConfiguration()
+    {
+    }
+    
+    ~BaseConfiguration()
+    {
+    }
 
 private:
 
