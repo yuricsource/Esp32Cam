@@ -5,12 +5,14 @@
 #include "Hardware.h"
 #include "mutex.hpp"
 
-using cpp_freertos::MutexStandard;
 using cpp_freertos::LockGuard;
+using cpp_freertos::MutexStandard;
 
 namespace Middleware
 {
 
+namespace Utilities
+{
 class Logger
 {
 public:
@@ -21,6 +23,7 @@ public:
 		Ble,
 		Wifi,
 		HttpServer,
+		FirstGateway,
 		Unknown = 255
 	};
 
@@ -31,11 +34,10 @@ public:
 	};
 
 private:
-	static MutexStandard* _logLock;
+	static MutexStandard *_logLock;
 	static bool createPrefix(const char *prefix, const char prefixLen, LogSource source);
 
 public:
-
 	static void LogError(const char *format, ...);
 	static void LogError(LogSource source, const char *format, ...);
 
@@ -43,4 +45,5 @@ public:
 	static void LogInfo(LogSource source, const char *format, ...);
 };
 
+} // namespace Utilities
 } // namespace Middleware

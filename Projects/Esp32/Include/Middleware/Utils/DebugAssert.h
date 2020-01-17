@@ -28,7 +28,7 @@
 		int __err_rc = (int)function;                                     \
 		if (__err_rc != result)                                           \
 		{                                                                 \
-			Middleware::DebugAssert::Assert(__err_rc, __FILE__, __LINE__, \
+			Middleware::Utilities::DebugAssert::Assert(__err_rc, __FILE__, __LINE__, \
 											__ASSERT_FUNC, #function);    \
 		}                                                                 \
 	} while (0)
@@ -42,7 +42,7 @@
 	esp_err_t __err_rc = (int)function;                                              \
 	if (__err_rc != result)                                                          \
 	{                                                                                \
-		Middleware::DebugAssert::AssertWithoutBreaking(__err_rc, __FILE__, __LINE__, \
+		Middleware::Utilities::DebugAssert::AssertWithoutBreaking(__err_rc, __FILE__, __LINE__, \
 													   __ASSERT_FUNC, #function);    \
 	}                                                                                \
 	__err_rc;                                                                        \
@@ -55,10 +55,11 @@
 namespace Middleware
 {
 
+namespace Utilities
+{
 class DebugAssert
 {
 public:
-
 	void Assert();
 
 public:
@@ -70,4 +71,5 @@ private:
 	static const char *GetErrorName(int code);
 };
 
+} // namespace Utilities
 } // namespace Middleware

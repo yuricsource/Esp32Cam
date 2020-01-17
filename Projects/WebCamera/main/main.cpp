@@ -25,7 +25,7 @@
 #include <cstring>
 
 using Applications::ApplicationAgent;
-using Middleware::Logger;
+using Middleware::Utilities::Logger;
 using Hal::Hardware;
 
 extern "C" void app_main(void)

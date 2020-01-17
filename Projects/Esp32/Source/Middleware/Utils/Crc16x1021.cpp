@@ -2,6 +2,8 @@
 
 namespace Middleware
 {
+namespace Utilities
+{
 
 uint16_t Crc16x1021::GetCrc(uint8_t *data, uint16_t len)
 {
@@ -17,4 +19,5 @@ uint16_t Crc16x1021::GetCrc(uint8_t *data, uint16_t len)
 	return result;
 }
 
+} // namespace Utilities
 } // namespace Middleware

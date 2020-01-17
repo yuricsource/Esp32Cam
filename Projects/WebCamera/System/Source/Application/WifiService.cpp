@@ -6,7 +6,7 @@ namespace Applications
 {
 
 using Hal::Hardware;
-using Middleware::Logger;
+using Middleware::Utilities::Logger;
 
 void WifiService::Run()
 {

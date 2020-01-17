@@ -21,6 +21,8 @@
     "*.inc": "cpp",
     "*.ipp": "cpp",
     "string": "cpp",
-    "*.lwip": "cpp"
-  }
+    "*.lwip": "cpp",
+    "cstdint": "cpp"
+  },
+  "cmake.configureOnOpen": false
 }

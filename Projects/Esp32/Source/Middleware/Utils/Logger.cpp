@@ -9,6 +9,8 @@
 
 namespace Middleware
 {
+namespace Utilities
+{
 
 using Hal::Hardware;
 
@@ -25,12 +27,12 @@ char const *severityError = "E";
 unsigned char const severityErrorLen = 1;
 
 Logger::LogInfos typeInfos[5] =
-{
-	{"HAL", 3},
-	{"CAMERA", 6},
-	{"BLE", 3},
-	{"WIFI", 4},
-	{"WEBSERV", 7},
+	{
+		{"HAL", 3},
+		{"CAMERA", 6},
+		{"BLE", 3},
+		{"WIFI", 4},
+		{"WEBSERV", 7},
 };
 
 void Logger::LogInfo(const char *format, ...)
@@ -153,4 +155,6 @@ bool Logger::createPrefix(const char *prefix, const char prefixLen, LogSource so
 }
 
 MutexStandard *Logger::_logLock = new MutexStandard();
+
+} // namespace Utilities
 } // namespace Middleware

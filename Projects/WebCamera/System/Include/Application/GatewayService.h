@@ -4,7 +4,7 @@
 #include "WifiService.h"
 #include "HttpServer.h"
 #include "TimeLimit.h"
-// #include "BaseConnection.h"
+ #include "BaseConnection.h"
 
 namespace Applications
 {
@@ -17,45 +17,6 @@ public:
     GatewayService();
 
 private:
-
-// struct RoutePath
-// {
-// 	RoutePath() :
-// 		PathLogicalId(0),
-// 		ConfigChanged(false),
-// 		Connection(nullptr),
-// 		PathHandler(nullptr),
-// 		RemoteEnd(),
-// 		TestConnectionCount(0)
-// 	{
-// 	}
-    
-// 	void ResetPath()
-// 	{
-// 		PathLogicalId = 0;
-// 		ConfigChanged = false;
-// 		Connection = nullptr;
-// 		PathHandler = nullptr;
-// 		RemoteEnd = {};
-// 		TestConnectionCount = 0;
-// 		TestConnectionTl.Reset();
-// 		LastConnectionActiveTl.Reset();
-// 	}
-    
-// 	bool ConfigChanged;
-// 	BaseConnection* Connection;
-// 	BasePathHandler* PathHandler = nullptr;
-// 	LogicalIdType PathLogicalId;
-// 	RemoteEndPoint RemoteEnd;
-    
-// 	/// @brief	Time when connection will be tested.
-// 	TimeLimit TestConnectionTl;
-// 	/// @brief	Number of successful tests.
-// 	uint32_t TestConnectionCount;
-    
-// 	/// @brief	Time when connection was last active.
-// 	TimeLimit LastConnectionActiveTl;
-// };
 
 private:
     /// @brief	Hide Copy constructor.

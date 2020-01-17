@@ -2,6 +2,8 @@
 
 namespace Middleware
 {
+namespace Utilities
+{
 
 uint8_t Checksum::GetChecksum(uint8_t *data, uint16_t len)
 {
@@ -15,4 +17,5 @@ uint8_t Checksum::GetChecksum(uint8_t *data, uint16_t len)
 	return result;
 }
 
+} // namespace Utilities
 } // namespace Middleware

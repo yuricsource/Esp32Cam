@@ -3,6 +3,8 @@
 
 namespace Middleware
 {
+namespace Utilities
+{
 
 template <typename T>
 CircularBuffer<T>::CircularBuffer(unsigned int size)
@@ -142,4 +144,5 @@ template class CircularBuffer<uint16_t>;
 template class CircularBuffer<char *>;
 template class CircularBuffer<uint64_t>;
 
+} // namespace Utilities
 } // namespace Middleware

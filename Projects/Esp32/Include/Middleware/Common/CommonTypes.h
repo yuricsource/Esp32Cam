@@ -6,6 +6,8 @@
 #include <bitset>
 #include "HalCommon.h"
 
+namespace Middleware
+{
 namespace Common
 {
 using Hal::ResetReason;
@@ -18,4 +20,4 @@ enum class ConnectionType
     Ethernet = 3
 };
 
-} // namespace Common
+}} // namespace Common

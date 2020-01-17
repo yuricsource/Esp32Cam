@@ -18,7 +18,7 @@
 namespace Applications
 {
 
-using Middleware::Logger;
+using Middleware::Utilities::Logger;
 using std::array;
 
 class HttpServer : public cpp_freertos::Thread

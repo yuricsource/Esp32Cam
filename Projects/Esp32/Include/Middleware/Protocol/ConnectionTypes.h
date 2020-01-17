@@ -4,7 +4,8 @@
 #include "FastDelegate.h"
 #include "lwip/ip_addr.h"
 #include "ConfigurationCommon.h"
-
+namespace Middleware
+{
 namespace Protocol
 {
 
@@ -44,3 +45,4 @@ struct RemoteConnection
 };
 
 } // namespace Protocol
+} // namespace Middleware

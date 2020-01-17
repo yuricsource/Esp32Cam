@@ -5,6 +5,8 @@
 namespace Middleware
 {
 
+namespace Utilities
+{
 /// @brief	CRC32  class.
 class Crc32xZlib
 {
@@ -23,4 +25,5 @@ public:
 	static uint32_t GetCrc(uint8_t *data, uint32_t len, uint32_t previousCrc32 = 0);
 };
 
+} // namespace Utilities
 } // namespace Middleware

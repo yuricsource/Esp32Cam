@@ -4,6 +4,9 @@
 
 namespace Middleware
 {
+namespace Utilities
+{
+
 void DebugAssert::Assert(int rc, const char *file, int line, const char *function, const char *expression)
 {
     printf("Assert check failed: 0x%x", rc);
@@ -27,7 +30,8 @@ void DebugAssert::abort()
 {
 
     __asm__("break 0,0");
-    while (1);
+    while (1)
+        ;
 }
 
 const char *DebugAssert::GetErrorName(int code)
@@ -44,4 +48,5 @@ const char *DebugAssert::GetErrorName(int code)
     return "Unkown";
 }
 
+} // namespace Utilities
 } // namespace Middleware

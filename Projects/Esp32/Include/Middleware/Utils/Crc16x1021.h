@@ -5,6 +5,8 @@
 namespace Middleware
 {
 
+namespace Utilities
+{
 /// @brief CRC16 class.
 class Crc16x1021
 {
@@ -20,4 +22,5 @@ public:
 	static uint16_t GetCrc(uint8_t *data, uint16_t len);
 };
 
+} // namespace Utilities
 } // namespace Middleware
