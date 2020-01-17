@@ -2,6 +2,7 @@
 
 #include "Crc32xZlib.h"
 #include "lwip/ip_addr.h"
+#include "BaseConfiguration.h"
 #include "ConfigurationCommon.h"
 #include "HalCommon.h"
 
@@ -23,14 +24,14 @@ struct BoardConfigurationData
     struct GeneralConfiguration
     {
         /// @brief	Configuration flags
-        union __Flags {
+        union _Settings {
             struct
             {
                 bool WifiEnabled : 1;
                 uint8_t _NotUsed : 7;
             } Flags;
             uint8_t AllFlags;
-        } Flags;
+        } Settings;
     };
     /// @brief	Wifi configuration.
     struct WifiConfiguration
@@ -45,7 +46,7 @@ struct BoardConfigurationData
         WifiPassword Password = {};
         MacAddress Mac = {};
 
-        union __Flags {
+        union _Settings {
             struct
             {
                 bool DhcpClient : 1;
@@ -53,7 +54,7 @@ struct BoardConfigurationData
                 uint8_t _NotUsed : 6;
             } Flags;
             uint8_t AllFlags;
-        } Flags;
+        } Settings;
 
         uint32_t GetCRC() const
         {
@@ -61,23 +62,34 @@ struct BoardConfigurationData
         }
     };
 
+    GeneralConfiguration GeneralFlags;
+    WifiConfiguration WifiConfig;
+
+    BoardConfigurationData() :
+    GeneralFlags(),
+    WifiConfig()
+    {
+    }
+
     uint32_t GetCRC() const
     {
         return Crc32xZlib::GetCrc((unsigned char *)this, sizeof(BoardConfigurationData), Crc32xZlib::Polynomial);
     }
 };
 
-class BoardConfiguration
+class BoardConfiguration : public BaseConfiguration
 {
 public:
     BoardConfiguration();
     ~BoardConfiguration();
 
     BoardConfigurationData *GetConfiguration() {return &_configuration;}
-
+    void DefaultConfiguration();
 private:
 
-    BoardConfigurationData _configuration;
+    BoardConfigurationData _configuration = {};
+
+private:
 
     /// @brief	Hide Copy constructor.
     BoardConfiguration(const BoardConfiguration &) = delete;
