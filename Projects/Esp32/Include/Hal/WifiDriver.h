@@ -22,18 +22,18 @@ public:
 	inline bool IsEnabled(){return _isEnabled;};
 	bool SetSsid(const char* ssid, uint8_t len);
 	bool SetPassword(const char* passwd, uint8_t len);
-	bool SetMode(WifiConfiguration wifiConfiguration);
+	bool SetMode(WifiModeConfiguration wifiConfiguration);
 	bool SetAuthentication(WifiAuthenticationMode authentication);
 	bool SetChannel(uint8_t channel);
 private:
 	bool _isEnabled = false;
 	bool _isConnected = false;
 	WifiAuthenticationMode _authentication = WifiAuthenticationMode::Open;
-	WifiConfiguration _wifiConfiguration = WifiConfiguration::HotSpot;
+	WifiModeConfiguration _wifiConfiguration = WifiModeConfiguration::HotSpot;
 	uint8_t _channel = 8;
 
-	array<char,WifiSsidMaxLength> _ssid = {};
-	array<char,WifiPasswordMaxLength> _password = {};
+	WifiSsid _ssid = {};
+	WifiPassword _password = {};
 };
 
 } // namespace Hal

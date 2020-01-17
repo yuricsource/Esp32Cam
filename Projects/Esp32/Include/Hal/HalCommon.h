@@ -2,15 +2,18 @@
 #ifndef INCLUDE_HAL_HALCOMMON_H_
 #define INCLUDE_HAL_HALCOMMON_H_
 
+#include <array>
 #include "esp_system.h"
 #include "esp_sleep.h"
 #include "freertos/FreeRTOS.h"
 #include <stdio.h>
 #include "esp_err.h"
 
-
 namespace Hal
 {
+
+using std::array;
+
 enum class I2sBus : uint8_t
 {
 	Bus_0,
@@ -195,7 +198,7 @@ enum class CameraErrorCode : uint8_t
 	CameraNotSupported
 };
 
-enum class WifiConfiguration : uint8_t
+enum class WifiModeConfiguration : uint8_t
 {
 	Client,
 	HotSpot,
@@ -212,12 +215,20 @@ enum class WifiAuthenticationMode : uint8_t
     Wpa2Enterprise
 };
 
-using MacAddress = uint8_t[6];
+static constexpr uint8_t MacAddressMaxLength = 6;
+using MacAddress = array<uint8_t,MacAddressMaxLength>;
+static_assert(sizeof(MacAddress) == 6, "Array has invalid size.");
+
+static constexpr uint8_t WifiSsidMaxLength = 32;
+using WifiSsid = array<char,WifiSsidMaxLength>;
+static_assert(sizeof(WifiSsid) == 32, "Array has invalid size.");
+
+static constexpr uint8_t WifiPasswordMaxLength = 64;
+using WifiPassword = array<char,WifiPasswordMaxLength>;
+static_assert(sizeof(WifiPassword) == 64, "Array has invalid size.");
 
 static constexpr uint32_t TimeBaseClock = 80000000;
 
 static constexpr uint32_t UartTimeOut = 20 / portTICK_RATE_MS;
-static constexpr uint8_t WifiSsidMaxLength = 32;
-static constexpr uint8_t WifiPasswordMaxLength = 64;
 } // namespace Hal
 #endif /* INCLUDE_HAL_HALCOMMON_H_ */

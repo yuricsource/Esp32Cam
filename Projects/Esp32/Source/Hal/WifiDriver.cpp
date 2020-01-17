@@ -110,7 +110,7 @@ bool WifiDriver::SetPassword(const char *passwd, uint8_t len)
 	return true;
 }
 
-bool WifiDriver::SetMode(WifiConfiguration wifiConfiguration)
+bool WifiDriver::SetMode(WifiModeConfiguration wifiConfiguration)
 {
 	if (_isEnabled)
 		return false;
@@ -155,7 +155,7 @@ bool WifiDriver::Enable()
 
 	esp_interface_t wifiMode = static_cast<esp_interface_t>(_wifiConfiguration);
 
-	if (_wifiConfiguration == WifiConfiguration::HotSpot)
+	if (_wifiConfiguration == WifiModeConfiguration::HotSpot)
 	{
 
 		strcpy((char *)wifi_config.ap.ssid, _ssid.data());
@@ -169,7 +169,7 @@ bool WifiDriver::Enable()
 		DebugAssert(esp_wifi_set_mode(WIFI_MODE_AP), ESP_OK);
 		DebugAssert(esp_wifi_start(), ESP_OK);
 	}
-	else if (_wifiConfiguration == WifiConfiguration::Client)
+	else if (_wifiConfiguration == WifiModeConfiguration::Client)
 	{
 		strcpy((char *)_ssid.data(), "Android Rules");
 		strcpy((char *)wifi_config.sta.ssid, _ssid.data());

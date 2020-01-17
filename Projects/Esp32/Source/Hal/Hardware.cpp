@@ -5,7 +5,7 @@
 #include "soc/rtc.h"
 #include "Logger.h"
 #include "RTOSExtra.h"
-#include "CommonTypes.h"
+#include "ConfigurationAgent.h"
 
 namespace Hal
 {
@@ -22,7 +22,7 @@ Hardware::Hardware() : _gpio(),
 					   _wifiDriver()
 {
 	esp_chip_info(&_mcuInfo);
-	esp_base_mac_addr_get(_macAdrress);
+	esp_base_mac_addr_get(_macAdrress.data());
 	printf("SDK Version         		: %s\n", (char *)esp_get_idf_version());
 	printf("CPU Cores           		: %d\n", _mcuInfo.cores);
 	// printf("CPU Clock           		: %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get()));
