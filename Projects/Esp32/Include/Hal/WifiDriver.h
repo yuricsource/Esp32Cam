@@ -28,6 +28,7 @@ public:
 private:
 	bool _isEnabled = false;
 	bool _isConnected = false;
+
 	WifiAuthenticationMode _authentication = WifiAuthenticationMode::Open;
 	WifiModeConfiguration _wifiConfiguration = WifiModeConfiguration::HotSpot;
 	uint8_t _channel = 8;

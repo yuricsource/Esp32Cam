@@ -9,9 +9,16 @@
 #include "nvs_flash.h"
 #include "nvs.h"
 #include "esp_wifi.h"
+#include "WifiDriver.h"
+#include "ConfigurationAgent.h"
 
 namespace Applications
 {
+
+using Hal::WifiAuthenticationMode;
+using Hal::WifiModeConfiguration;
+using Hal::WifiSsid;
+using Hal::WifiPassword;
 
 class WifiService : public cpp_freertos::Thread
 {
@@ -25,26 +32,44 @@ public:
         return _connected;
     }
 
+    void ConfigurationUpdated();
+
 protected:
     void Run() override;
 
 private:
-    enum class WiFiState : uint8_t
+    enum class WifiState : uint8_t
     {
         Idle,
         ResetAdapter,
         WaitingTransmitter,
+        PrepareWifiConnection,
         StaticIpRequest,
         StaticIpDone,
         DhcpStart,
         DhcpRequest,
         DhcpWaiting,
-        DhcpDone
+        DhcpDone,
+        StartHotspot,
+        SetStaticIp,
+        StartDhcpServer
     };
 
-    WiFiState _wiFiState = WiFiState::Idle;
+    WifiState _wifiState = WifiState::Idle;
     bool _connected = false;
-    wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
+    bool _useDhcp = true;
+
+    ip_addr_t _ipAddress = {};
+    ip_addr_t _maskAddress = {};
+    ip_addr_t _gatewayAddress = {};
+    ip_addr_t _dnsServer = {};
+	WifiAuthenticationMode _authentication = WifiAuthenticationMode::Open;
+	WifiModeConfiguration _wifiMode = WifiModeConfiguration::HotSpot;    
+	uint8_t _channel = 8;
+	WifiSsid _ssid = {};
+	WifiPassword _password = {};
+    void changeState(WifiState wifiState);
+
 private:
     /// @brief	Hide Copy constructor.
     WifiService(const WifiService &) = delete;

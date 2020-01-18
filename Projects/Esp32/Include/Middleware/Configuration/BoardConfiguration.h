@@ -42,6 +42,7 @@ struct BoardConfigurationData
         ip_addr_t DnsServer = {};
         WifiModeConfiguration WifiMode = WifiModeConfiguration::Client;
         WifiAuthenticationMode AuthenticationMode = WifiAuthenticationMode::Open;
+        uint8_t Channel = 0;
         WifiSsid Ssid = {};
         WifiPassword Password = {};
         MacAddress Mac = {};
@@ -49,9 +50,8 @@ struct BoardConfigurationData
         union _Settings {
             struct
             {
-                bool DhcpClient : 1;
-                bool DhcpServer : 1;
-                uint8_t _NotUsed : 6;
+                bool DhcpEnabled : 1;
+                uint8_t _NotUsed : 7;
             } Flags;
             uint8_t AllFlags;
         } Settings;

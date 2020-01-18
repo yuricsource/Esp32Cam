@@ -27,6 +27,7 @@ extern "C" void app_main(void)
 {
 	Hardware::Instance();
 	ConfigurationAgent::Instance();
+	ConfigurationAgent::Instance()->UseDefaultConfiguration();
 	ApplicationAgent::Instance();
 	ApplicationAgent::Instance()->Initialize();
 	ApplicationAgent::Instance()->GetWifi().Start();
