@@ -28,6 +28,7 @@ void WifiService::ConfigurationUpdated()
 void WifiService::changeState(WifiState wifiState)
 {
     _wifiState = wifiState;
+    Logger::LogInfo(Logger::LogSource::Wifi, "wifiState: %d",static_cast<uint8_t>(wifiState));
 }
 
 
@@ -52,7 +53,6 @@ void WifiService::Run()
         break;
         case WifiState::ResetAdapter:
         {
-           
             changeState(WifiState::WaitingTransmitter);
         }
         break;
