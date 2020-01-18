@@ -79,8 +79,10 @@ WifiDriver::WifiDriver()
 	DebugAssert(ret, ESP_OK);
 	DebugAssert(esp_netif_init(), ESP_OK);
 	DebugAssert(esp_event_loop_create_default(), ESP_OK);
-	netif_create_default_wifi_ap();
-	netif_create_default_wifi_sta();
+	_hotstopNetif = netif_create_default_wifi_ap();
+	assert(_hotstopNetif);
+	_clientNetif = netif_create_default_wifi_sta();
+	assert(_clientNetif);
 	DebugAssert(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL), ESP_OK);
 }
 
@@ -170,6 +172,8 @@ bool WifiDriver::Enable()
 	}
 	else if (_wifiConfiguration == WifiModeConfiguration::Client)
 	{
+		strcpy((char *)wifi_config.sta.password, _password.data());
+		strcpy((char *)wifi_config.sta.ssid, _ssid.data());
 		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
 		DebugAssert(esp_wifi_set_mode(WIFI_MODE_STA), ESP_OK);
@@ -177,7 +181,7 @@ bool WifiDriver::Enable()
 	}
 	else
 	{
-		assert(0);
+		assert(nullptr);
 	}
 
 	DebugAssert(esp_wifi_set_config(wifiMode, &wifi_config), ESP_OK);

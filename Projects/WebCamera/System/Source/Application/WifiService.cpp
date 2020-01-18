@@ -72,7 +72,7 @@ void WifiService::Run()
             else
             {
                Logger::LogInfo(Logger::LogSource::Wifi, "SSID: %s.",_ssid.data());
-                 _wifiDriver.SetMode(WifiModeConfiguration::HotSpot);
+                _wifiDriver.SetMode(WifiModeConfiguration::HotSpot);
                 _wifiDriver.SetSsid(_ssid.data(),_ssid.size());
                 _wifiDriver.SetPassword(_password.data(),_password.size());
                 _wifiDriver.SetAuthentication(_authentication);
@@ -118,7 +118,16 @@ void WifiService::Run()
         break;
         case WifiState::DhcpWaiting:
         {
+            esp_netif_ip_info_t ip_info = {};
+            esp_netif_t *gnetif = _wifiDriver.GetWifiClientNetif();
+            
+            assert(gnetif);
+            DebugAssert(esp_netif_get_ip_info(gnetif, &ip_info), ESP_OK);
+    
+            Logger::LogInfo(Logger::LogSource::Wifi, "Ip: %s",ip4addr_ntoa((const ip4_addr_t*)&ip_info.ip));
+            
             changeState(WifiState::DhcpDone);
+            
         }
         break;
         case WifiState::DhcpDone:
@@ -141,6 +150,15 @@ void WifiService::Run()
         break;
         case WifiState::StartDhcpServer:
         {
+
+            esp_netif_ip_info_t ip_info = {};
+            esp_netif_t *gnetif = _wifiDriver.GetWifiHostNetif();
+            
+            assert(gnetif);
+            DebugAssert(esp_netif_get_ip_info(gnetif, &ip_info), ESP_OK);
+    
+            Logger::LogInfo(Logger::LogSource::Wifi, "Ip: %s",ip4addr_ntoa((const ip4_addr_t*)&ip_info.ip));
+            
             changeState(WifiState::DhcpDone);
         }
         break;
