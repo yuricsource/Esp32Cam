@@ -11,6 +11,7 @@ void BoardConfiguration::DefaultConfiguration()
     _configuration.WifiConfig.Settings.Flags.DhcpEnabled = true;
     _configuration.WifiConfig.Channel = 8;
     _configuration.WifiConfig.WifiMode = WifiModeConfiguration::HotSpot;
+    _configuration.WifiConfig.AuthenticationMode = WifiAuthenticationMode::Wpa2Psk;
     sprintf(_configuration.WifiConfig.Ssid.data(),"%s","WebCamera hotspot");
     sprintf(_configuration.WifiConfig.Password.data(),"%s","12345678");
     

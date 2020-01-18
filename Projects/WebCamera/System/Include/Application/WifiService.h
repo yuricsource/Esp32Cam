@@ -11,6 +11,7 @@
 #include "esp_wifi.h"
 #include "WifiDriver.h"
 #include "ConfigurationAgent.h"
+#include "Hardware.h"
 
 namespace Applications
 {
@@ -19,6 +20,7 @@ using Hal::WifiAuthenticationMode;
 using Hal::WifiModeConfiguration;
 using Hal::WifiSsid;
 using Hal::WifiPassword;
+using Hal::WifiDriver;
 
 class WifiService : public cpp_freertos::Thread
 {
@@ -42,6 +44,7 @@ private:
     {
         Idle,
         ResetAdapter,
+        ConfigureTransmitter,
         WaitingTransmitter,
         PrepareWifiConnection,
         StaticIpRequest,
@@ -68,6 +71,7 @@ private:
 	uint8_t _channel = 8;
 	WifiSsid _ssid = {};
 	WifiPassword _password = {};
+
     void changeState(WifiState wifiState);
 
 private:

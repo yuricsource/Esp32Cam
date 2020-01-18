@@ -9,6 +9,7 @@
 #include "esp_log.h"
 #include "freertos/event_groups.h"
 #include "DebugAssert.h"
+#include "Dwt.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -81,8 +82,6 @@ WifiDriver::WifiDriver()
 	netif_create_default_wifi_ap();
 	netif_create_default_wifi_sta();
 	DebugAssert(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL), ESP_OK);
-	/////////Test//////////
-	strcpy((char *)_ssid.data(), "YuriTest");
 }
 
 WifiDriver::~WifiDriver()
@@ -133,6 +132,7 @@ bool WifiDriver::SetAuthentication(WifiAuthenticationMode authentication)
 void WifiDriver::ResetDriver()
 {
 	Disable();
+	Dwt::DelayMicrosecond(100);
 	Enable();
 }
 
@@ -157,7 +157,6 @@ bool WifiDriver::Enable()
 
 	if (_wifiConfiguration == WifiModeConfiguration::HotSpot)
 	{
-
 		strcpy((char *)wifi_config.ap.ssid, _ssid.data());
 		wifi_config.ap.ssid_len = strlen(_ssid.data());
 		wifi_config.ap.max_connection = 4;
@@ -171,11 +170,6 @@ bool WifiDriver::Enable()
 	}
 	else if (_wifiConfiguration == WifiModeConfiguration::Client)
 	{
-		strcpy((char *)_ssid.data(), "Android Rules");
-		strcpy((char *)wifi_config.sta.ssid, _ssid.data());
-		strcpy((char *)_password.data(), "android11");
-		strcpy((char *)wifi_config.sta.password, _password.data());
-
 		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
 		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
 		DebugAssert(esp_wifi_set_mode(WIFI_MODE_STA), ESP_OK);
