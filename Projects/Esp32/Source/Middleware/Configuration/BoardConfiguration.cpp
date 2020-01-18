@@ -1,7 +1,6 @@
 #include "BoardConfiguration.h"
 
-//#define TEST_HOST
-#define TEST_CLIENT
+//#define TEST_CLIENT
 
 namespace Middleware
 {
@@ -24,7 +23,7 @@ void BoardConfiguration::DefaultConfiguration()
     _configuration.WifiConfig.WifiMode = WifiModeConfiguration::HotSpot;
     sprintf(_configuration.WifiConfig.Ssid.data(),"%s","WebCamera hotspot");
     sprintf(_configuration.WifiConfig.Password.data(),"%s","12345678");
-   
+    _configuration.WifiConfig.AuthenticationMode = WifiAuthenticationMode::Wpa2Psk;
 #endif
 }
 
