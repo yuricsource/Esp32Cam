@@ -17,11 +17,8 @@
 #include <esp_log.h>
 #include "Hardware.h"
 #include "Tests.h"
-#include "Logger.h"
 #include "Rng.h"
-#include "CircularBuffer.h"
 #include "esp_http_server.h"
-#include "DebugAssert.h"
 #include <cstring>
 
 void executetMenu(char Test)
@@ -72,7 +69,7 @@ void executetMenu(char Test)
 extern "C" void app_main(void)
 {
 	Hal::Hardware::Instance();
- 	Middleware::Logger::LogInfo("Hardware Tester for ESP32\n");
+ 	printf("Hardware Tester for ESP32\n");
 
 	char test = 0;
 	

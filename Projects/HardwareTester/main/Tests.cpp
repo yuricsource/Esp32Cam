@@ -1,6 +1,5 @@
 
 #include "Tests.h"
-#include <cstring>
 
 using Hal::Dwt;
 using Hal::Hardware;
@@ -221,17 +220,17 @@ void WifiMenu()
 			mode = ReadKey();
 			if (mode == '1')
 			{
-				Hardware::Instance()->GetWifi().SetMode(Hal::WifiConfiguration::Client);
+				Hardware::Instance()->GetWifi().SetMode(Hal::WifiModeConfiguration::Client);
 				printf("Configured as Wifi Client.\n");
 			}
 			else if (mode == '2')
 			{
-				Hardware::Instance()->GetWifi().SetMode(Hal::WifiConfiguration::HotSpot);
+				Hardware::Instance()->GetWifi().SetMode(Hal::WifiModeConfiguration::HotSpot);
 				printf("Configured as HotSpot.\n");
 			}
 			else if (mode == '3')
 			{
-				Hardware::Instance()->GetWifi().SetMode(Hal::WifiConfiguration::Mesh);
+				Hardware::Instance()->GetWifi().SetMode(Hal::WifiModeConfiguration::Mesh);
 				printf("Configured as Mesh network (not supported yet).\n");
 			}
 			else

@@ -3,9 +3,10 @@
 #include "wchar.h"
 #include "Hardware.h"
 #include "soc/rtc.h"
-#include "Logger.h"
+
+#ifndef HARDWARE_TESTER
 #include "RTOSExtra.h"
-#include "ConfigurationAgent.h"
+#endif
 
 namespace Hal
 {
@@ -39,7 +40,9 @@ Hardware::Hardware() : _gpio(),
 		   _macAdrress[3]);
 	// printf("RTC counter         		: %d\n", system_get_time());
 	printf("MCU Free Heap       		: %d\n", esp_get_free_heap_size());
+#ifndef HARDWARE_TESTER
 	printf("MCU Project Heap Allocated	: %d\n", configTOTAL_PROJECT_HEAP_SIZE_ALLOCATED);
+#endif
 	printf("Reset Reason        		: %s\n", GetResetReasonAsString(GetResetReason()));
 	printf("\n");
 

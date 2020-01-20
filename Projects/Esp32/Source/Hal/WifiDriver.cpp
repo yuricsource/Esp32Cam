@@ -8,7 +8,6 @@
 #include "esp_wifi.h"
 #include "esp_log.h"
 #include "freertos/event_groups.h"
-#include "DebugAssert.h"
 #include "Dwt.h"
 
 #ifdef __cplusplus
@@ -73,17 +72,16 @@ WifiDriver::WifiDriver()
 	esp_err_t ret = nvs_flash_init();
 	if (ret == ESP_ERR_NVS_NO_FREE_PAGES || ret == ESP_ERR_NVS_NEW_VERSION_FOUND)
 	{
-		DebugAssert(nvs_flash_erase(), ESP_OK);
+		nvs_flash_erase();
 		ret = nvs_flash_init();
 	}
-	DebugAssert(ret, ESP_OK);
-	DebugAssert(esp_netif_init(), ESP_OK);
-	DebugAssert(esp_event_loop_create_default(), ESP_OK);
+	esp_netif_init();
+	esp_event_loop_create_default();
 	_hotstopNetif = netif_create_default_wifi_ap();
 	assert(_hotstopNetif);
 	_clientNetif = netif_create_default_wifi_sta();
 	assert(_clientNetif);
-	DebugAssert(esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL), ESP_OK);
+	esp_event_handler_register(WIFI_EVENT, ESP_EVENT_ANY_ID, &wifi_event_handler, NULL);
 }
 
 WifiDriver::~WifiDriver()
@@ -166,25 +164,25 @@ bool WifiDriver::Enable()
 		strcpy((char *)wifi_config.ap.password, _password.data());
 
 		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
-		DebugAssert(esp_wifi_set_mode(WIFI_MODE_AP), ESP_OK);
-		DebugAssert(esp_wifi_start(), ESP_OK);
+		esp_wifi_init(&cfg);
+		esp_wifi_set_mode(WIFI_MODE_AP);
+		esp_wifi_start();
 	}
 	else if (_wifiConfiguration == WifiModeConfiguration::Client)
 	{
 		strcpy((char *)wifi_config.sta.password, _password.data());
 		strcpy((char *)wifi_config.sta.ssid, _ssid.data());
 		wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-		DebugAssert(esp_wifi_init(&cfg), ESP_OK);
-		DebugAssert(esp_wifi_set_mode(WIFI_MODE_STA), ESP_OK);
-		DebugAssert(esp_wifi_start(), ESP_OK);
+		esp_wifi_init(&cfg);
+		esp_wifi_set_mode(WIFI_MODE_STA);
+		esp_wifi_start();
 	}
 	else
 	{
 		assert(nullptr);
 	}
 
-	DebugAssert(esp_wifi_set_config(wifiMode, &wifi_config), ESP_OK);
+	esp_wifi_set_config(wifiMode, &wifi_config);
 
 	_isEnabled = true;
 
@@ -196,9 +194,9 @@ bool WifiDriver::Disable()
 	if (_isEnabled == false)
 		return true;
 
-	DebugAssertWithoutAbort(esp_wifi_disconnect(), ESP_OK);
-	DebugAssertWithoutAbort(esp_wifi_stop(), ESP_OK);
-	DebugAssertWithoutAbort(esp_wifi_deinit(), ESP_OK);
+	esp_wifi_disconnect();
+	esp_wifi_stop();
+	esp_wifi_deinit();
 
 	_isEnabled = false;
 

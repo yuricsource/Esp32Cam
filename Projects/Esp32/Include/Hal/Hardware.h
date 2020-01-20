@@ -19,7 +19,6 @@
 #include "Camera.h"
 #include "Rng.h"
 #include "WifiDriver.h"
-#include "BaseConnection.h"
 
 namespace Hal
 {
