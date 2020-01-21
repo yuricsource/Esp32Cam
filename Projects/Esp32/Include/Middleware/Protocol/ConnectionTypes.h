@@ -3,7 +3,7 @@
 #include <cstdint>
 #include "FastDelegate.h"
 #include "lwip/ip_addr.h"
-#include "ConfigurationCommon.h"
+#include "CommonTypes.h"
 namespace Middleware
 {
 namespace Protocol

@@ -6,6 +6,7 @@
 #include "lwip/ip_addr.h"
 #include "CommonTypes.h"
 #include "ConnectionTypes.h"
+#include "ConfigurationCommon.h"
 
 namespace Middleware
 {
@@ -14,6 +15,7 @@ namespace Protocol
 
 using namespace fastdelegate;
 using namespace Common;
+
 
 class BaseConnection
 {
@@ -108,7 +110,7 @@ public:
 		_connectionContext.OnDataReceived(data, len);
 	}
 
-	constexpr ConnectionType GetConnectionType() const
+	constexpr TransportLayerType GetConnection() const
 	{
 		return _connectionType;
 	}
@@ -159,7 +161,7 @@ protected:
 
 	ConnectionContext _connectionContext = {};
 
-	ConnectionType _connectionType = ConnectionType::None;
+	TransportLayerType _connectionType = TransportLayerType::None;
 
 	ConnectionError _lastError = ConnectionError::None;
 
