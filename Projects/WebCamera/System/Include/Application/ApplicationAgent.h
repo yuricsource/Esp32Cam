@@ -3,6 +3,8 @@
 #include "Hardware.h"
 #include "WifiService.h"
 #include "HttpServer.h"
+#include "DnsClient.h"
+#include "IPParser.h"
 
 namespace Applications
 {
