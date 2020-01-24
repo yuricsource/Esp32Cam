@@ -31,15 +31,10 @@ public:
 	{
 		_connectionContext.State = ConnectionState::ConnectionNotConfigured;
 	}
-
-	bool IsNonStopping()
+	
+	ConnectStatus Connect(const RemoteConnection &remoteConnection)
 	{
-		return isNonStopping();
-	}
-
-	ConnectStatus Connect(const RemoteConnection &remoteConnection, NonStoppingConnectionStage useNonStopping = NonStoppingConnectionStage::Stopped)
-	{
-		return DoConnect(remoteConnection, useNonStopping);
+		return DoConnect(remoteConnection);
 	}
 
 	bool Send(const unsigned char *data, uint16_t length)
@@ -128,12 +123,8 @@ public:
 	}
 
 private:
-	virtual bool isNonStopping()
-	{
-		return false;
-	}
 
-	virtual ConnectStatus DoConnect(const RemoteConnection &remoteConnection, NonStoppingConnectionStage useNonStopping = NonStoppingConnectionStage::Stopped)
+	virtual ConnectStatus DoConnect(const RemoteConnection &remoteConnection)
 	{
 		return ConnectStatus::Failed;
 	}

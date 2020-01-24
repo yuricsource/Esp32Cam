@@ -31,13 +31,6 @@ enum class ConnectionChangeReason
 using DelegateDataReceived = FastDelegate2<const char *, uint16_t>;
 using DelegateConnectionStateChanged = FastDelegate2<ConnectionState, ConnectionChangeReason>;
 
-enum class NonStoppingConnectionStage : uint8_t
-{
-	Stopped = 0,
-	Starting = 1,
-	CheckingProgress = 2,
-};
-
 struct RemoteConnection
 {
 	uint16_t Port;
