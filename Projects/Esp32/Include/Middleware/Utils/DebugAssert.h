@@ -65,10 +65,11 @@ public:
 public:
 	static void Assert(int rc, const char *file, int line, const char *function, const char *expression);
 	static void AssertWithoutBreaking(int rc, const char *file, int line, const char *function, const char *expression);
+	static const char *GetGeneralErrorName(int code);
+	static const char *GetLwipErrorName(int code);
 
 private:
 	static void abort();
-	static const char *GetErrorName(int code);
 };
 
 } // namespace Utilities
