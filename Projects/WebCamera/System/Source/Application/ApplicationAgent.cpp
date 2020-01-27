@@ -21,6 +21,7 @@ void ApplicationAgent::Initialize()
 {
     _wifiService = new WifiService();
     _httpServer = new HttpServer(80);
+    _gatewayService = new GatewayService();
 }
 
 } // namespace Applications

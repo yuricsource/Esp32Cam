@@ -4,6 +4,7 @@
 #include "WifiService.h"
 #include "HttpServer.h"
 #include "DnsClient.h"
+#include "GatewayService.h"
 #include "IPParser.h"
 
 namespace Applications
@@ -27,10 +28,13 @@ public:
 
     WifiService& GetWifi() {return *_wifiService;};
     HttpServer& GetHttpServer(){return *_httpServer;};
+    GatewayService& GetGatewayService(){ return *_gatewayService;};
+
 private:
     static ApplicationAgent *_applications;
     WifiService *_wifiService;
     HttpServer *_httpServer;
+    GatewayService *_gatewayService;
 
 private:
     /// @brief	Hide Copy constructor.
