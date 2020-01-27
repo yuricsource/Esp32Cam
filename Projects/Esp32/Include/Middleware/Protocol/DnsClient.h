@@ -13,11 +13,14 @@
 #include "semaphore.hpp"
 #include "TimeLimit.h"
 
-namespace Protocol {
+namespace Middleware
+{
+namespace Protocol
+{
 
-using Protocol::IPParser;
-using cpp_freertos::BinarySemaphore; 
+using cpp_freertos::BinarySemaphore;
 using Hal::TimeLimit;
+using Middleware::Protocol::IPParser;
 
 extern "C" void dns_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg);
 
@@ -29,14 +32,14 @@ public:
 	{
 		dns_init();
 	}
-	
+
 	enum class DnsResolverNonBlockingStage
 	{
 		Start = 0,
 		Waiting,
 		Done,
 	};
-		
+
 	static inline DnsClient *Instance()
 	{
 		if (_dnsClient == nullptr)
@@ -58,36 +61,36 @@ public:
 
 	class DnsParameter
 	{
-		public:
-		DnsParameter():
-		IpAddress(nullptr),
-		DnsSemaphore(nullptr)
-		{};
-		ip_addr_t* IpAddress;
-		BinarySemaphore* DnsSemaphore;
+	public:
+		DnsParameter() : IpAddress(nullptr),
+						 DnsSemaphore(nullptr){};
+		ip_addr_t *IpAddress;
+		BinarySemaphore *DnsSemaphore;
 	};
-	
-	void SetDnsServer(const ip_addr_t& dnsServer);
-	
-	DnsResolveResult Resolve(const char* hostname, ip_addr_t& ipaddr);
-	
+
+	void SetDnsServer(const ip_addr_t &dnsServer);
+
+	DnsResolveResult Resolve(const char *hostname, ip_addr_t &ipaddr);
+
 private:
-	static DnsClient* _dnsClient;
+	static DnsClient *_dnsClient;
 	BinarySemaphore _dnsSemaphore;
-	
+
 	friend void dns_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg);
+
 private:
 	/// @brief	Hide Copy constructor.
-	DnsClient(const DnsClient&) = delete;
-	
+	DnsClient(const DnsClient &) = delete;
+
 	/// @brief	Hide Assignment operator.
-	DnsClient& operator=(const DnsClient&) = delete;
-	
+	DnsClient &operator=(const DnsClient &) = delete;
+
 	/// @brief	Hide Move constructor.
-	DnsClient(DnsClient&&) = delete;
-	
+	DnsClient(DnsClient &&) = delete;
+
 	/// @brief	Hide Move assignment operator.
-	DnsClient& operator=(DnsClient&&) = delete;	
+	DnsClient &operator=(DnsClient &&) = delete;
 };
 
-}
+} // namespace Protocol
+} // namespace Middleware

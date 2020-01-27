@@ -1,6 +1,9 @@
 #include "DnsClient.h"
 
-namespace Protocol {
+namespace Middleware 
+{
+namespace Protocol 
+{
 
 DnsClient* DnsClient::_dnsClient = nullptr;
 
@@ -77,4 +80,5 @@ DnsClient::DnsResolveResult DnsClient::Resolve(const char* hostname, ip_addr_t& 
 	return DnsResolveResult::UnknownError;
 }
 
+}
 }

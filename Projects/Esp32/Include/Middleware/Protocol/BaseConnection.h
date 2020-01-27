@@ -23,7 +23,7 @@ public:
 	enum class ConnectStatus
 	{
 		Failed = 0,
-		Connection = 1,
+		Connecting = 1,
 		SuccessfullyConnected = 2,
 	};
 
@@ -92,7 +92,7 @@ public:
 		_connectionContext.State = state;
 	}
 
-	inline void NotifyConnectionChanged(ConnectionChangeReason reason)
+	inline void ConnectionChanged(ConnectionChangeReason reason)
 	{
 		if (_connectionContext.OnStateChanged)
 			_connectionContext.OnStateChanged(_connectionContext.State, reason);

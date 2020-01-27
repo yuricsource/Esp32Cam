@@ -22,10 +22,12 @@ enum class ConnectionState
 
 enum class ConnectionChangeReason
 {
-	None = 0,
-	Error = 1,
-	Timeout = 2,
-	Closed = 3
+	None,
+	Error,
+	Timeout,
+	Aborted,
+	Reset,
+	Closed
 };
 
 using DelegateDataReceived = FastDelegate2<const char *, uint16_t>;
