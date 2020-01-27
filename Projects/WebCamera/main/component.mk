@@ -9,21 +9,21 @@
 
 
 
-COMPONENT_SRCDIRS           +=  ../System/Source/Hal                                     \
-                                ../System/Source/Hal/Camera                              \
-                                ../System/Source/Hal/Wifi                                \
-                                ../System/Source/Middleware/Utils                        \
-                                ../System/Source/Middleware/Configuration                \
-                                ../System/Source/Middleware/Protocol                     \
+COMPONENT_SRCDIRS           +=  ../../Esp32/Source/Hal                                     \
+                                ../../Esp32/Source/Hal/Camera                              \
+                                ../../Esp32/Source/Hal/Wifi                                \
+                                ../../Esp32/Source/Middleware/Utils                        \
+                                ../../Esp32/Source/Middleware/Configuration                \
+                                ../../Esp32/Source/Middleware/Protocol                     \
                                 ../System/Source/Application                             \
                                 ../System/Libraries/freertos-addons/Source
 COMPONENT_ADD_INCLUDEDIRS   +=  ${IDF_PATH}/components/                                  \
-                                ../System/Include/Hal                                    \
-                                ../System/Include/Hal/Camera                             \
-                                ../System/Include/Hal/Wifi                               \
-                                ../System/Include/Middleware/Utils                       \
-                                ../System/Include/Middleware/Configuration               \
-                                ../System/Include/Middleware/Common                      \
-                                ../System/Include/Middleware/Protocol                    \
+                                ../../Esp32/Include/Hal                                    \
+                                ../../Esp32/Include/Hal/Camera                             \
+                                ../../Esp32/Include/Hal/Wifi                               \
+                                ../../Esp32/Include/Middleware/Utils                       \
+                                ../../Esp32/Include/Middleware/Configuration               \
+                                ../../Esp32/Include/Middleware/Common                      \
+                                ../../Esp32//Include/Middleware/Protocol                    \
                                 ../System/Include/Application                            \
                                 ../System/Libraries/freertos-addons/Source/include

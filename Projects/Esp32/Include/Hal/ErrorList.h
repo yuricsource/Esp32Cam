@@ -1,5 +1,6 @@
 #include "esp_err.h"
 #include "esp_wifi.h"
+#include "lwip/err.h"
 
 #define ErrorCodeAndName(err)    {err, #err}
 
@@ -589,4 +590,25 @@ static const errorMessage ErrorMessageTable[] = {
 #   ifdef      ESP_ERR_HTTPD_TASK
     ErrorCodeAndName(ESP_ERR_HTTPD_TASK),                             /* 45064 0xb008 Failed to launch server task/thread */
 #   endif
+};
+
+static const errorMessage ErrorMessageTableLwip[] = 
+{
+    ErrorCodeAndName(ERR_OK),
+    ErrorCodeAndName(ERR_MEM),
+    ErrorCodeAndName(ERR_BUF),
+    ErrorCodeAndName(ERR_TIMEOUT),
+    ErrorCodeAndName(ERR_RTE),
+    ErrorCodeAndName(ERR_INPROGRESS),
+    ErrorCodeAndName(ERR_VAL),
+    ErrorCodeAndName(ERR_WOULDBLOCK),
+    ErrorCodeAndName(ERR_USE),
+    ErrorCodeAndName(ERR_ALREADY),
+    ErrorCodeAndName(ERR_ISCONN),
+    ErrorCodeAndName(ERR_CONN),
+    ErrorCodeAndName(ERR_IF),
+    ErrorCodeAndName(ERR_ABRT),
+    ErrorCodeAndName(ERR_RST),
+    ErrorCodeAndName(ERR_CLSD),
+    ErrorCodeAndName(ERR_ARG),
 };

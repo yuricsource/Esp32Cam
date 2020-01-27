@@ -3,6 +3,9 @@
 		{
 			"name": "WebCamera",
 			"path": "."
+		},
+		{
+			"path": "/home/yuri/projects/Esp32Cam/Projects/Esp32"
 		}
 	],
 	"settings": {

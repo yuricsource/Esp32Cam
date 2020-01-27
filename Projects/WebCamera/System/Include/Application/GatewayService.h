@@ -7,6 +7,8 @@
 #include "ConfigurationCommon.h"
 #include "BaseConnection.h"
 #include "BaseRouteHandler.h"
+#include "TcpConnection.h"
+#include "Logger.h"
 
 namespace Applications
 {
@@ -16,33 +18,41 @@ using Middleware::Common::ProtocolType;
 using Middleware::Common::TransportLayerType;
 using Middleware::Protocol::BaseConnection;
 using Middleware::Protocol::BaseRouteHandler;
+using Middleware::Protocol::TcpConnection;
+using Middleware::Protocol::RemoteConnection;
+using Middleware::Utilities::Logger;
 
-class GatewayService
+class GatewayService : public cpp_freertos::Thread
 {
 public:
     GatewayService();
 
 private:
-
     struct RoutePathConnection
     {
-        RoutePathConnection() :
-            Connection(nullptr),
-            RouteHandler(nullptr),
-            Used(false)
-        {}
-        
-        BaseConnection* Connection;
-        BaseRouteHandler* RouteHandler;
+        RoutePathConnection() : Connection(nullptr),
+                                RouteHandler(nullptr),
+                                Used(false)
+        {
+        }
+
+        BaseConnection *Connection;
+        BaseRouteHandler *RouteHandler;
         TransportLayerType TransportLayer;
         ProtocolType Protocol;
         bool Used;
-        
+
         inline constexpr bool ConnectionValid() const
         {
-            return Connection != nullptr; 
+            return Connection != nullptr;
         }
     };
+
+protected:
+    void Run() override;
+
+private:
+    RoutePathConnection _connectionPath;
 
 private:
     /// @brief	Hide Copy constructor.

@@ -31,6 +31,7 @@ extern "C" void app_main(void)
 	ApplicationAgent::Instance()->Initialize();
 	ApplicationAgent::Instance()->GetWifi().Start();
 	ApplicationAgent::Instance()->GetHttpServer().Start();
+	ApplicationAgent::Instance()->GetGatewayService().Start();
  	
 	ConfigurationAgent::Instance()->UseDefaultConfiguration();
 	Logger::LogInfo("WebCamera using ESP32\n");
