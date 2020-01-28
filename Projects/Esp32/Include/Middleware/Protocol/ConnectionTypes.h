@@ -1,9 +1,11 @@
 #pragma once
 
+#include <cstring>
 #include <cstdint>
 #include "FastDelegate.h"
 #include "lwip/ip_addr.h"
 #include "CommonTypes.h"
+
 namespace Middleware
 {
 namespace Protocol

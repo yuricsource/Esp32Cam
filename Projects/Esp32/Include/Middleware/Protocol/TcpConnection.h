@@ -33,7 +33,6 @@ public:
 
 private:
 
-	static constexpr uint16_t StartPort = 49152;
 	uint16_t _port;
 
 	tcp_pcb *_pcb;

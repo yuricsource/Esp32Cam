@@ -4,6 +4,7 @@
 #include "lwip/ip_addr.h"
 #include "BaseConfiguration.h"
 #include "ConfigurationCommon.h"
+#include "ConnectionTypes.h"
 #include "HalCommon.h"
 
 namespace Middleware
@@ -11,12 +12,13 @@ namespace Middleware
 namespace Configuration
 {
 
-using Utilities::Crc32xZlib;
-using Hal::WifiModeConfiguration;
-using Hal::WifiAuthenticationMode;
 using Hal::MacAddress;
+using Hal::WifiAuthenticationMode;
+using Hal::WifiModeConfiguration;
 using Hal::WifiPassword;
 using Hal::WifiSsid;
+using Middleware::Protocol::RemoteConnection;
+using Utilities::Crc32xZlib;
 
 struct BoardConfigurationData
 {
@@ -33,6 +35,7 @@ struct BoardConfigurationData
             uint8_t AllFlags;
         } Settings;
     };
+
     /// @brief	Wifi configuration.
     struct WifiConfiguration
     {
@@ -62,12 +65,25 @@ struct BoardConfigurationData
         }
     };
 
+    /// @brief	Server configuration.
+    struct ServerConfiguration
+    {
+        RemoteConnection connection = {};
+
+        uint32_t GetCRC() const
+        {
+            return Crc32xZlib::GetCrc((unsigned char *)this, sizeof(ServerConfiguration), Crc32xZlib::Polynomial);
+        }
+    };
+
     GeneralConfiguration GeneralFlags;
     WifiConfiguration WifiConfig;
+    ServerConfiguration ServerConfig;
 
-    BoardConfigurationData() :
-    GeneralFlags(),
-    WifiConfig()
+    BoardConfigurationData() : GeneralFlags(),
+                               WifiConfig(),
+                               ServerConfig()
+
     {
     }
 
@@ -83,14 +99,13 @@ public:
     BoardConfiguration();
     ~BoardConfiguration();
 
-    BoardConfigurationData *GetConfiguration() {return &_configuration;}
+    BoardConfigurationData *GetConfiguration() { return &_configuration; }
     void DefaultConfiguration();
-private:
 
+private:
     BoardConfigurationData _configuration = {};
 
 private:
-
     /// @brief	Hide Copy constructor.
     BoardConfiguration(const BoardConfiguration &) = delete;
 

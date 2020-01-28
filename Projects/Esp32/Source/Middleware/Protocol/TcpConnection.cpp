@@ -15,7 +15,7 @@ using Middleware::Utilities::DebugAssert;
 
 BaseConnection::ConnectStatus TcpConnection::DoConnect(const RemoteConnection &remoteConnection)
 {
-    _port = 8080; // Hardware::Instance()->GetRng().GetNumber() || StartPort;
+    _port = remoteConnection.Port;
 
     ip_addr_t ipAddress = ip_addr_any;
 
@@ -163,7 +163,7 @@ err_t TcpConnection::receiveHandler(void *arg, struct tcp_pcb *pcb, struct pbuf 
                 tcpConnection->SetConnectionState(ConnectionState::Disconnected);
                 tcpConnection->ConnectionChanged(ConnectionChangeReason::Closed);
             }
-            Logger::LogInfo(Logger::LogSource::Wifi, "CONNECTION IS CLOSED by remote host.");
+            Logger::LogInfo(Logger::LogSource::Wifi, "Connection closed by remote host.");
         }
     }
 
@@ -206,16 +206,26 @@ bool TcpConnection::DoSend(const unsigned char *data, uint16_t length)
 
 void TcpConnection::DoClose()
 {
+	if (_pcb == nullptr)
+		return;
+
+	Logger::LogInfo(Logger::LogSource::Wifi, "Closing Connection port %i.\n", _port);
+	
+    clearPcbHandler(this, _pcb);
+	_pcb = nullptr;
+
     return;
 }
 
 void TcpConnection::DoReset()
 {
+     // To-Do
     return;
 }
 
 bool TcpConnection::IsReady()
 {
+     // To-Do
     return false;
 }
 
