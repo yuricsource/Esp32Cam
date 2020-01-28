@@ -18,8 +18,8 @@ using Middleware::Common::ProtocolType;
 using Middleware::Common::TransportLayerType;
 using Middleware::Protocol::BaseConnection;
 using Middleware::Protocol::BaseRouteHandler;
-using Middleware::Protocol::TcpConnection;
 using Middleware::Protocol::RemoteConnection;
+using Middleware::Protocol::TcpConnection;
 using Middleware::Utilities::Logger;
 
 class GatewayService : public cpp_freertos::Thread
@@ -48,11 +48,25 @@ private:
         }
     };
 
+    enum class ConnectionState : uint8_t
+    {
+        None,
+        RestartConnection,
+        TryToConnect,
+        EstablishConnection,
+        Connected
+    };
+
+    RoutePathConnection _connectionPath;
+    ConnectionState _connectionState;
+
+    void changeState(ConnectionState connectionState)
+    {
+        _connectionState = connectionState;
+    }
+
 protected:
     void Run() override;
-
-private:
-    RoutePathConnection _connectionPath;
 
 private:
     /// @brief	Hide Copy constructor.

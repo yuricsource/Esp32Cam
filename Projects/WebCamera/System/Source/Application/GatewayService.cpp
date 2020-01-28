@@ -1,9 +1,14 @@
 #include "GatewayService.h"
+#include "ConfigurationAgent.h"
 
 namespace Applications
 {
 
-GatewayService::GatewayService() : cpp_freertos::Thread("GWSVC", configGATEWAYSVC_STACK_DEPTH, 3), _connectionPath()
+using Middleware::Configuration::ConfigurationAgent;
+// using Applications::GatewayService;
+
+GatewayService::GatewayService() : cpp_freertos::Thread("GWSVC", configGATEWAYSVC_STACK_DEPTH, 3),
+    _connectionPath(), _connectionState(ConnectionState::None)
 {
     _connectionPath.Protocol = ProtocolType::Websocket;
     _connectionPath.TransportLayer = TransportLayerType::Wifi;
@@ -13,13 +18,37 @@ GatewayService::GatewayService() : cpp_freertos::Thread("GWSVC", configGATEWAYSV
 void GatewayService::Run()
 {
     vTaskDelay(600);
-    RemoteConnection connection;
-    memcpy(connection.Address.data(), "192.168.0.102", sizeof("192.168.0.102"));
-    Logger::LogInfo(Logger::LogSource::FirstGateway,"Connection to google");
-    _connectionPath.Connection->Connect(connection);
-    
+
+    RemoteConnection *connection = &ConfigurationAgent::Instance()->GetBoardConfiguration()->GetConfiguration()->ServerConfig.connection;
+
     for (;;)
     {
+        switch (_connectionState)
+        {
+        case ConnectionState::None:
+            changeState(ConnectionState::RestartConnection);
+            break;
+
+        case ConnectionState::RestartConnection:
+            // _connectionPath.Connection->Reset();
+            changeState(ConnectionState::TryToConnect);
+            break;
+
+        case ConnectionState::TryToConnect:
+            _connectionPath.Connection->Connect(*connection);
+            changeState(ConnectionState::EstablishConnection);
+            break;
+
+        case ConnectionState::EstablishConnection:
+            changeState(ConnectionState::Connected);
+            break;
+
+        case ConnectionState::Connected:
+            break;
+
+        default:
+            break;
+        }
         vTaskDelay(10);
     }
 }
