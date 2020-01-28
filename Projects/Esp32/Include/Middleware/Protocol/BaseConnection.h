@@ -54,7 +54,7 @@ public:
 
 	bool IsConnectionReady()
 	{
-		return IsReady();
+		return IsConnected();
 	}
 
 	void SetDataReceived(DelegateDataReceived delegate)
@@ -135,7 +135,7 @@ private:
 
 	virtual void DoReset() = 0;
 
-	virtual bool IsReady() = 0;
+	virtual bool IsConnected() = 0;
 
 protected:
 	~BaseConnection()

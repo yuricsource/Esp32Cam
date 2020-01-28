@@ -49,7 +49,7 @@ BaseConnection::ConnectStatus TcpConnection::DoConnect(const RemoteConnection &r
     tcp_connect(_pcb, &ipAddress, remoteConnection.Port, connectedHandler);
     
     ConnectionChanged(ConnectionChangeReason::None);
-
+    _isConnected = true;
     return BaseConnection::ConnectStatus::SuccessfullyConnected;
 }
 
@@ -196,6 +196,7 @@ void TcpConnection::clearPcbHandler(TcpConnection* tcpConnection, tcp_pcb *pcb)
     tcp_close(pcb);
 	
 	Logger::LogInfo(Logger::LogSource::Wifi, "Deleting pcb, port %i.", localPort);
+    // _isConnected = false;
 }
 
 bool TcpConnection::DoSend(const unsigned char *data, uint16_t length)
@@ -223,10 +224,9 @@ void TcpConnection::DoReset()
     return;
 }
 
-bool TcpConnection::IsReady()
+bool TcpConnection::IsConnected()
 {
-     // To-Do
-    return false;
+    return _isConnected;
 }
 
 uint16_t TcpConnection::GetPort()

@@ -20,7 +20,7 @@ class TcpConnection : public BaseConnection
 public:
 	TcpConnection() : 
 		BaseConnection(),
-		_port(0), _pcb(nullptr)
+		_port(0),_isConnected(false), _pcb(nullptr)
 	{
 	}
 	
@@ -34,7 +34,7 @@ public:
 private:
 
 	uint16_t _port;
-
+	bool _isConnected;
 	tcp_pcb *_pcb;
 
 	static err_t receiveHandler(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
@@ -52,7 +52,7 @@ private:
 
 	void DoReset() override;
 
-	bool IsReady() override;
+	bool IsConnected() override;
 	
 private:
 	/// @brief	Hide Copy constructor.

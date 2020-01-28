@@ -13,6 +13,7 @@ GatewayService::GatewayService() : cpp_freertos::Thread("GWSVC", configGATEWAYSV
     _connectionPath.Protocol = ProtocolType::Websocket;
     _connectionPath.TransportLayer = TransportLayerType::Wifi;
     _connectionPath.Connection = new TcpConnection();
+    _connectionPath.RouteHandler = nullptr;
 }
 
 void GatewayService::Run()
@@ -30,7 +31,7 @@ void GatewayService::Run()
             break;
 
         case ConnectionState::RestartConnection:
-            // _connectionPath.Connection->Reset();
+            _connectionPath.Connection->Close();
             changeState(ConnectionState::TryToConnect);
             break;
 
@@ -40,10 +41,10 @@ void GatewayService::Run()
             break;
 
         case ConnectionState::EstablishConnection:
-            changeState(ConnectionState::Connected);
+            changeState(ConnectionState::Done);
             break;
 
-        case ConnectionState::Connected:
+        case ConnectionState::Done:
             break;
 
         default:

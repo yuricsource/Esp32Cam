@@ -34,7 +34,6 @@ public:
 	{
 	}
 
-	/// @brief	Get reference to the underlying connection
 	const BaseConnection &GetConnection()
 	{
 		return *_connection;
@@ -45,13 +44,11 @@ public:
 		return _executionResult;
 	}
 
-	/// @brief	Check if path is terminated
 	bool IsTerminated() const
 	{
 		return DoIsTerminated();
 	}
 
-	/// @brief	Start path processing. Returns False if unable to start.
 	bool Start(ConnectionMode connectionMode, RemoteConnection *address, uint8_t processingIndex, uint8_t processingLogicalId)
 	{
 		return DoStart(connectionMode, address, processingIndex, processingLogicalId);
@@ -85,19 +82,14 @@ protected:
 
 
 private:
-	/// @brief	Set Path Connection
 	virtual void DoSetConnection() = 0;
 
-	///	@brief	True if the path handling is terminated.
 	virtual bool DoIsTerminated() const = 0;
 
-	/// @brief	Start path processing. Returns False if unable to start.
 	virtual bool DoStart(ConnectionMode connectionMode, RemoteConnection *address, uint8_t processingIndex, uint8_t processingLogicalId) = 0;
 
-	/// @brief	Termination request
 	virtual void DoTerminate() = 0;
 
-	/// @brief	Main processing call
 	virtual void DoProcess() = 0;
 
 private:

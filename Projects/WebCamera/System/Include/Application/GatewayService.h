@@ -9,6 +9,7 @@
 #include "BaseRouteHandler.h"
 #include "TcpConnection.h"
 #include "Logger.h"
+#include "WebSocket.h"
 
 namespace Applications
 {
@@ -54,7 +55,7 @@ private:
         RestartConnection,
         TryToConnect,
         EstablishConnection,
-        Connected
+        Done
     };
 
     RoutePathConnection _connectionPath;
