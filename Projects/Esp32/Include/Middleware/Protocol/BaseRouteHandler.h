@@ -46,22 +46,22 @@ public:
 
 	bool IsTerminated() const
 	{
-		return DoIsTerminated();
+		return isTerminated();
 	}
 
 	bool Start(ConnectionMode connectionMode, RemoteConnection *address, uint8_t processingIndex, uint8_t processingLogicalId)
 	{
-		return DoStart(connectionMode, address, processingIndex, processingLogicalId);
+		return start(connectionMode, address, processingIndex, processingLogicalId);
 	}
 
 	void Terminate()
 	{
-		DoTerminate();
+		terminate();
 	}
 
 	void Process()
 	{
-		DoProcess();
+		process();
 	}
 
 protected:
@@ -69,11 +69,11 @@ protected:
 	ConnectionExecutionResult _executionResult;
 	RemoteConnection _remoteConnection;
 
-	virtual void ReceivedData(const uint8_t *data, uint16_t length) = 0;
+	virtual void receivedData(const uint8_t *data, uint16_t length) = 0;
 
-	virtual void ConnectionStateChanged(ConnectionState state, ConnectionChangeReason reason) = 0;
+	virtual void connectionStateChanged(ConnectionState state, ConnectionChangeReason reason) = 0;
 
-	virtual bool SendFrame(const uint8_t *data, uint16_t length) = 0;
+	virtual bool sendFrame(const uint8_t *data, uint16_t length) = 0;
 
 	const RemoteConnection &GetRemoteConnection()
 	{
@@ -82,15 +82,15 @@ protected:
 
 
 private:
-	virtual void DoSetConnection() = 0;
+	virtual void setConnection() = 0;
 
-	virtual bool DoIsTerminated() const = 0;
+	virtual bool isTerminated() const = 0;
 
-	virtual bool DoStart(ConnectionMode connectionMode, RemoteConnection *address, uint8_t processingIndex, uint8_t processingLogicalId) = 0;
+	virtual bool start(ConnectionMode connectionMode, RemoteConnection *address, uint8_t processingIndex, uint8_t processingLogicalId) = 0;
 
-	virtual void DoTerminate() = 0;
+	virtual void terminate() = 0;
 
-	virtual void DoProcess() = 0;
+	virtual void process() = 0;
 
 private:
 	/// @brief	Hide Copy constructor.

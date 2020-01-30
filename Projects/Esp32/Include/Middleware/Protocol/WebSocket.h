@@ -10,11 +10,23 @@ namespace Protocol
 class WebsocketPath : public BaseRouteHandler
 {
 public:
-    void ReceivedData(const uint8_t *data, uint16_t length) override;
 
-    void ConnectionStateChanged(ConnectionState state, ConnectionChangeReason reason) override;
+private:
+    void receivedData(const uint8_t *data, uint16_t length) override;
 
-    bool SendFrame(const uint8_t *data, uint16_t length) override;
+    void connectionStateChanged(ConnectionState state, ConnectionChangeReason reason) override;
+
+    bool sendFrame(const uint8_t *data, uint16_t length) override;
+
+	void setConnection() override;
+
+	bool isTerminated() const override;
+
+	bool start(BaseRouteHandler::ConnectionMode connectionMode, RemoteConnection *address, uint8_t processingIndex, uint8_t processingLogicalId) override;
+
+	void terminate() override;
+
+	void process() override;
 
 private:
     /// @brief	Hide Copy constructor.
