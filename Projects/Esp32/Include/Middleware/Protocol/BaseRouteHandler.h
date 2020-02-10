@@ -64,6 +64,25 @@ public:
 		process();
 	}
 
+	void SetConnection(BaseConnection* connection)
+	{
+		//_pathDataExchangeHandler.SetPathInfo(&_pathInfo);
+		//RedefineDescription();
+		
+		// Assign or remove connection
+		if (connection == nullptr)
+		{
+			_connection = nullptr;
+			//DoSetConnection();
+		}
+		else
+		{
+			_connection = connection;
+			//DoSetConnection();
+		}
+	}
+	
+
 protected:
 	BaseConnection *_connection = nullptr;
 	ConnectionExecutionResult _executionResult;

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "BaseRouteHandler.h"
+#include "HttpParser.h"
+#include "CommonConnection.h"
 
 namespace Middleware
 {
@@ -27,6 +29,12 @@ private:
 	void terminate() override;
 
 	void process() override;
+
+	static constexpr uint16_t MaxHayStackLength = HayStackMaxSize;
+	
+	std::array<char, MaxHayStackLength> _hayStack = { };
+	
+	uint16_t _hayStackWorkingLength = 0;
 
 private:
     /// @brief	Hide Copy constructor.
