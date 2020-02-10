@@ -1,0 +1,15 @@
+{
+  "extends": ["google"],
+  "rules": {
+    "max-len": 0,
+    "require-jsdoc": 0
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017,
+    "experimentalObjectRestSpread": true,
+    "sourceType": "module"
+  },
+  "env": {
+    "es6": true
+  }
+}
