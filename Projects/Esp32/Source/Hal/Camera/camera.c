@@ -49,6 +49,7 @@
 #include "Camera/xclk.h"
 #include "Camera/twi.h"
 
+#define CONFIG_OV2640_SUPPORT 1
 
 #if CONFIG_OV2640_SUPPORT
 #include "ov2640.h"
@@ -143,10 +144,10 @@ esp_err_t camera_probe(const camera_config_t* config,
 	gpio_config(&conf);
 
 	gpio_set_level(config->pin_reset, 1);
-	delay(3000);
+	delay(100);
 
 	gpio_set_level(config->pin_reset, 0);
-	delay(1000);
+	delay(10);
 
 #if CONFIG_OV2640_SUPPORT
 	uint8_t buf[] = {0xff, 0x01};

@@ -16,7 +16,7 @@ Hardware *Hardware::_pHardware;
 Hardware::Hardware() : _gpio(),
 					   _debugPort(&_gpio, UartPort::Uart0, 115200, Gpio::GpioIndex::Gpio3, Gpio::GpioIndex::Gpio1),
 					   _spiffs(),
-					   //_camera(&_gpio),
+					   _camera(&_gpio),
 					   _sdCard(&_gpio),
 					   _leds(&_gpio),
 					   _rng(),
