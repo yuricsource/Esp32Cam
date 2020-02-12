@@ -17,7 +17,8 @@ void BoardConfiguration::DefaultConfiguration()
     _configuration.WifiConfig.WifiMode = WifiModeConfiguration::Client;
     sprintf(_configuration.WifiConfig.Ssid.data(),"%s","Yuri_Duda");
     sprintf(_configuration.WifiConfig.Password.data(),"%s","Australia2us");
-    memcpy(_configuration.ServerConfig.connection.Address.data(), "192.168.0.102", sizeof("192.168.0.102"));
+    memcpy(_configuration.ServerConfig.connection.Address.data(), "www.google.com", sizeof("www.google.com"));
+    // memcpy(_configuration.ServerConfig.connection.Address.data(), "192.168.0.102", sizeof("192.168.0.102"));
     _configuration.ServerConfig.connection.Port = 3333;
 #else
     /*HotSpot Configuration*/
