@@ -15,8 +15,8 @@ void SoftwareResetTest();
 void PutCpuToSleep();
 void TestSpiffs();
 void TestSdCard();
-void ToggleFlashLed();
 void WifiMenu();
+void LedMenu();
 char ReadKey();
 void ReadString(char * string, uint8_t size);
 

@@ -33,7 +33,7 @@ private:
 	Gpio::GpioIndex ledsIndex[MaxLeds] =
 	{
 		Gpio::GpioIndex::Gpio33, // Red Led
-		Gpio::GpioIndex::Gpio4, // Flash Led
+		Gpio::GpioIndex::Gpio4,  // Flash Led
 	};
 };
 } // namespace Hal

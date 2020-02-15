@@ -28,7 +28,7 @@ void executetMenu(char Test)
 
 	case 't':
 	case 'T':
-		ToggleFlashLed();
+		LedMenu();
 		break;
 	case 'r':
 	case 'R':
@@ -58,7 +58,7 @@ void executetMenu(char Test)
 	printf("\n");
 	printf("Main menu:\n");
 	printf("----------\n");
-	printf("[T] - Toggle Flash Led\n");
+	printf("[T] - Led Menu\n");
 	printf("[R] - Software Reset Test\n");
 	printf("[F] - Deep Sleep for 5 Seconds.\n");
 	printf("[C] - Test SPIFFS\n");

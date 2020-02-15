@@ -150,11 +150,6 @@ void SoftwareResetTest()
 	Hardware::Instance()->SoftwareReset();
 }
 
-void ToggleFlashLed()
-{
-	Hardware::Instance()->GetLeds().Toggle(Hal::Leds::LedIndex::FlashLed);
-}
-
 char ReadKey()
 {
 	char key = 0;
@@ -302,6 +297,61 @@ void WifiMenu()
 		printf("[C] - Set WiFi Channel\n");
 		printf("[T] - Start Wifi\n");
 		printf("[Z] - Stop Wifi\n");
+		printf("[X] - Return\n");
+
+		test = ReadKey();
+	}
+}
+
+void LedMenu()
+{
+	char test = 0;
+
+	while (1)
+	{
+		switch (test)
+		{
+		case 'q':
+		case 'Q':
+		{
+			Hardware::Instance()->GetLeds().SetLed(Hal::Leds::LedIndex::FlashLed);
+		}
+		break;
+		case 'a':
+		case 'A':
+		{
+			Hardware::Instance()->GetLeds().ResetLed(Hal::Leds::LedIndex::FlashLed);
+		}
+		break;
+		case 'w':
+		case 'W':
+		{
+			Hardware::Instance()->GetLeds().SetLed(Hal::Leds::LedIndex::RedLed);
+		}
+		break;
+		case 's':
+		case 'S':
+		{
+			Hardware::Instance()->GetLeds().ResetLed(Hal::Leds::LedIndex::RedLed);
+		}
+		break;
+		case 'x':
+		case 'X':
+		{
+			return;
+		}
+		break;
+		default:
+			break;
+		}
+
+		printf("\n");
+		printf("Led menu:\n");
+		printf("----------\n");
+		printf("[Q] - Turn Flash On\n");
+		printf("[A] - Turn Flash Off\n");
+		printf("[W] - Turn Red Led On\n");
+		printf("[S] - Turn Red Led Off\n");
 		printf("[X] - Return\n");
 
 		test = ReadKey();
