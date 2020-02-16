@@ -20,7 +20,6 @@
 #include "qr_recoginize.h"
 #include "string.h"
 #include "bitmap.h"
-#include "Logger.h"
 
 static const char *STREAM_CONTENT_TYPE =
     "multipart/x-mixed-replace; boundary=123456789000000000000987654321";
@@ -270,34 +269,43 @@ Camera::Camera(Gpio *IoPins)
     cameraConfig.PinScl = 27;
     cameraConfig.PinReset = 32;
     cameraConfig.XclkFreqHz = 10000000;
-    cameraConfig.PixelFormat = static_cast<CameraPixelFormat>(CAMERA_PIXEL_FORMAT);
-
+    cameraConfig.PixelFormat = static_cast<camera_pixelformat_t>(CAMERA_PIXEL_FORMAT);
 }
+
+uint8_t *Camera::GetFrameBuffer()
+{
+    return camera_get_fb();
+}
+
+size_t Camera::GetFrameBufferSize()
+{
+    return camera_get_data_size();
+}
+
+bool Camera::Capture()
+{
+    esp_err_t err = camera_run();
+    if (err != ESP_OK)
+    {
+        printf("Camera capture failed with error = %d", err);
+        return false;
+    }
+    return true;
+}
+
+void Camera::DeInit()
+{
+    camera_deinit();
+}
+
+void Camera::SetResolution(CameraFrameSize frameSize)
+{
+}
+
 void Camera::Init()
 {
-    camera_config_t camera_config = {};
 
-    camera_config.ledc_channel = cameraConfig.TimerChannel;
-    camera_config.ledc_timer = cameraConfig.Timer;
-    camera_config.pin_d0 = cameraConfig.PinD0;
-    camera_config.pin_d1 = cameraConfig.PinD1;
-    camera_config.pin_d2 = cameraConfig.PinD2;
-    camera_config.pin_d3 = cameraConfig.PinD3;
-    camera_config.pin_d4 = cameraConfig.PinD4;
-    camera_config.pin_d5 = cameraConfig.PinD5;
-    camera_config.pin_d6 = cameraConfig.PinD6;
-    camera_config.pin_d7 = cameraConfig.PinD7;
-    camera_config.pin_xclk = cameraConfig.PinXclk;
-    camera_config.pin_pclk = cameraConfig.PinPclk;
-    camera_config.pin_vsync = cameraConfig.PinVsync;
-    camera_config.pin_href = cameraConfig.PinHref;
-    camera_config.pin_sscb_sda = cameraConfig.PinSda;
-    camera_config.pin_sscb_scl = cameraConfig.PinScl;
-    camera_config.pin_reset = cameraConfig.PinReset;
-    camera_config.xclk_freq_hz = cameraConfig.XclkFreqHz;
-
-    esp_err_t err = camera_probe(&camera_config, (camera_model_t *)(&cameraConfig.CameraModel));
-    camera_pixelformat_t s_pixel_format;
+    esp_err_t err = camera_probe((camera_config_t *)&cameraConfig, (camera_model_t *)(&cameraConfig.CameraModel));
     if (err != ESP_OK)
     {
         printf("Camera probe failed with error 0x%x\n", err);
@@ -306,18 +314,20 @@ void Camera::Init()
 
     if (cameraConfig.CameraModel == CameraModelType::CameraOV7725)
     {
-        s_pixel_format = CAMERA_PIXEL_FORMAT;
-        camera_config.frame_size = CAMERA_FRAME_SIZE;
+        // s_pixel_format = CAMERA_PIXEL_FORMAT;
+        // camera_config.frame_size = CAMERA_FRAME_SIZE;
         printf("Detected OV7725 camera, using %s bitmap format",
                CAMERA_PIXEL_FORMAT == CAMERA_PF_GRAYSCALE ? "grayscale" : "RGB565");
     }
     else if (cameraConfig.CameraModel == CameraModelType::CameraOV2640)
     {
         printf("Detected OV2640 camera, using JPEG format");
-        s_pixel_format = CAMERA_PIXEL_FORMAT;
-        camera_config.frame_size = CAMERA_FRAME_SIZE;
-        if (s_pixel_format == CAMERA_PF_JPEG)
-            camera_config.jpeg_quality = 5;
+        // s_pixel_format = CAMERA_PIXEL_FORMAT;
+        // camera_config.frame_size = CAMERA_FRAME_SIZE;
+        cameraConfig.FrameSize = (camera_framesize_t)CameraFrameSize::CameraFrameSizeUXGA;
+        cameraConfig.PixelFormat = (camera_pixelformat_t) CameraPixelFormat::CameraPixelFormatJPEG;
+        if (cameraConfig.PixelFormat == (camera_framesize_t) CameraPixelFormat::CameraPixelFormatJPEG)
+            cameraConfig.JPEGQuality = 5;
     }
     else
     {
@@ -325,57 +335,42 @@ void Camera::Init()
         return;
     }
 
-    camera_config.pixel_format = s_pixel_format;
-    err = camera_init(&camera_config);
+    err = camera_init((camera_config_t *)&cameraConfig);
     if (err != ESP_OK)
     {
         printf("Camera init failed with error 0x%x", err);
         return;
     }
 
-    // tcpip_adapter_init();
-    s_wifi_event_group = xEventGroupCreate();
-    // ESP_ERROR_CHECK(esp_event_loop_init(event_handler, NULL));
-    // wifi_init_config_t cfg = WIFI_INIT_CONFIG_DEFAULT();
-    // ESP_ERROR_CHECK(esp_wifi_init(&cfg));
+    // s_wifi_event_group = xEventGroupCreate();
 
-    // wifi_config_t wifi_config = {};
-    // strcpy((char *)wifi_config.sta.ssid, "Yuri_Duda");
-    // strcpy((char *)wifi_config.sta.password, "Australia2us");
+    // printf("Connected\n");
 
-    // ESP_ERROR_CHECK(esp_wifi_set_mode(WIFI_MODE_STA));
-    // ESP_ERROR_CHECK(esp_wifi_set_config(WIFI_IF_STA, &wifi_config));
-    // ESP_ERROR_CHECK(esp_wifi_start());
-    // ESP_ERROR_CHECK(esp_wifi_set_ps(WIFI_PS_NONE));
-    // printf("Connecting to \"%s\"\n", wifi_config.sta.ssid);
-    // xEventGroupWaitBits(s_wifi_event_group, CONNECTED_BIT, false, true, portMAX_DELAY);
-    printf("Connected\n");
+    // http_server_t server;
+    // http_server_options_t http_options = HTTP_SERVER_OPTIONS_DEFAULT();
+    // ESP_ERROR_CHECK(http_server_start(&http_options, &server));
 
-    http_server_t server;
-    http_server_options_t http_options = HTTP_SERVER_OPTIONS_DEFAULT();
-    ESP_ERROR_CHECK(http_server_start(&http_options, &server));
-
-    if (s_pixel_format == CAMERA_PF_GRAYSCALE)
-    {
-        ESP_ERROR_CHECK(http_register_handler(server, "/pgm", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_grayscale_pgm, &camera_config));
-        printf("Open http:// %d.%d.%d.%d /pgm for a single image/x-portable-graymap image\n", IP2STR(&s_ip_addr));
-    }
-    if (s_pixel_format == CAMERA_PF_RGB565)
-    {
-        ESP_ERROR_CHECK(http_register_handler(server, "/bmp", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_rgb_bmp, NULL));
-        printf("Open http://%d.%d.%d.%d/bmp for single image/bitmap image\n", IP2STR(&s_ip_addr));
-        ESP_ERROR_CHECK(http_register_handler(server, "/bmp_stream", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_rgb_bmp_stream, NULL));
-        printf("Open http://%d.%d.%d.%d/bmp_stream for multipart/x-mixed-replace stream of bitmaps\n", IP2STR(&s_ip_addr));
-    }
-    if (s_pixel_format == CAMERA_PF_JPEG)
-    {
-        ESP_ERROR_CHECK(http_register_handler(server, "/jpg", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_jpg, NULL));
-        printf("Open http://%d.%d.%d.%d/jpg for single image/jpg image\n", IP2STR(&s_ip_addr));
-        ESP_ERROR_CHECK(http_register_handler(server, "/jpg_stream", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_jpg_stream, NULL));
-        printf("Open http://%d.%d.%d.%d/jpg_stream for multipart/x-mixed-replace stream of JPEGs\n", IP2STR(&s_ip_addr));
-    }
-    printf("Free heap: %u\n", xPortGetFreeHeapSize());
-    printf("Camera demo ready\n");
+    // if (s_pixel_format == CAMERA_PF_GRAYSCALE)
+    // {
+    //     ESP_ERROR_CHECK(http_register_handler(server, "/pgm", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_grayscale_pgm, &camera_config));
+    //     printf("Open http:// %d.%d.%d.%d /pgm for a single image/x-portable-graymap image\n", IP2STR(&s_ip_addr));
+    // }
+    // if (s_pixel_format == CAMERA_PF_RGB565)
+    // {
+    //     ESP_ERROR_CHECK(http_register_handler(server, "/bmp", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_rgb_bmp, NULL));
+    //     printf("Open http://%d.%d.%d.%d/bmp for single image/bitmap image\n", IP2STR(&s_ip_addr));
+    //     ESP_ERROR_CHECK(http_register_handler(server, "/bmp_stream", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_rgb_bmp_stream, NULL));
+    //     printf("Open http://%d.%d.%d.%d/bmp_stream for multipart/x-mixed-replace stream of bitmaps\n", IP2STR(&s_ip_addr));
+    // }
+    // if (s_pixel_format == CAMERA_PF_JPEG)
+    // {
+    //     ESP_ERROR_CHECK(http_register_handler(server, "/jpg", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_jpg, NULL));
+    //     printf("Open http://%d.%d.%d.%d/jpg for single image/jpg image\n", IP2STR(&s_ip_addr));
+    //     ESP_ERROR_CHECK(http_register_handler(server, "/jpg_stream", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_jpg_stream, NULL));
+    //     printf("Open http://%d.%d.%d.%d/jpg_stream for multipart/x-mixed-replace stream of JPEGs\n", IP2STR(&s_ip_addr));
+    // }
+    // printf("Free heap: %u\n", xPortGetFreeHeapSize());
+    // printf("Camera demo ready\n");
 }
 
 Camera::~Camera()

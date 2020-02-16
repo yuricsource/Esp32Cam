@@ -25,7 +25,7 @@ bool SdCard::Mount()
 	_gpio->SetMode(Gpio::GpioIndex::Gpio2, Gpio::Mode::Input);
 	_gpio->SetPull(Gpio::GpioIndex::Gpio2, SdCardInputConfiguration);
 	_gpio->SetMode(Gpio::GpioIndex::Gpio4, Gpio::Mode::Input);
-	_gpio->SetPull(Gpio::GpioIndex::Gpio4, SdCardInputConfiguration);
+	_gpio->SetPull(Gpio::GpioIndex::Gpio4,  Gpio::Pull::Down);
 	_gpio->SetMode(Gpio::GpioIndex::Gpio12, Gpio::Mode::Input);
 	_gpio->SetPull(Gpio::GpioIndex::Gpio12, SdCardInputConfiguration);
 	_gpio->SetMode(Gpio::GpioIndex::Gpio13, Gpio::Mode::Input);
@@ -88,6 +88,8 @@ bool SdCard::Mount()
 void SdCard::Unmount()
 {
 	esp_vfs_fat_sdmmc_unmount();
+	_gpio->SetMode(Gpio::GpioIndex::Gpio4, Gpio::Mode::Input);
+	_gpio->SetPull(Gpio::GpioIndex::Gpio4,  Gpio::Pull::Down);
 	isMounted = false;
 }
 

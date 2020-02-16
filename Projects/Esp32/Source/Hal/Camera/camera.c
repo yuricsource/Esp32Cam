@@ -144,10 +144,10 @@ esp_err_t camera_probe(const camera_config_t* config,
 	gpio_config(&conf);
 
 	gpio_set_level(config->pin_reset, 1);
-	delay(100);
+	delay(1);
 
 	gpio_set_level(config->pin_reset, 0);
-	delay(10);
+	delay(1);
 
 #if CONFIG_OV2640_SUPPORT
 	uint8_t buf[] = {0xff, 0x01};
@@ -156,7 +156,7 @@ esp_err_t camera_probe(const camera_config_t* config,
 
 	ESP_LOGD(TAG, "Searching for camera address");
 	/* Probe the sensor */
-	delay(10);
+	delay(1);
 	uint8_t slv_addr = SCCB_Probe();
 	if (slv_addr == 0) {
 		*out_camera_model = CAMERA_NONE;

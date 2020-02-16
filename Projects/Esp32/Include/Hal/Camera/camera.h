@@ -18,66 +18,71 @@
 #include "driver/ledc.h"
 
 #ifdef __cplusplus
-extern "C" {
+extern "C"
+{
 #endif
 
-typedef enum {
-    CAMERA_PF_RGB565 = 0,       //!< RGB, 2 bytes per pixel (not implemented)
-    CAMERA_PF_YUV422 = 1,       //!< YUYV, 2 bytes per pixel (not implemented)
-    CAMERA_PF_GRAYSCALE = 2,    //!< 1 byte per pixel
-    CAMERA_PF_JPEG = 3,         //!< JPEG compressed
-} camera_pixelformat_t;
+    typedef enum
+    {
+        CAMERA_PF_RGB565 = 0,    //!< RGB, 2 bytes per pixel (not implemented)
+        CAMERA_PF_YUV422 = 1,    //!< YUYV, 2 bytes per pixel (not implemented)
+        CAMERA_PF_GRAYSCALE = 2, //!< 1 byte per pixel
+        CAMERA_PF_JPEG = 3,      //!< JPEG compressed
+    } camera_pixelformat_t;
 
-typedef enum {
-    CAMERA_FS_QQVGA = 4,     //!< 160x120
-    CAMERA_FS_QVGA = 8,      //!< 320x240
-    CAMERA_FS_VGA = 10,      //!< 640x480
-    CAMERA_FS_SVGA = 11,     //!< 800x600
-	CAMERA_FS_SXGA=12,		//	1280* 1024
-	CAMERA_FS_UXGA=13,		//1600*1200
-} camera_framesize_t;
+    typedef enum
+    {
+        CAMERA_FS_QQVGA = 4, //!< 160x120
+        CAMERA_FS_QVGA = 8,  //!< 320x240
+        CAMERA_FS_VGA = 10,  //!< 640x480
+        CAMERA_FS_SVGA = 11, //!< 800x600
+        CAMERA_FS_SXGA = 12, //!< 1280x1024
+        CAMERA_FS_UXGA = 13, //!< 1600x1200
+    } camera_framesize_t;
 
-typedef enum {
-    CAMERA_NONE = 0,
-    CAMERA_UNKNOWN = 1,
-    CAMERA_OV7725 = 7725,
-    CAMERA_OV2640 = 2640,
-} camera_model_t;
+    typedef enum
+    {
+        CAMERA_NONE = 0,
+        CAMERA_UNKNOWN = 1,
+        CAMERA_OV7725 = 7725,
+        CAMERA_OV2640 = 2640,
+    } camera_model_t;
 
-typedef struct {
-    int pin_reset;          /*!< GPIO pin for camera reset line */
-    int pin_xclk;           /*!< GPIO pin for camera XCLK line */
-    int pin_sscb_sda;       /*!< GPIO pin for camera SDA line */
-    int pin_sscb_scl;       /*!< GPIO pin for camera SCL line */
-    int pin_d7;             /*!< GPIO pin for camera D7 line */
-    int pin_d6;             /*!< GPIO pin for camera D6 line */
-    int pin_d5;             /*!< GPIO pin for camera D5 line */
-    int pin_d4;             /*!< GPIO pin for camera D4 line */
-    int pin_d3;             /*!< GPIO pin for camera D3 line */
-    int pin_d2;             /*!< GPIO pin for camera D2 line */
-    int pin_d1;             /*!< GPIO pin for camera D1 line */
-    int pin_d0;             /*!< GPIO pin for camera D0 line */
-    int pin_vsync;          /*!< GPIO pin for camera VSYNC line */
-    int pin_href;           /*!< GPIO pin for camera HREF line */
-    int pin_pclk;           /*!< GPIO pin for camera PCLK line */
+    typedef struct
+    {
+        int pin_reset;    /*!< GPIO pin for camera reset line */
+        int pin_xclk;     /*!< GPIO pin for camera XCLK line */
+        int pin_sscb_sda; /*!< GPIO pin for camera SDA line */
+        int pin_sscb_scl; /*!< GPIO pin for camera SCL line */
+        int pin_d7;       /*!< GPIO pin for camera D7 line */
+        int pin_d6;       /*!< GPIO pin for camera D6 line */
+        int pin_d5;       /*!< GPIO pin for camera D5 line */
+        int pin_d4;       /*!< GPIO pin for camera D4 line */
+        int pin_d3;       /*!< GPIO pin for camera D3 line */
+        int pin_d2;       /*!< GPIO pin for camera D2 line */
+        int pin_d1;       /*!< GPIO pin for camera D1 line */
+        int pin_d0;       /*!< GPIO pin for camera D0 line */
+        int pin_vsync;    /*!< GPIO pin for camera VSYNC line */
+        int pin_href;     /*!< GPIO pin for camera HREF line */
+        int pin_pclk;     /*!< GPIO pin for camera PCLK line */
 
-    int xclk_freq_hz;       /*!< Frequency of XCLK signal, in Hz */
+        int xclk_freq_hz; /*!< Frequency of XCLK signal, in Hz */
 
-    ledc_timer_t ledc_timer;        /*!< LEDC timer to be used for generating XCLK  */
-    ledc_channel_t ledc_channel;    /*!< LEDC channel to be used for generating XCLK  */
+        ledc_timer_t ledc_timer;     /*!< LEDC timer to be used for generating XCLK  */
+        ledc_channel_t ledc_channel; /*!< LEDC channel to be used for generating XCLK  */
 
-    camera_pixelformat_t pixel_format;
-    camera_framesize_t frame_size;
+        camera_pixelformat_t pixel_format;
+        camera_framesize_t frame_size;
 
-    int jpeg_quality;
-} camera_config_t;
+        int jpeg_quality;
+    } camera_config_t;
 
 #define ESP_ERR_CAMERA_BASE 0x20000
-#define ESP_ERR_CAMERA_NOT_DETECTED             (ESP_ERR_CAMERA_BASE + 1)
+#define ESP_ERR_CAMERA_NOT_DETECTED (ESP_ERR_CAMERA_BASE + 1)
 #define ESP_ERR_CAMERA_FAILED_TO_SET_FRAME_SIZE (ESP_ERR_CAMERA_BASE + 2)
-#define ESP_ERR_CAMERA_NOT_SUPPORTED            (ESP_ERR_CAMERA_BASE + 3)
+#define ESP_ERR_CAMERA_NOT_SUPPORTED (ESP_ERR_CAMERA_BASE + 3)
 
-/**
+    /**
  * @brief Probe the camera
  * This function enables LEDC peripheral to generate XCLK signal,
  * detects the camera I2C address and detects camera model.
@@ -86,9 +91,9 @@ typedef struct {
  * @param[out] out_camera_model output, detected camera model
  * @return ESP_OK if camera was detected
  */
-esp_err_t camera_probe(const camera_config_t* config, camera_model_t* out_camera_model);
+    esp_err_t camera_probe(const camera_config_t *config, camera_model_t *out_camera_model);
 
-/**
+    /**
  * @brief Initialize the camera driver
  *
  * @note call camera_probe before calling this function
@@ -103,46 +108,46 @@ esp_err_t camera_probe(const camera_config_t* config, camera_model_t* out_camera
  * @param config  Camera configuration parameters
  * @return ESP_OK on success
  */
-esp_err_t camera_init(const camera_config_t* config);
+    esp_err_t camera_init(const camera_config_t *config);
 
-/**
+    /**
  * Deinitialize the camera driver
  *
  * @return
  *      - ESP_OK on success
  *      - ESP_ERR_INVALID_STATE if the driver hasn't been initialized yet
  */
-esp_err_t camera_deinit();
+    esp_err_t camera_deinit();
 
-/**
+    /**
  * @brief Obtain the pointer to framebuffer allocated by camera_init function.
  *
  * @return pointer to framebuffer
  */
-uint8_t* camera_get_fb();
+    uint8_t *camera_get_fb();
 
-/**
+    /**
  * @brief Return the size of valid data in the framebuffer
  *
  * For grayscale mode, this function returns width * height of the framebuffer.
  * For JPEG mode, this function returns the actual size of encoded JPEG image.
  * @return size of valid data in framebuffer, in bytes
  */
-size_t camera_get_data_size();
+    size_t camera_get_data_size();
 
-/**
+    /**
  * @brief Get the width of framebuffer, in pixels.
  * @return width of framebuffer, in pixels
  */
-int camera_get_fb_width();
+    int camera_get_fb_width();
 
-/**
+    /**
  * @brief Get the height of framebuffer, in pixels.
  * @return height of framebuffer, in pixels
  */
-int camera_get_fb_height();
+    int camera_get_fb_height();
 
-/**
+    /**
  * @brief Acquire one frame and store it into framebuffer
  *
  * This function waits for the next VSYNC, starts DMA to get data from camera,
@@ -151,14 +156,13 @@ int camera_get_fb_height();
  *
  * @return ESP_OK on success
  */
-esp_err_t camera_run();
+    esp_err_t camera_run();
 
-/**
+    /**
  * @brief Print contents of framebuffer on terminal
  *
  */
-void camera_print_fb();
-
+    void camera_print_fb();
 
 #ifdef __cplusplus
 }

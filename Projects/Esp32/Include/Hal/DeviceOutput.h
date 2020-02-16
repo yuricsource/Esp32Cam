@@ -29,8 +29,8 @@ public:
 private:
 	Gpio *_gpio;
 	Gpio::GpioIndex outputIndex[MaxOutputs] =
-		{
-			Gpio::GpioIndex::Gpio2 // Connected to User Button
+	{
+		Gpio::GpioIndex::Gpio2 // Connected to User Button
 	};
 };
 } // namespace Hal

@@ -59,8 +59,8 @@ public:
 		ledc_timer_t Timer;			 /*!< LEDC timer to be used for generating XCLK  */
 		ledc_channel_t TimerChannel; /*!< LEDC channel to be used for generating XCLK  */
 
-		CameraPixelFormat PixelFormat;
-		CameraFrameSize FrameSize;
+		camera_pixelformat_t PixelFormat;
+		camera_framesize_t FrameSize;
 
 		int JPEGQuality;
 
@@ -68,7 +68,13 @@ public:
 	};
 
 	Camera(Gpio *IoPins);
-    void Init(void);
+    void Init();
+	void DeInit();
+	uint8_t * GetFrameBuffer();
+	size_t GetFrameBufferSize();
+	bool Capture();
+	void SetResolution(CameraFrameSize frameSize);
+
 	~Camera();
 	
 private:
