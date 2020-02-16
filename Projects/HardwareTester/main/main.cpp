@@ -38,8 +38,8 @@ void executetMenu(char Test)
 	case 'F':
 		PutCpuToSleep();
 		break;
-	case 'c':
-	case 'C':
+	case 's':
+	case 'S':
 		TestSpiffs();
 		break;
 		break;
@@ -51,6 +51,10 @@ void executetMenu(char Test)
 	case 'W':
 		WifiMenu();
 		break;
+	case 'c':
+	case 'C':
+		CameraMenu();
+		break;
 	default:
 		break;
 	}
@@ -61,9 +65,10 @@ void executetMenu(char Test)
 	printf("[T] - Led Menu\n");
 	printf("[R] - Software Reset Test\n");
 	printf("[F] - Deep Sleep for 5 Seconds.\n");
-	printf("[C] - Test SPIFFS\n");
+	printf("[S] - Test SPIFFS\n");
 	printf("[Z] - Test SdCard\n");
 	printf("[W] - WiFi Menu\n");
+	printf("[C] - Camera Menu\n");
 }
 
 extern "C" void app_main(void)

@@ -19,6 +19,7 @@ void WifiMenu();
 void LedMenu();
 char ReadKey();
 void ReadString(char * string, uint8_t size);
+void CameraMenu();
 
 const char *GetTestPhrase();
 #endif /* TESTS_H_ */

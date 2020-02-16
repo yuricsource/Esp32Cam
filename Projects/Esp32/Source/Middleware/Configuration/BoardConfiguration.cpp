@@ -1,6 +1,6 @@
 #include "BoardConfiguration.h"
 
-#define TEST_CLIENT
+//#define TEST_CLIENT
 
 namespace Middleware
 {

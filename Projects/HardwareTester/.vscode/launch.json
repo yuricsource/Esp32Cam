@@ -6,12 +6,13 @@
   "configurations": [
     {
       "name": "ESP32 OpenOCD",
+      "preLaunchTask": "RunOpenocd", // The name of the task defined above
       "type": "cppdbg",
       "request": "launch",
-      "miDebuggerPath": "${env:IDF_TOOLS_PATH}/tools/xtensa-esp32-elf/esp32-2019r1-8.2.0/xtensa-esp32-elf/bin/xtensa-esp32-elf-gdb.exe",
+      "miDebuggerPath": "xtensa-esp32-elf-gdb",
       "cwd": "${workspaceFolder}/build",
       //change the name of the elf file as required
-      "program": "${workspaceFolder}/build/mair-template.elf",
+      "program": "${workspaceFolder}/build/app-hardware-tester.elf",
       "setupCommands": [
         {
           "description": "Enable pretty-printing for gdb",
@@ -21,13 +22,13 @@
         {
           // there's a bug in vs code that prevents us from using ${workspaceFolder} variable.
           // update the path as needed
-          "text": "file 'C:/_esp32/esp32_starter_template/build/mair-template.elf'"
+          "text": "file '/home/yuri/projects/Esp32Cam/Projects/HardwareTester/build/app-hardware-tester.elf'"
         },
         {
           "text": "target remote 127.0.0.1:3333"
         },
         {
-          "text": "set remote hardware-watchpoint-limit 2"
+          "text": "set remote hardware-watchpoint-limit 8"
         },
         {
           "text": "monitor reset halt"

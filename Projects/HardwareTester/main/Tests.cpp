@@ -357,3 +357,107 @@ void LedMenu()
 		test = ReadKey();
 	}
 }
+
+void CameraMenu()
+{
+	char test = 0;
+
+	while (1)
+	{
+		switch (test)
+		{
+		case 's':
+		case 'S':
+		{
+			char mode = 0;
+			printf("\n\nSet the camera resolution:\n\n");
+			printf("[1] - QQVGA (320x240)\n");
+			printf("[2] - QVGA (640x480)\n");
+			printf("[3] - SVGA (800x600)\n");
+			printf("[4] - SXGA (1280x1024)\n");
+			printf("[5] - UXGA (1600x1200)\n");
+			mode = ReadKey();
+			if (mode == '1')
+			{
+			}
+			else if (mode == '2')
+			{
+			}
+			else if (mode == '3')
+			{
+			}
+			else if (mode == '4')
+			{
+			}
+			else if (mode == '5')
+			{
+			}
+			else
+				printf("Invalid option.\n");
+		}
+		break;
+		case 'i':
+		case 'I':
+		{
+
+			Hardware *system = Hal::Hardware::Instance();
+			if (system->GetSdCard().Mount())
+			{
+				Hardware::Instance()->GetCamera().Init();
+				Hardware::Instance()->GetCamera().Capture();
+
+				struct stat st;
+				if (stat("/sdcard/test.jpg", &st) == 0)
+				{
+					// Delete it if it exists
+					unlink("/sdcard/test.jpg");
+				}
+
+				printf("Opening file\n");
+				FILE *f = fopen("/sdcard/test.jpg", "wb");
+				if (f == NULL)
+				{
+					printf("Failed to open file for writing\n");
+					return;
+				}
+
+				uint32_t bfSize = Hardware::Instance()->GetCamera().GetFrameBufferSize();
+				uint8_t *fb = Hardware::Instance()->GetCamera().GetFrameBuffer();
+				printf("Photo Captured, Saving in the SD Card. Image size:%d\n", bfSize);
+				fwrite(fb, bfSize, 1, f);
+				printf("Closing file\n");
+				fclose(f);
+				Hardware::Instance()->GetCamera().DeInit();
+			}
+			else
+				printf("Error: SdCard not mounted.\n");
+
+			system->GetSdCard().Unmount();
+		}
+		break;
+		case 'p':
+		case 'P':
+		{
+		}
+		break;
+		case 'x':
+		case 'X':
+		{
+			return;
+		}
+		break;
+		default:
+			break;
+		}
+
+		printf("\n");
+		printf("Camera menu:\n");
+		printf("----------\n");
+		printf("[S] - Camera Resolution\n");
+		printf("[I] - Capture and Save in the SD Card\n");
+		printf("[P] - Capture and Save in the internal Flash\n");
+		printf("[X] - Return\n");
+
+		test = ReadKey();
+	}
+}
