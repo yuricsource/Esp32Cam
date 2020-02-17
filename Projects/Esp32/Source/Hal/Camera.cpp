@@ -1,12 +1,11 @@
 
-#include "Camera.h"
-#include "Camera/camera.h"
-#include "nvs_flash.h"
-#include "tcpip_adapter.h"
 
 #include <stdio.h>
 #include <string.h>
 
+#include "Camera.h"
+#include "nvs_flash.h"
+#include "tcpip_adapter.h"
 #include "esp_system.h"
 #include "esp_wifi.h"
 #include "esp_event_loop.h"
@@ -14,44 +13,44 @@
 #include "esp_err.h"
 #include "nvs_flash.h"
 #include "driver/gpio.h"
-#include "camera.h"
-#include "bitmap.h"
-#include "led.h"
-#include "qr_recoginize.h"
+#include "Camera/Driver/esp_camera.h"
+// #include "bitmap.h"
+// #include "led.h"
+// #include "qr_recoginize.h"
 #include "string.h"
-#include "bitmap.h"
+// #include "bitmap.h"
 
-static const char *STREAM_CONTENT_TYPE =
-    "multipart/x-mixed-replace; boundary=123456789000000000000987654321";
+// static const char *STREAM_CONTENT_TYPE =
+//     "multipart/x-mixed-replace; boundary=123456789000000000000987654321";
 
-static const char *STREAM_BOUNDARY = "--123456789000000000000987654321";
-static EventGroupHandle_t s_wifi_event_group;
+// static const char *STREAM_BOUNDARY = "--123456789000000000000987654321";
+// static EventGroupHandle_t s_wifi_event_group;
 
-static const int CONNECTED_BIT = BIT0;
-static ip4_addr_t s_ip_addr;
-static camera_pixelformat_t s_pixel_format;
+// static const int CONNECTED_BIT = BIT0;
+// static ip4_addr_t s_ip_addr;
+// static camera_pixelformat_t s_pixel_format;
 
-bitmap_header_t *bmp_create_header(int w, int h)
-{
-    bitmap_header_t *pbitmap = (bitmap_header_t *)calloc(1, sizeof(bitmap_header_t));
-    int _pixelbytesize = w * h * _bitsperpixel / 8;
-    int _filesize = _pixelbytesize + sizeof(bitmap_header_t);
-    memcpy((char *)pbitmap->fileheader.signature, "BM", 2);
-    pbitmap->fileheader.filesize = _filesize;
-    pbitmap->fileheader.fileoffset_to_pixelarray = sizeof(bitmap_header_t);
-    pbitmap->bitmapinfoheader.dibheadersize = sizeof(Bitmapinfoheader);
-    pbitmap->bitmapinfoheader.width = w;
-    pbitmap->bitmapinfoheader.height = h;
-    pbitmap->bitmapinfoheader.planes = _planes;
-    pbitmap->bitmapinfoheader.bitsperpixel = _bitsperpixel;
-    pbitmap->bitmapinfoheader.compression = _compression;
-    pbitmap->bitmapinfoheader.imagesize = _pixelbytesize;
-    pbitmap->bitmapinfoheader.ypixelpermeter = _ypixelpermeter;
-    pbitmap->bitmapinfoheader.xpixelpermeter = _xpixelpermeter;
-    pbitmap->bitmapinfoheader.numcolorspallette = 0;
-    return pbitmap;
-}
-
+// bitmap_header_t *bmp_create_header(int w, int h)
+// {
+//     bitmap_header_t *pbitmap = (bitmap_header_t *)calloc(1, sizeof(bitmap_header_t));
+//     int _pixelbytesize = w * h * _bitsperpixel / 8;
+//     int _filesize = _pixelbytesize + sizeof(bitmap_header_t);
+//     memcpy((char *)pbitmap->fileheader.signature, "BM", 2);
+//     pbitmap->fileheader.filesize = _filesize;
+//     pbitmap->fileheader.fileoffset_to_pixelarray = sizeof(bitmap_header_t);
+//     pbitmap->bitmapinfoheader.dibheadersize = sizeof(Bitmapinfoheader);
+//     pbitmap->bitmapinfoheader.width = w;
+//     pbitmap->bitmapinfoheader.height = h;
+//     pbitmap->bitmapinfoheader.planes = _planes;
+//     pbitmap->bitmapinfoheader.bitsperpixel = _bitsperpixel;
+//     pbitmap->bitmapinfoheader.compression = _compression;
+//     pbitmap->bitmapinfoheader.imagesize = _pixelbytesize;
+//     pbitmap->bitmapinfoheader.ypixelpermeter = _ypixelpermeter;
+//     pbitmap->bitmapinfoheader.xpixelpermeter = _xpixelpermeter;
+//     pbitmap->bitmapinfoheader.numcolorspallette = 0;
+//     return pbitmap;
+// }
+/*
 static esp_err_t write_frame(http_context_t http_ctx)
 {
     http_buffer_t fb_data = {
@@ -63,7 +62,7 @@ static esp_err_t write_frame(http_context_t http_ctx)
 
 static void handle_grayscale_pgm(http_context_t http_ctx, void *ctx)
 {
-    esp_err_t err = camera_run();
+    esp_err_t err = esp_camera_fb_get();
     if (err != ESP_OK)
     {
         printf("Camera capture failed with error = %d", err);
@@ -95,7 +94,7 @@ static void handle_grayscale_pgm(http_context_t http_ctx, void *ctx)
 
 static void handle_rgb_bmp(http_context_t http_ctx, void *ctx)
 {
-    esp_err_t err = camera_run();
+    esp_err_t err = esp_camera_fb_get();
     if (err != ESP_OK)
     {
         printf("Camera capture failed with error = %d", err);
@@ -122,7 +121,7 @@ static void handle_rgb_bmp(http_context_t http_ctx, void *ctx)
 
 static void handle_jpg(http_context_t http_ctx, void *ctx)
 {
-    esp_err_t err = camera_run();
+    esp_err_t err = esp_camera_fb_get();
     if (err != ESP_OK)
     {
         printf("Camera capture failed with error = %d", err);
@@ -149,7 +148,7 @@ static void handle_rgb_bmp_stream(http_context_t http_ctx, void *ctx)
 
     while (true)
     {
-        esp_err_t err = camera_run();
+        esp_err_t err = esp_camera_fb_get();
         if (err != ESP_OK)
         {
             printf("Camera capture failed with error = %d", err);
@@ -188,7 +187,7 @@ static void handle_jpg_stream(http_context_t http_ctx, void *ctx)
     http_response_begin(http_ctx, 200, STREAM_CONTENT_TYPE, HTTP_RESPONSE_SIZE_UNKNOWN);
     while (true)
     {
-        esp_err_t err = camera_run();
+        esp_err_t err = esp_camera_fb_get();
         if (err != ESP_OK)
         {
             printf("Camera capture failed with error = %d", err);
@@ -234,7 +233,7 @@ static esp_err_t event_handler(void *ctx, system_event_t *event)
     }
     return ESP_OK;
 }
-
+*/
 namespace Hal
 {
 
@@ -247,9 +246,6 @@ Camera::Camera(Gpio *IoPins)
         ESP_ERROR_CHECK(nvs_flash_erase());
         ESP_ERROR_CHECK(nvs_flash_init());
     }
-
-#define CAMERA_PIXEL_FORMAT CAMERA_PF_JPEG
-#define CAMERA_FRAME_SIZE CAMERA_FS_UXGA
 
     cameraConfig.TimerChannel = LEDC_CHANNEL_0;
     cameraConfig.Timer = LEDC_TIMER_0;
@@ -269,25 +265,26 @@ Camera::Camera(Gpio *IoPins)
     cameraConfig.PinScl = 27;
     cameraConfig.PinReset = 32;
     cameraConfig.XclkFreqHz = 10000000;
-    cameraConfig.PixelFormat = static_cast<camera_pixelformat_t>(CAMERA_PIXEL_FORMAT);
+    cameraConfig.FrameSize = static_cast<framesize_t>(CameraFrameSize::CameraFrameSizeVGA);
+    cameraConfig.PixelFormat = static_cast<pixformat_t>(CameraPixelFormat::CameraPixelFormatJPEG);
 }
 
 uint8_t *Camera::GetFrameBuffer()
 {
-    return camera_get_fb();
+    return nullptr; // camera_get_fb();
 }
 
 size_t Camera::GetFrameBufferSize()
 {
-    return camera_get_data_size();
+    return 0; // camera_get_data_size();
 }
 
 bool Camera::Capture()
 {
-    esp_err_t err = camera_run();
-    if (err != ESP_OK)
+    camera_fb_t * fb = esp_camera_fb_get();
+    if (fb == nullptr)
     {
-        printf("Camera capture failed with error = %d", err);
+        // printf("Camera capture failed with error = %d", err);
         return false;
     }
     return true;
@@ -295,47 +292,47 @@ bool Camera::Capture()
 
 void Camera::DeInit()
 {
-    camera_deinit();
+    esp_camera_deinit();
 }
 
 void Camera::SetResolution(CameraFrameSize frameSize)
 {
+    cameraConfig.FrameSize = static_cast<framesize_t>(frameSize);
+}
+
+void Camera::SetImageFormat(CameraPixelFormat format)
+{
+    cameraConfig.PixelFormat = static_cast<pixformat_t>(format);
 }
 
 void Camera::Init()
 {
 
-    esp_err_t err = camera_probe((camera_config_t *)&cameraConfig, (camera_model_t *)(&cameraConfig.CameraModel));
-    if (err != ESP_OK)
-    {
-        printf("Camera probe failed with error 0x%x\n", err);
-        return;
-    }
+    // esp_err_t err = camera_probe((camera_config_t *)&cameraConfig, (camera_model_t *)(&cameraConfig.CameraModel));
+    // if (err != ESP_OK)
+    // {
+    //     printf("Camera probe failed with error 0x%x\n", err);
+    //     return;
+    // }
 
-    if (cameraConfig.CameraModel == CameraModelType::CameraOV7725)
-    {
-        // s_pixel_format = CAMERA_PIXEL_FORMAT;
-        // camera_config.frame_size = CAMERA_FRAME_SIZE;
-        printf("Detected OV7725 camera, using %s bitmap format",
-               CAMERA_PIXEL_FORMAT == CAMERA_PF_GRAYSCALE ? "grayscale" : "RGB565");
-    }
-    else if (cameraConfig.CameraModel == CameraModelType::CameraOV2640)
-    {
-        printf("Detected OV2640 camera, using JPEG format");
-        // s_pixel_format = CAMERA_PIXEL_FORMAT;
-        // camera_config.frame_size = CAMERA_FRAME_SIZE;
-        cameraConfig.FrameSize = (camera_framesize_t)CameraFrameSize::CameraFrameSizeUXGA;
-        cameraConfig.PixelFormat = (camera_pixelformat_t) CameraPixelFormat::CameraPixelFormatJPEG;
-        if (cameraConfig.PixelFormat == (camera_framesize_t) CameraPixelFormat::CameraPixelFormatJPEG)
-            cameraConfig.JPEGQuality = 5;
-    }
-    else
-    {
-        printf("Camera not supported");
-        return;
-    }
+    // if (cameraConfig.CameraModel == CameraModelType::CameraOV7725)
+    // {
+    //     printf("Detected OV7725 camera, using %s bitmap format",
+    //            cameraConfig.PixelFormat == CAMERA_PF_GRAYSCALE ? "grayscale" : "RGB565");
+    // }
+    // else if (cameraConfig.CameraModel == CameraModelType::CameraOV2640)
+    // {
+    //     printf("Detected OV2640 camera, using JPEG format");
+    //     if (cameraConfig.PixelFormat == (camera_framesize_t) CameraPixelFormat::CameraPixelFormatJPEG)
+    //         cameraConfig.JPEGQuality = 5;
+    // }
+    // else
+    // {
+    //     printf("Camera not supported");
+    //     return;
+    // }
 
-    err = camera_init((camera_config_t *)&cameraConfig);
+    esp_err_t err = esp_camera_init((camera_config_t *)&cameraConfig);
     if (err != ESP_OK)
     {
         printf("Camera init failed with error 0x%x", err);

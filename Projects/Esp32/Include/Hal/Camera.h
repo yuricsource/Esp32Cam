@@ -9,12 +9,12 @@
 #define MAIN_INCLUDE_HAL_CAMERA_CAMERA_H_
 
 #include "../../components/http_server/my_http_server.h"
-#include "bitmap.h"
+// #include "bitmap.h"
 #include "HalCommon.h"
 #include "Gpio.h"
 #include "esp_err.h"
 #include "driver/ledc.h"
-#include "Camera/camera.h"
+#include "Camera/Driver/esp_camera.h"
 #include "freertos/FreeRTOS.h"
 #include "freertos/task.h"
 #include "freertos/semphr.h"
@@ -53,27 +53,31 @@ public:
 		int PinVsync; /*!< GPIO pin for camera VSYNC line */
 		int PinHref;  /*!< GPIO pin for camera HREF line */
 		int PinPclk;  /*!< GPIO pin for camera PCLK line */
-
 		int XclkFreqHz; /*!< Frequency of XCLK signal, in Hz */
-
 		ledc_timer_t Timer;			 /*!< LEDC timer to be used for generating XCLK  */
 		ledc_channel_t TimerChannel; /*!< LEDC channel to be used for generating XCLK  */
-
-		camera_pixelformat_t PixelFormat;
-		camera_framesize_t FrameSize;
-
+		pixformat_t PixelFormat;
+		framesize_t FrameSize;
 		int JPEGQuality;
-
+		size_t fb_count;
 		CameraModelType CameraModel;
 	};
 
 	Camera(Gpio *IoPins);
-    void Init();
+    
+	void Init();
+	
 	void DeInit();
+	
 	uint8_t * GetFrameBuffer();
+	
 	size_t GetFrameBufferSize();
+	
 	bool Capture();
+
 	void SetResolution(CameraFrameSize frameSize);
+
+	void SetImageFormat(CameraPixelFormat format);
 
 	~Camera();
 	

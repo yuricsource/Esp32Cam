@@ -179,8 +179,8 @@ enum class CameraFrameSize : uint8_t
 	CameraFrameSizeQVGA = 8,  //320x240
 	CameraFrameSizeVGA = 10,  //640x480
 	CameraFrameSizeSVGA = 11, //800x600
-	CameraFrameSizeSXGA = 12, //1280* 1024
-	CameraFrameSizeUXGA = 13, //1600*1200
+	CameraFrameSizeSXGA = 12, //1280x1024
+	CameraFrameSizeUXGA = 13, //1600x1200
 };
 
 enum class CameraModelType : uint16_t
