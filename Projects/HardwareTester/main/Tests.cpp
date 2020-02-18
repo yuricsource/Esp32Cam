@@ -399,34 +399,46 @@ void CameraMenu()
 		case 'i':
 		case 'I':
 		{
-
 			Hardware *system = Hal::Hardware::Instance();
+			system->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeSVGA);
 			if (system->GetSdCard().Mount())
 			{
+				printf("Heap Before the Camera       		: %d\n", esp_get_free_heap_size());
 				Hardware::Instance()->GetCamera().Init();
-				Hardware::Instance()->GetCamera().Capture();
-
-				struct stat st;
-				if (stat("/sdcard/test.jpg", &st) == 0)
+				printf("Heap After the Camera       		: %d\n", esp_get_free_heap_size());
+				for (uint8_t i = 0; i < 10; i++)
 				{
-					// Delete it if it exists
-					unlink("/sdcard/test.jpg");
-				}
+					Hardware::Instance()->GetCamera().Capture();
+					std::array<char, 30> fileName;
 
-				printf("Opening file\n");
-				FILE *f = fopen("/sdcard/test.jpg", "wb");
-				if (f == NULL)
-				{
-					printf("Failed to open file for writing\n");
-					return;
-				}
+					snprintf(fileName.data(), fileName.size(), "/sdcard/%s%d.jpg", "pic", i + 1);
+					struct stat st;
+					if (stat(fileName.data(), &st) == 0)
+					{
+						// Delete it if it exists
+						unlink(fileName.data());
+					}
 
-				uint32_t bfSize = Hardware::Instance()->GetCamera().GetFrameBufferSize();
-				uint8_t *fb = Hardware::Instance()->GetCamera().GetFrameBuffer();
-				printf("Photo Captured, Saving in the SD Card. Image size:%d\n", bfSize);
-				fwrite(fb, bfSize, 1, f);
-				printf("Closing file\n");
-				fclose(f);
+					printf("Opening file\n");
+					FILE *f = fopen(fileName.data(), "wb");
+					if (f == NULL)
+					{
+						printf("Failed to open file for writing\n");
+						return;
+					}
+
+					const camera_fb_t *fb = Hardware::Instance()->GetCamera().GetFrameBuffer();
+					if (fb != nullptr)
+					{
+						printf("Photo Captured, Saving in the SD Card. Image size:%d\n", fb->len);
+						fwrite(fb->buf, fb->len, 1, f);
+						printf("Closing file\n");
+					}
+					else
+						printf("Frame Buffer failed\n");
+
+					fclose(f);
+				}
 				Hardware::Instance()->GetCamera().DeInit();
 			}
 			else
@@ -438,6 +450,46 @@ void CameraMenu()
 		case 'p':
 		case 'P':
 		{
+			Hardware *system = Hal::Hardware::Instance();
+			// system->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeSVGA);
+			// system->GetCamera().SetImageFormat(Hal::CameraPixelFormat::CameraPixelFormatRGB565);
+			// if (system->GetSdCard().Mount())
+			// {
+			// 	Hardware::Instance()->GetCamera().Init();
+			// 	for (uint8_t i = 0; i < 10; i++)
+			// 	{
+			// 		Hardware::Instance()->GetCamera().Capture();
+			// 		std::array<char, 30> fileName;
+
+			// 		snprintf(fileName.data(), fileName.size(), "/sdcard/%s%d.bmp", "pic", i + 1);
+			// 		struct stat st;
+			// 		if (stat(fileName.data(), &st) == 0)
+			// 		{
+			// 			// Delete it if it exists
+			// 			unlink(fileName.data());
+			// 		}
+
+			// 		printf("Opening file\n");
+			// 		FILE *f = fopen(fileName.data(), "wb");
+			// 		if (f == NULL)
+			// 		{
+			// 			printf("Failed to open file for writing\n");
+			// 			return;
+			// 		}
+
+			// 		uint32_t bfSize = Hardware::Instance()->GetCamera().GetFrameBufferSize();
+			// 		uint8_t *fb = Hardware::Instance()->GetCamera().GetFrameBuffer();
+			// 		printf("Photo Captured, Saving in the SD Card. Image size:%d\n", bfSize);
+			// 		fwrite(fb, bfSize, 1, f);
+			// 		printf("Closing file\n");
+			// 		fclose(f);
+			// 	}
+			// 	Hardware::Instance()->GetCamera().DeInit();
+			// }
+			// else
+			// 	printf("Error: SdCard not mounted.\n");
+
+			// system->GetSdCard().Unmount();
 		}
 		break;
 		case 'x':
@@ -454,7 +506,8 @@ void CameraMenu()
 		printf("Camera menu:\n");
 		printf("----------\n");
 		printf("[S] - Camera Resolution\n");
-		printf("[I] - Capture and Save in the SD Card\n");
+		printf("[I] - Capture 10 JPEG images and Save in the SD Card\n");
+		printf("[P] - Capture 10 BMP images and Save in the SD Card\n");
 		printf("[P] - Capture and Save in the internal Flash\n");
 		printf("[X] - Return\n");
 

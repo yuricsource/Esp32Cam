@@ -247,44 +247,42 @@ Camera::Camera(Gpio *IoPins)
         ESP_ERROR_CHECK(nvs_flash_init());
     }
 
-    cameraConfig.TimerChannel = LEDC_CHANNEL_0;
-    cameraConfig.Timer = LEDC_TIMER_0;
-    cameraConfig.PinD0 = 5;
-    cameraConfig.PinD1 = 18;
-    cameraConfig.PinD2 = 19;
-    cameraConfig.PinD3 = 21;
-    cameraConfig.PinD4 = 36;
-    cameraConfig.PinD5 = 39;
-    cameraConfig.PinD6 = 34;
-    cameraConfig.PinD7 = 35;
-    cameraConfig.PinXclk = 0;
-    cameraConfig.PinPclk = 22;
-    cameraConfig.PinVsync = 25;
-    cameraConfig.PinHref = 23;
-    cameraConfig.PinSda = 26;
-    cameraConfig.PinScl = 27;
-    cameraConfig.PinReset = 32;
-    cameraConfig.XclkFreqHz = 10000000;
-    cameraConfig.FrameSize = static_cast<framesize_t>(CameraFrameSize::CameraFrameSizeVGA);
-    cameraConfig.PixelFormat = static_cast<pixformat_t>(CameraPixelFormat::CameraPixelFormatJPEG);
+    _cameraConfig.ledc_channel = LEDC_CHANNEL_0;
+    _cameraConfig.ledc_timer = LEDC_TIMER_0;
+    _cameraConfig.pin_d0 = 5;
+    _cameraConfig.pin_d1 = 18;
+    _cameraConfig.pin_d2 = 19;
+    _cameraConfig.pin_d3 = 21;
+    _cameraConfig.pin_d4 = 36;
+    _cameraConfig.pin_d5 = 39;
+    _cameraConfig.pin_d6 = 34;
+    _cameraConfig.pin_d7 = 35;
+    _cameraConfig.pin_xclk = 0;
+    _cameraConfig.pin_pclk = 22;
+    _cameraConfig.pin_vsync = 25;
+    _cameraConfig.pin_href = 23;
+    _cameraConfig.pin_sscb_sda = 26;
+    _cameraConfig.pin_sscb_scl = 27;
+    _cameraConfig.pin_reset = -1;
+    _cameraConfig.pin_pwdn = 32;
+    _cameraConfig.xclk_freq_hz = 10000000;
+    _cameraConfig.jpeg_quality = 10;
+    _cameraConfig.fb_count = 1;
+    _cameraConfig.frame_size = static_cast<framesize_t>(CameraFrameSize::CameraFrameSizeVGA);
+    _cameraConfig.pixel_format = static_cast<pixformat_t>(CameraPixelFormat::CameraPixelFormatJPEG);
 }
 
-uint8_t *Camera::GetFrameBuffer()
+const camera_fb_t *Camera::GetFrameBuffer()
 {
-    return nullptr; // camera_get_fb();
-}
-
-size_t Camera::GetFrameBufferSize()
-{
-    return 0; // camera_get_data_size();
+    return _frameBuffer;
 }
 
 bool Camera::Capture()
 {
-    camera_fb_t * fb = esp_camera_fb_get();
-    if (fb == nullptr)
+    _frameBuffer = esp_camera_fb_get();
+    if (_frameBuffer == nullptr)
     {
-        // printf("Camera capture failed with error = %d", err);
+        printf("Camera capture failed\n");
         return false;
     }
     return true;
@@ -297,12 +295,12 @@ void Camera::DeInit()
 
 void Camera::SetResolution(CameraFrameSize frameSize)
 {
-    cameraConfig.FrameSize = static_cast<framesize_t>(frameSize);
+    _cameraConfig.frame_size = static_cast<framesize_t>(frameSize);
 }
 
 void Camera::SetImageFormat(CameraPixelFormat format)
 {
-    cameraConfig.PixelFormat = static_cast<pixformat_t>(format);
+    _cameraConfig.pixel_format = static_cast<pixformat_t>(format);
 }
 
 void Camera::Init()
@@ -332,7 +330,7 @@ void Camera::Init()
     //     return;
     // }
 
-    esp_err_t err = esp_camera_init((camera_config_t *)&cameraConfig);
+    esp_err_t err = esp_camera_init((camera_config_t *)&_cameraConfig);
     if (err != ESP_OK)
     {
         printf("Camera init failed with error 0x%x", err);

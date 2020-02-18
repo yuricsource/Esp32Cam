@@ -18,7 +18,7 @@
 #include "esp_log.h"
 static const char* TAG = "sccb";
 #endif
-
+#define CONFIG_SCCB_HARDWARE_I2C 1
 #define LITTLETOBIG(x)          ((x<<8)|(x>>8))
 
 #ifdef CONFIG_SCCB_HARDWARE_I2C

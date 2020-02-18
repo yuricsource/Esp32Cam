@@ -7,16 +7,27 @@
 # please read the ESP-IDF documents if you need to do this.
 #
 
-CXXFLAGS+=-DHARDWARE_TESTER=1
 
-COMPONENT_SRCDIRS           +=  ../System/Source/Hal                                     \
-                                ../System/Source/Hal/Camera                              \
-                                ../System/Source/Hal/Wifi                                \
-                                ../System/Source/Application                             \
+
+COMPONENT_SRCDIRS           +=  ../../Esp32/Source/Hal                                     \
+                                ../../Esp32/Source/Hal/Camera/Conversions                  \
+                                ../../Esp32/Source/Hal/Camera/Driver                       \
+                                ../../Esp32/Source/Hal/Camera/Sensors                      \
+                                ../../Esp32/Source/Hal/Wifi                                \
+                                ../../Esp32/Source/Middleware/Utils                        \
+                                ../../Esp32/Source/Middleware/Configuration                \
+                                ../../Esp32/Source/Middleware/Protocol                     \
+                                ../System/Source/Application                               \
                                 ../System/Libraries/freertos-addons/Source
-COMPONENT_ADD_INCLUDEDIRS   +=  ${IDF_PATH}/components/                                  \
-                                ../System/Include/Hal                                    \
-                                ../System/Include/Hal/Camera                             \
-                                ../System/Include/Hal/Wifi                               \
-                                ../System/Include/Application                            \
+COMPONENT_ADD_INCLUDEDIRS   +=  ${IDF_PATH}/components/                                    \
+                                ../../Esp32/Include/Hal                                    \
+                                ../../Esp32/Include/Hal/Camera/Conversions                 \
+                                ../../Esp32/Include/Hal/Camera/Driver                      \
+                                ../../Esp32/Include/Hal/Camera/Sensors                     \
+                                ../../Esp32/Include/Hal/Wifi                               \
+                                ../../Esp32/Include/Middleware/Utils                       \
+                                ../../Esp32/Include/Middleware/Configuration               \
+                                ../../Esp32/Include/Middleware/Common                      \
+                                ../../Esp32//Include/Middleware/Protocol                   \
+                                ../System/Include/Application                              \
                                 ../System/Libraries/freertos-addons/Source/include

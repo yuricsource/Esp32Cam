@@ -36,32 +36,6 @@ class Camera
 {
 
 public:
-	struct CameraConfiguration
-	{
-		int PinReset; /*!< GPIO pin for camera reset line */
-		int PinXclk;  /*!< GPIO pin for camera XCLK line */
-		int PinSda;   /*!< GPIO pin for camera SDA line */
-		int PinScl;   /*!< GPIO pin for camera SCL line */
-		int PinD7;	/*!< GPIO pin for camera D7 line */
-		int PinD6;	/*!< GPIO pin for camera D6 line */
-		int PinD5;	/*!< GPIO pin for camera D5 line */
-		int PinD4;	/*!< GPIO pin for camera D4 line */
-		int PinD3;	/*!< GPIO pin for camera D3 line */
-		int PinD2;	/*!< GPIO pin for camera D2 line */
-		int PinD1;	/*!< GPIO pin for camera D1 line */
-		int PinD0;	/*!< GPIO pin for camera D0 line */
-		int PinVsync; /*!< GPIO pin for camera VSYNC line */
-		int PinHref;  /*!< GPIO pin for camera HREF line */
-		int PinPclk;  /*!< GPIO pin for camera PCLK line */
-		int XclkFreqHz; /*!< Frequency of XCLK signal, in Hz */
-		ledc_timer_t Timer;			 /*!< LEDC timer to be used for generating XCLK  */
-		ledc_channel_t TimerChannel; /*!< LEDC channel to be used for generating XCLK  */
-		pixformat_t PixelFormat;
-		framesize_t FrameSize;
-		int JPEGQuality;
-		size_t fb_count;
-		CameraModelType CameraModel;
-	};
 
 	Camera(Gpio *IoPins);
     
@@ -69,9 +43,7 @@ public:
 	
 	void DeInit();
 	
-	uint8_t * GetFrameBuffer();
-	
-	size_t GetFrameBufferSize();
+	const camera_fb_t * GetFrameBuffer();
 	
 	bool Capture();
 
@@ -83,7 +55,8 @@ public:
 	
 private:
 
-CameraConfiguration cameraConfig = {};
+camera_config_t _cameraConfig = {};
+camera_fb_t *_frameBuffer = nullptr;
 
 };
 } // namespace Hal

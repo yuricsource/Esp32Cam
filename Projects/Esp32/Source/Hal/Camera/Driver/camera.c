@@ -36,8 +36,13 @@
 #include "esp_camera.h"
 #include "camera_common.h"
 #include "xclk.h"
+
+#define CONFIG_OV2640_SUPPORT 1
+#define CONFIG_OV3660_SUPPORT 1
+#define CAMERA_CORE0 1
+
 #if CONFIG_OV2640_SUPPORT
-#include "ov2640.h"
+#include "Camera/Sensors/ov2640.h"
 #endif
 #if CONFIG_OV7725_SUPPORT
 #include "ov7725.h"
@@ -1205,7 +1210,7 @@ esp_err_t camera_init(const camera_config_t* config)
     }
 
     vsync_intr_disable();
-    err = gpio_install_isr_service(ESP_INTR_FLAG_LEVEL1 | ESP_INTR_FLAG_IRAM);
+    err = gpio_install_isr_service(ESP_INTR_FLAG_IRAM);
     if (err != ESP_OK) {
         ESP_LOGE(TAG, "gpio_install_isr_service failed (%x)", err);
         goto fail;

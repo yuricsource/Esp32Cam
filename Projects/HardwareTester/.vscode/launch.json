@@ -5,8 +5,8 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "ESP32 OpenOCD",
       "preLaunchTask": "RunOpenocd", // The name of the task defined above
+      "name": "ESP32 OpenOCD",
       "type": "cppdbg",
       "request": "launch",
       "miDebuggerPath": "xtensa-esp32-elf-gdb",
@@ -38,7 +38,6 @@
         }
       ],
       "externalConsole": false,
-
       "logging": {
         // "trace": true,
         // "traceResponse": true,
