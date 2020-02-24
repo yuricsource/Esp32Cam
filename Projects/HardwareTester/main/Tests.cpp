@@ -236,7 +236,6 @@ void WifiMenu()
 		case 'I':
 		{
 			char ssid[Hal::WifiSsidMaxLength] = {};
-			uint8_t i = 0;
 			test = 0;
 			printf("Enter the SSID:\n");
 			ReadString(ssid, Hal::WifiSsidMaxLength);
@@ -447,49 +446,10 @@ void CameraMenu()
 			system->GetSdCard().Unmount();
 		}
 		break;
-		case 'p':
-		case 'P':
+		case 'w':
+		case 'W':
 		{
-			Hardware *system = Hal::Hardware::Instance();
-			// system->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeSVGA);
-			// system->GetCamera().SetImageFormat(Hal::CameraPixelFormat::CameraPixelFormatRGB565);
-			// if (system->GetSdCard().Mount())
-			// {
-			// 	Hardware::Instance()->GetCamera().Init();
-			// 	for (uint8_t i = 0; i < 10; i++)
-			// 	{
-			// 		Hardware::Instance()->GetCamera().Capture();
-			// 		std::array<char, 30> fileName;
-
-			// 		snprintf(fileName.data(), fileName.size(), "/sdcard/%s%d.bmp", "pic", i + 1);
-			// 		struct stat st;
-			// 		if (stat(fileName.data(), &st) == 0)
-			// 		{
-			// 			// Delete it if it exists
-			// 			unlink(fileName.data());
-			// 		}
-
-			// 		printf("Opening file\n");
-			// 		FILE *f = fopen(fileName.data(), "wb");
-			// 		if (f == NULL)
-			// 		{
-			// 			printf("Failed to open file for writing\n");
-			// 			return;
-			// 		}
-
-			// 		uint32_t bfSize = Hardware::Instance()->GetCamera().GetFrameBufferSize();
-			// 		uint8_t *fb = Hardware::Instance()->GetCamera().GetFrameBuffer();
-			// 		printf("Photo Captured, Saving in the SD Card. Image size:%d\n", bfSize);
-			// 		fwrite(fb, bfSize, 1, f);
-			// 		printf("Closing file\n");
-			// 		fclose(f);
-			// 	}
-			// 	Hardware::Instance()->GetCamera().DeInit();
-			// }
-			// else
-			// 	printf("Error: SdCard not mounted.\n");
-
-			// system->GetSdCard().Unmount();
+			//httpd_config_t config = HTTPD_DEFAULT_CONFIG();
 		}
 		break;
 		case 'x':
@@ -506,9 +466,9 @@ void CameraMenu()
 		printf("Camera menu:\n");
 		printf("----------\n");
 		printf("[S] - Camera Resolution\n");
-		printf("[I] - Capture 10 JPEG images and Save in the SD Card\n");
-		printf("[P] - Capture 10 BMP images and Save in the SD Card\n");
-		printf("[P] - Capture and Save in the internal Flash\n");
+		//printf("[P] - Capture and Save in the internal Flash\n");
+		printf("[I] - Capture 10 images and Save in the SD Card\n");
+		printf("[W] - Start Streaming Web\n");
 		printf("[X] - Return\n");
 
 		test = ReadKey();

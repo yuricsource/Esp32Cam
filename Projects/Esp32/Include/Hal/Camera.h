@@ -21,14 +21,6 @@
 #include "freertos/event_groups.h"
 #include "esp_event_legacy.h"
 
-static void handle_grayscale_pgm(http_context_t http_ctx, void* ctx);
-static void handle_rgb_bmp(http_context_t http_ctx, void* ctx);
-static void handle_rgb_bmp_stream(http_context_t http_ctx, void* ctx);
-static void handle_jpg(http_context_t http_ctx, void* ctx);
-static void handle_jpg_stream(http_context_t http_ctx, void* ctx);
-static esp_err_t event_handler(void *ctx, system_event_t *event);
-static esp_err_t write_frame(http_context_t http_ctx);
-
 namespace Hal
 {
 
@@ -50,6 +42,8 @@ public:
 	void SetResolution(CameraFrameSize frameSize);
 
 	void SetImageFormat(CameraPixelFormat format);
+
+	bool initialized = false;
 
 	~Camera();
 	

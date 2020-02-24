@@ -290,7 +290,11 @@ bool Camera::Capture()
 
 void Camera::DeInit()
 {
-    esp_camera_deinit();
+    if (initialized)
+    {
+        esp_camera_deinit();
+        initialized = false;
+    }
 }
 
 void Camera::SetResolution(CameraFrameSize frameSize)
@@ -305,30 +309,8 @@ void Camera::SetImageFormat(CameraPixelFormat format)
 
 void Camera::Init()
 {
-
-    // esp_err_t err = camera_probe((camera_config_t *)&cameraConfig, (camera_model_t *)(&cameraConfig.CameraModel));
-    // if (err != ESP_OK)
-    // {
-    //     printf("Camera probe failed with error 0x%x\n", err);
-    //     return;
-    // }
-
-    // if (cameraConfig.CameraModel == CameraModelType::CameraOV7725)
-    // {
-    //     printf("Detected OV7725 camera, using %s bitmap format",
-    //            cameraConfig.PixelFormat == CAMERA_PF_GRAYSCALE ? "grayscale" : "RGB565");
-    // }
-    // else if (cameraConfig.CameraModel == CameraModelType::CameraOV2640)
-    // {
-    //     printf("Detected OV2640 camera, using JPEG format");
-    //     if (cameraConfig.PixelFormat == (camera_framesize_t) CameraPixelFormat::CameraPixelFormatJPEG)
-    //         cameraConfig.JPEGQuality = 5;
-    // }
-    // else
-    // {
-    //     printf("Camera not supported");
-    //     return;
-    // }
+    if (initialized)
+        return;
 
     esp_err_t err = esp_camera_init((camera_config_t *)&_cameraConfig);
     if (err != ESP_OK)
@@ -337,35 +319,7 @@ void Camera::Init()
         return;
     }
 
-    // s_wifi_event_group = xEventGroupCreate();
-
-    // printf("Connected\n");
-
-    // http_server_t server;
-    // http_server_options_t http_options = HTTP_SERVER_OPTIONS_DEFAULT();
-    // ESP_ERROR_CHECK(http_server_start(&http_options, &server));
-
-    // if (s_pixel_format == CAMERA_PF_GRAYSCALE)
-    // {
-    //     ESP_ERROR_CHECK(http_register_handler(server, "/pgm", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_grayscale_pgm, &camera_config));
-    //     printf("Open http:// %d.%d.%d.%d /pgm for a single image/x-portable-graymap image\n", IP2STR(&s_ip_addr));
-    // }
-    // if (s_pixel_format == CAMERA_PF_RGB565)
-    // {
-    //     ESP_ERROR_CHECK(http_register_handler(server, "/bmp", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_rgb_bmp, NULL));
-    //     printf("Open http://%d.%d.%d.%d/bmp for single image/bitmap image\n", IP2STR(&s_ip_addr));
-    //     ESP_ERROR_CHECK(http_register_handler(server, "/bmp_stream", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_rgb_bmp_stream, NULL));
-    //     printf("Open http://%d.%d.%d.%d/bmp_stream for multipart/x-mixed-replace stream of bitmaps\n", IP2STR(&s_ip_addr));
-    // }
-    // if (s_pixel_format == CAMERA_PF_JPEG)
-    // {
-    //     ESP_ERROR_CHECK(http_register_handler(server, "/jpg", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_jpg, NULL));
-    //     printf("Open http://%d.%d.%d.%d/jpg for single image/jpg image\n", IP2STR(&s_ip_addr));
-    //     ESP_ERROR_CHECK(http_register_handler(server, "/jpg_stream", HTTP_GET, HTTP_HANDLE_RESPONSE, &handle_jpg_stream, NULL));
-    //     printf("Open http://%d.%d.%d.%d/jpg_stream for multipart/x-mixed-replace stream of JPEGs\n", IP2STR(&s_ip_addr));
-    // }
-    // printf("Free heap: %u\n", xPortGetFreeHeapSize());
-    // printf("Camera demo ready\n");
+    initialized = true;
 }
 
 Camera::~Camera()
