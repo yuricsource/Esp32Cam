@@ -1,5 +1,6 @@
 
 #include "Tests.h"
+#include "esp_http_server.h"
 
 using Hal::Dwt;
 using Hal::Hardware;
@@ -8,6 +9,112 @@ using Hal::TimeLimit;
 using namespace std;
 
 const char *testPhrase = "RTC holds the memory with low power";
+
+#define PART_BOUNDARY "123456789000000000000987654321"
+static const char *_STREAM_CONTENT_TYPE = "multipart/x-mixed-replace;boundary=" PART_BOUNDARY;
+static const char *_STREAM_BOUNDARY = "\r\n--" PART_BOUNDARY "\r\n";
+static const char *_STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n";
+httpd_handle_t stream_httpd = NULL;
+
+static esp_err_t stream_handler(httpd_req_t *req)
+{
+	camera_fb_t *fb = NULL;
+	esp_err_t res = ESP_OK;
+	size_t _jpg_buf_len = 0;
+	uint8_t *_jpg_buf = NULL;
+	char *part_buf[64];
+	//dl_matrix3du_t *image_matrix = NULL;
+	// bool detected = false;
+	// int face_id = 0;
+	// int64_t fr_start = 0;
+	// int64_t fr_ready = 0;
+	// int64_t fr_face = 0;
+	// int64_t fr_recognize = 0;
+	// int64_t fr_encode = 0;
+
+	static int64_t last_frame = 0;
+	if (!last_frame)
+	{
+		last_frame = esp_timer_get_time();
+	}
+
+	res = httpd_resp_set_type(req, _STREAM_CONTENT_TYPE);
+	if (res != ESP_OK)
+	{
+		return res;
+	}
+
+	httpd_resp_set_hdr(req, "Access-Control-Allow-Origin", "*");
+
+	while (true)
+	{
+		// detected = false;
+		// face_id = 0;
+		fb = esp_camera_fb_get();
+		if (!fb)
+		{
+			printf("Camera capture failed");
+			res = ESP_FAIL;
+		}
+		else
+		{
+			// fr_start = esp_timer_get_time();
+			// fr_ready = fr_start;
+			// fr_face = fr_start;
+			// fr_encode = fr_start;
+			// fr_recognize = fr_start;
+
+			if (fb->format != PIXFORMAT_JPEG)
+			{
+				bool jpeg_converted = frame2jpg(fb, 80, &_jpg_buf, &_jpg_buf_len);
+				esp_camera_fb_return(fb);
+				fb = NULL;
+				if (!jpeg_converted)
+				{
+					printf("JPEG compression failed");
+					res = ESP_FAIL;
+				}
+			}
+			else
+			{
+				_jpg_buf_len = fb->len;
+				_jpg_buf = fb->buf;
+			}
+		}
+		if (res == ESP_OK)
+		{
+			size_t hlen = snprintf((char *)part_buf, 64, _STREAM_PART, _jpg_buf_len);
+			res = httpd_resp_send_chunk(req, (const char *)part_buf, hlen);
+		}
+		if (res == ESP_OK)
+		{
+			res = httpd_resp_send_chunk(req, (const char *)_jpg_buf, _jpg_buf_len);
+		}
+		if (res == ESP_OK)
+		{
+			res = httpd_resp_send_chunk(req, _STREAM_BOUNDARY, strlen(_STREAM_BOUNDARY));
+		}
+		if (fb)
+		{
+			esp_camera_fb_return(fb);
+			fb = NULL;
+			_jpg_buf = NULL;
+		}
+		else if (_jpg_buf)
+		{
+			free(_jpg_buf);
+			_jpg_buf = NULL;
+		}
+		if (res != ESP_OK)
+		{
+			break;
+		}
+		// int64_t fr_end = esp_timer_get_time();
+	}
+
+	last_frame = 0;
+	return res;
+}
 
 const char *GetTestPhrase()
 {
@@ -370,26 +477,36 @@ void CameraMenu()
 		{
 			char mode = 0;
 			printf("\n\nSet the camera resolution:\n\n");
-			printf("[1] - QQVGA (320x240)\n");
-			printf("[2] - QVGA (640x480)\n");
-			printf("[3] - SVGA (800x600)\n");
-			printf("[4] - SXGA (1280x1024)\n");
-			printf("[5] - UXGA (1600x1200)\n");
+			printf("[0] - QQVGA\t(160x120)\n");
+			printf("[1] - QVGA \t(320x240)\n");
+			printf("[2] - VGA  \t(640x480)\n");
+			printf("[3] - SVGA \t(800x600)\n");
+			printf("[4] - SXGA \t(1280x1024)\n");
+			printf("[5] - UXGA \t(1600x1200)\n");
 			mode = ReadKey();
+			if (mode == '0')
+			{
+				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeQQVGA);
+			}
 			if (mode == '1')
 			{
+				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeQVGA);
 			}
 			else if (mode == '2')
 			{
+				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeVGA);
 			}
 			else if (mode == '3')
 			{
+				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeSVGA);
 			}
 			else if (mode == '4')
 			{
+				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeSXGA);
 			}
 			else if (mode == '5')
 			{
+				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeUXGA);
 			}
 			else
 				printf("Invalid option.\n");
@@ -449,7 +566,17 @@ void CameraMenu()
 		case 'w':
 		case 'W':
 		{
-			//httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+			httpd_config_t config = HTTPD_DEFAULT_CONFIG();
+			httpd_uri_t stream_uri =
+				{
+					.uri = "/stream",
+					.method = HTTP_GET,
+					.handler = stream_handler,
+					.user_ctx = NULL};
+			if (httpd_start(&stream_httpd, &config) == ESP_OK)
+			{
+				httpd_register_uri_handler(stream_httpd, &stream_uri);
+			}
 		}
 		break;
 		case 'x':
