@@ -17,21 +17,13 @@ static const char *_STREAM_BOUNDARY = "\r\n--" PART_BOUNDARY "\r\n";
 static const char *_STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n";
 httpd_handle_t web_stream_httpd = NULL;
 
-static esp_err_t web_stream_handler(httpd_req_t *req)
+static esp_err_t stream_handler(httpd_req_t *req)
 {
 	camera_fb_t *fb = NULL;
 	esp_err_t res = ESP_OK;
 	size_t _jpg_buf_len = 0;
 	uint8_t *_jpg_buf = NULL;
 	char *part_buf[64];
-	//dl_matrix3du_t *image_matrix = NULL;
-	// bool detected = false;
-	// int face_id = 0;
-	// int64_t fr_start = 0;
-	// int64_t fr_ready = 0;
-	// int64_t fr_face = 0;
-	// int64_t fr_recognize = 0;
-	// int64_t fr_encode = 0;
 
 	static int64_t last_frame = 0;
 	if (!last_frame)
@@ -49,8 +41,6 @@ static esp_err_t web_stream_handler(httpd_req_t *req)
 
 	while (true)
 	{
-		// detected = false;
-		// face_id = 0;
 		fb = esp_camera_fb_get();
 		if (!fb)
 		{
@@ -59,12 +49,6 @@ static esp_err_t web_stream_handler(httpd_req_t *req)
 		}
 		else
 		{
-			// fr_start = esp_timer_get_time();
-			// fr_ready = fr_start;
-			// fr_face = fr_start;
-			// fr_encode = fr_start;
-			// fr_recognize = fr_start;
-
 			if (fb->format != PIXFORMAT_JPEG)
 			{
 				bool jpeg_converted = frame2jpg(fb, 80, &_jpg_buf, &_jpg_buf_len);
@@ -583,6 +567,12 @@ void CameraMenu()
 		case 'h':
 		case 'H':
 		{
+			Hardware::Instance()->GetWifi().Disable();
+			Hardware::Instance()->GetWifi().SetSsid("Camera Wifi", strlen("Camera Wifi"));
+			Hardware::Instance()->GetWifi().SetPassword("123cam123", strlen("123cam123"));
+			Hardware::Instance()->GetWifi().SetMode(Hal::WifiModeConfiguration::HotSpot);
+			Hardware::Instance()->GetWifi().SetAuthentication(Hal::WifiAuthenticationMode::Wpa2Psk);
+			Hardware::Instance()->GetWifi().Enable();
 			Hardware::Instance()->GetCamera().Init();
 			startCameraServer();
 			break;
