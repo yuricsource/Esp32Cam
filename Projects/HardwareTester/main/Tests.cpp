@@ -1,6 +1,7 @@
 
 #include "Tests.h"
 #include "esp_http_server.h"
+#include "CameraStreamTest.h"
 
 using Hal::Dwt;
 using Hal::Hardware;
@@ -14,9 +15,9 @@ const char *testPhrase = "RTC holds the memory with low power";
 static const char *_STREAM_CONTENT_TYPE = "multipart/x-mixed-replace;boundary=" PART_BOUNDARY;
 static const char *_STREAM_BOUNDARY = "\r\n--" PART_BOUNDARY "\r\n";
 static const char *_STREAM_PART = "Content-Type: image/jpeg\r\nContent-Length: %u\r\n\r\n";
-httpd_handle_t stream_httpd = NULL;
+httpd_handle_t web_stream_httpd = NULL;
 
-static esp_err_t stream_handler(httpd_req_t *req)
+static esp_err_t web_stream_handler(httpd_req_t *req)
 {
 	camera_fb_t *fb = NULL;
 	esp_err_t res = ESP_OK;
@@ -573,12 +574,19 @@ void CameraMenu()
 					.method = HTTP_GET,
 					.handler = stream_handler,
 					.user_ctx = NULL};
-			if (httpd_start(&stream_httpd, &config) == ESP_OK)
+			if (httpd_start(&web_stream_httpd, &config) == ESP_OK)
 			{
-				httpd_register_uri_handler(stream_httpd, &stream_uri);
+				httpd_register_uri_handler(web_stream_httpd, &stream_uri);
 			}
 		}
 		break;
+		case 'h':
+		case 'H':
+		{
+			Hardware::Instance()->GetCamera().Init();
+			startCameraServer();
+			break;
+		}
 		case 'x':
 		case 'X':
 		{
@@ -595,7 +603,8 @@ void CameraMenu()
 		printf("[S] - Camera Resolution\n");
 		//printf("[P] - Capture and Save in the internal Flash\n");
 		printf("[I] - Capture 10 images and Save in the SD Card\n");
-		printf("[W] - Start Streaming Web\n");
+		printf("[W] - Start Simple Streaming Web\n");
+		printf("[H] - Start Demo Streaming Web\n");
 		printf("[X] - Return\n");
 
 		test = ReadKey();
