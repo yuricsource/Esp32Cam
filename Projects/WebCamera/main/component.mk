@@ -12,7 +12,7 @@
 COMPONENT_SRCDIRS           +=  ../../Esp32/Source/Hal                                     \
                                 ../../Esp32/Source/Hal/Camera/Conversions                  \
                                 ../../Esp32/Source/Hal/Camera/Driver                       \
-                                ../../Esp32/Source/Hal/Camera/Sensor                       \
+                                ../../Esp32/Source/Hal/Camera/Sensors                      \
                                 ../../Esp32/Source/Hal/Wifi                                \
                                 ../../Esp32/Source/Middleware/Utils                        \
                                 ../../Esp32/Source/Middleware/Configuration                \
@@ -23,7 +23,7 @@ COMPONENT_ADD_INCLUDEDIRS   +=  ${IDF_PATH}/components/                         
                                 ../../Esp32/Include/Hal                                    \
                                 ../../Esp32/Include/Hal/Camera/Conversions                 \
                                 ../../Esp32/Include/Hal/Camera/Driver                      \
-                                ../../Esp32/Include/Hal/Camera/Sensor                      \
+                                ../../Esp32/Include/Hal/Camera/Sensors                     \
                                 ../../Esp32/Include/Hal/Wifi                               \
                                 ../../Esp32/Include/Middleware/Utils                       \
                                 ../../Esp32/Include/Middleware/Configuration               \
