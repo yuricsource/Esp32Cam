@@ -442,7 +442,7 @@ static esp_err_t status_handler(httpd_req_t *req)
     p += sprintf(p, "\"vflip\":%u,", s->status.vflip);
     p += sprintf(p, "\"hmirror\":%u,", s->status.hmirror);
     p += sprintf(p, "\"dcw\":%u,", s->status.dcw);
-    p += sprintf(p, "\"colorbar\":%u,", s->status.colorbar);
+    p += sprintf(p, "\"colorbar\":%u", s->status.colorbar);
     *p++ = '}';
     *p++ = 0;
     httpd_resp_set_type(req, "application/json");
