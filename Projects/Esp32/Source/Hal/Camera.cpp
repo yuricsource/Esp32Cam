@@ -86,7 +86,7 @@ int Camera::SetImageAutoExposureLevel(int level)
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
-        return s->set_wb_mode(s, static_cast<int>(level));
+        return s->set_ae_level(s, static_cast<int>(level));
     }
     return 0;
 }
@@ -106,7 +106,7 @@ int Camera::SetImageSpecialEffect(CameraSpecialEffect effect)
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
-        return s->set_raw_gma(s, static_cast<int>(effect));
+        return s->set_special_effect(s, static_cast<int>(effect));
     }
     return 0;
 }
@@ -116,7 +116,7 @@ int Camera::SetImageLensCorrection(bool lensCorrection)
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
-        return s->set_raw_gma(s, lensCorrection);
+        return s->set_lenc(s, lensCorrection);
     }
     return 0;
 }
