@@ -21,8 +21,6 @@ static esp_err_t cmd_handler(httpd_req_t *req);
 static esp_err_t status_handler(httpd_req_t *req);
 static esp_err_t index_handler(httpd_req_t *req);
 
-
-
 static ra_filter_t *ra_filter_init(ra_filter_t *filter, size_t sample_size)
 {
     memset(filter, 0, sizeof(ra_filter_t));
@@ -347,55 +345,78 @@ static esp_err_t cmd_handler(httpd_req_t *req)
     if (!strcmp(variable, "framesize"))
     {
         if (s->pixformat == PIXFORMAT_JPEG)
-            res = s->set_framesize(s, (framesize_t)val);
+            //res = s->set_framesize(s, (framesize_t)val);
+            res = Hal::Hardware::Instance()->GetCamera().SetResolution(static_cast<Hal::CameraFrameSize>(val));
     }
     else if (!strcmp(variable, "quality"))
-        res = s->set_quality(s, val);
+        //res = s->set_quality(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageQuality(val);
     else if (!strcmp(variable, "contrast"))
-        res = s->set_contrast(s, val);
+        //res = s->set_contrast(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageContrast(val);
     else if (!strcmp(variable, "brightness"))
-        res = s->set_brightness(s, val);
+        //res = s->set_brightness(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageBrightness(val);
     else if (!strcmp(variable, "saturation"))
-        res = s->set_saturation(s, val);
+        //res = s->set_saturation(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageSaturation(val);
     else if (!strcmp(variable, "gainceiling"))
-        res = s->set_gainceiling(s, (gainceiling_t)val);
+        //res = s->set_gainceiling(s, (gainceiling_t)val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageGainCeiling(static_cast<Hal::CameraGainCeiling>(val));
     else if (!strcmp(variable, "colorbar"))
-        res = s->set_colorbar(s, val);
+        //res = s->set_colorbar(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageColourBar(static_cast<bool>(val));
     else if (!strcmp(variable, "awb"))
-        res = s->set_whitebal(s, val);
+        //res = s->set_whitebal(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageAutoWhiteBalance(static_cast<bool>(val));
     else if (!strcmp(variable, "agc"))
-        res = s->set_gain_ctrl(s, val);
+        //res = s->set_gain_ctrl(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageAutoGainControl(static_cast<bool>(val));
     else if (!strcmp(variable, "aec"))
-        res = s->set_exposure_ctrl(s, val);
+        // res = s->set_exposure_ctrl(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageAutoExposureControl(static_cast<bool>(val));
     else if (!strcmp(variable, "hmirror"))
-        res = s->set_hmirror(s, val);
+        // res = s->set_hmirror(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageHorizontalMirror(static_cast<bool>(val));
     else if (!strcmp(variable, "vflip"))
-        res = s->set_vflip(s, val);
+        // res = s->set_vflip(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageVerticalMirror(static_cast<bool>(val));
     else if (!strcmp(variable, "awb_gain"))
-        res = s->set_awb_gain(s, val);
+        // res = s->set_awb_gain(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageAutoWhiteBalanceGain(static_cast<bool>(val));
     else if (!strcmp(variable, "agc_gain"))
-        res = s->set_agc_gain(s, val);
+        // res = s->set_agc_gain(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageAutoGainCeiling(val);
     else if (!strcmp(variable, "aec_value"))
-        res = s->set_aec_value(s, val);
+        // res = s->set_aec_value(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageExposureTime(val);
     else if (!strcmp(variable, "aec2"))
-        res = s->set_aec2(s, val);
+        // res = s->set_aec2(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageAutoExposureDsp(static_cast<bool>(val));
     else if (!strcmp(variable, "dcw"))
-        res = s->set_dcw(s, val);
+        // res = s->set_dcw(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageDownsizeEn(static_cast<bool>(val));
     else if (!strcmp(variable, "bpc"))
-        res = s->set_bpc(s, val);
+        // res = s->set_bpc(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageBPC(static_cast<bool>(val));
     else if (!strcmp(variable, "wpc"))
-        res = s->set_wpc(s, val);
+        // res = s->set_wpc(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageWPC(static_cast<bool>(val));
     else if (!strcmp(variable, "raw_gma"))
-        res = s->set_raw_gma(s, val);
+        // res = s->set_raw_gma(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageRawGma(static_cast<bool>(val));
     else if (!strcmp(variable, "lenc"))
-        res = s->set_lenc(s, val);
+        // res = s->set_lenc(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageLensCorrection(static_cast<bool>(val));
     else if (!strcmp(variable, "special_effect"))
-        res = s->set_special_effect(s, val);
+        // res = s->set_special_effect(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageSpecialEffect(static_cast<Hal::CameraSpecialEffect>(val));
     else if (!strcmp(variable, "wb_mode"))
-        res = s->set_wb_mode(s, val);
+        // res = s->set_wb_mode(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageWhiteBalanceMode(static_cast<Hal::CameraWhiteBalanceMode>(val));
     else if (!strcmp(variable, "ae_level"))
-        res = s->set_ae_level(s, val);
-
+        // res = s->set_ae_level(s, val);
+        res = Hal::Hardware::Instance()->GetCamera().SetImageAutoExposureLevel(val);
     else
     {
         res = -1;

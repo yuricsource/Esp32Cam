@@ -175,12 +175,57 @@ enum class CameraPixelFormat : uint8_t
 
 enum class CameraFrameSize : uint8_t
 {
-	CameraFrameSizeQQVGA = 4, //160x120
-	CameraFrameSizeQVGA = 8,  //320x240
-	CameraFrameSizeVGA = 10,  //640x480
-	CameraFrameSizeSVGA = 11, //800x600
-	CameraFrameSizeSXGA = 12, //1280x1024
-	CameraFrameSizeUXGA = 13, //1600x1200
+	CameraFrameSizeSVGA = 9, 	//800x600
+	CameraFrameSizeXGA = 10, 	//1024x768
+	CameraFrameSizeSXGA = 11, 	//1280x1024
+	CameraFrameSizeUXGA = 12, 	//1600x1200
+};
+
+    /*FRAMESIZE_96x96,    // 96x96		1
+    FRAMESIZE_QQVGA,    // 160x120		2
+    FRAMESIZE_QQVGA2,   // 128x160		3
+    FRAMESIZE_QCIF,     // 176x144		4
+    FRAMESIZE_HQVGA,    // 240x176		5
+    FRAMESIZE_240x240,  // 240x240		6
+    FRAMESIZE_QVGA,     // 320x240		7
+    FRAMESIZE_CIF,      // 400x296		8*/
+    // FRAMESIZE_VGA,      // 640x480		9
+    // FRAMESIZE_SVGA,     // 800x600		10
+    // FRAMESIZE_XGA,      // 1024x768		11
+    // FRAMESIZE_SXGA,     // 1280x1024	12
+    // FRAMESIZE_UXGA,     // 1600x1200	13
+    // FRAMESIZE_QXGA,     // 2048*1536	14
+    // FRAMESIZE_INVALID
+
+enum class CameraWhiteBalanceMode : uint8_t
+{
+	Auto,
+	Sunny,
+	Cloudy,
+	Office,
+	Home
+};
+
+enum class CameraSpecialEffect : uint8_t
+{
+	None,
+	Negative,
+	GrayScale,
+	RedTint,
+	GreenTint,
+	BlueTint,
+	Sepia,
+};
+
+enum class CameraGainCeiling : uint8_t
+{
+	Gain2,
+	Gain4,
+	Gain8,
+	Gain16,
+	Gain32,
+	Gain64,
+	Gain128,
 };
 
 enum class CameraModelType : uint16_t

@@ -14,226 +14,8 @@
 #include "nvs_flash.h"
 #include "driver/gpio.h"
 #include "Camera/Driver/esp_camera.h"
-// #include "bitmap.h"
-// #include "led.h"
-// #include "qr_recoginize.h"
 #include "string.h"
-// #include "bitmap.h"
 
-// static const char *STREAM_CONTENT_TYPE =
-//     "multipart/x-mixed-replace; boundary=123456789000000000000987654321";
-
-// static const char *STREAM_BOUNDARY = "--123456789000000000000987654321";
-// static EventGroupHandle_t s_wifi_event_group;
-
-// static const int CONNECTED_BIT = BIT0;
-// static ip4_addr_t s_ip_addr;
-// static camera_pixelformat_t s_pixel_format;
-
-// bitmap_header_t *bmp_create_header(int w, int h)
-// {
-//     bitmap_header_t *pbitmap = (bitmap_header_t *)calloc(1, sizeof(bitmap_header_t));
-//     int _pixelbytesize = w * h * _bitsperpixel / 8;
-//     int _filesize = _pixelbytesize + sizeof(bitmap_header_t);
-//     memcpy((char *)pbitmap->fileheader.signature, "BM", 2);
-//     pbitmap->fileheader.filesize = _filesize;
-//     pbitmap->fileheader.fileoffset_to_pixelarray = sizeof(bitmap_header_t);
-//     pbitmap->bitmapinfoheader.dibheadersize = sizeof(Bitmapinfoheader);
-//     pbitmap->bitmapinfoheader.width = w;
-//     pbitmap->bitmapinfoheader.height = h;
-//     pbitmap->bitmapinfoheader.planes = _planes;
-//     pbitmap->bitmapinfoheader.bitsperpixel = _bitsperpixel;
-//     pbitmap->bitmapinfoheader.compression = _compression;
-//     pbitmap->bitmapinfoheader.imagesize = _pixelbytesize;
-//     pbitmap->bitmapinfoheader.ypixelpermeter = _ypixelpermeter;
-//     pbitmap->bitmapinfoheader.xpixelpermeter = _xpixelpermeter;
-//     pbitmap->bitmapinfoheader.numcolorspallette = 0;
-//     return pbitmap;
-// }
-/*
-static esp_err_t write_frame(http_context_t http_ctx)
-{
-    http_buffer_t fb_data = {
-        .data = camera_get_fb(),
-        .size = camera_get_data_size(),
-        .data_is_persistent = true};
-    return http_response_write(http_ctx, &fb_data);
-}
-
-static void handle_grayscale_pgm(http_context_t http_ctx, void *ctx)
-{
-    esp_err_t err = esp_camera_fb_get();
-    if (err != ESP_OK)
-    {
-        printf("Camera capture failed with error = %d", err);
-        return;
-    }
-    char *pgm_header_str;
-    asprintf(&pgm_header_str, "P5 %d %d %d\n",
-             camera_get_fb_width(), camera_get_fb_height(), 255);
-    if (pgm_header_str == NULL)
-    {
-        return;
-    }
-
-    size_t response_size = strlen(pgm_header_str) + camera_get_data_size();
-    http_response_begin(http_ctx, 200, "image/x-portable-graymap", response_size);
-    http_response_set_header(http_ctx, "Content-disposition", "inline; filename=capture.pgm");
-    http_buffer_t pgm_header = {.data = pgm_header_str};
-    http_response_write(http_ctx, &pgm_header);
-    free(pgm_header_str);
-
-    write_frame(http_ctx);
-    http_response_end(http_ctx);
-    printf("Free heap: %u", xPortGetFreeHeapSize());
-#if CONFIG_QR_RECOGNIZE
-    camera_config_t *camera_config = ctx;
-    xTaskCreate(qr_recoginze, "qr_recoginze", 111500, camera_config, 5, NULL);
-#endif
-}
-
-static void handle_rgb_bmp(http_context_t http_ctx, void *ctx)
-{
-    esp_err_t err = esp_camera_fb_get();
-    if (err != ESP_OK)
-    {
-        printf("Camera capture failed with error = %d", err);
-        return;
-    }
-
-    bitmap_header_t *header = bmp_create_header(camera_get_fb_width(), camera_get_fb_height());
-    if (header == NULL)
-    {
-        return;
-    }
-
-    http_response_begin(http_ctx, 200, "image/bmp", sizeof(*header) + camera_get_data_size());
-    http_buffer_t bmp_header = {
-        .data = header,
-        .size = sizeof(*header)};
-    http_response_set_header(http_ctx, "Content-disposition", "inline; filename=capture.bmp");
-    http_response_write(http_ctx, &bmp_header);
-    free(header);
-
-    write_frame(http_ctx);
-    http_response_end(http_ctx);
-}
-
-static void handle_jpg(http_context_t http_ctx, void *ctx)
-{
-    esp_err_t err = esp_camera_fb_get();
-    if (err != ESP_OK)
-    {
-        printf("Camera capture failed with error = %d", err);
-        return;
-    }
-
-    http_response_begin(http_ctx, 200, "image/jpeg", camera_get_data_size());
-    http_response_set_header(http_ctx, "Content-disposition", "inline; filename=capture.jpg");
-    write_frame(http_ctx);
-    http_response_end(http_ctx);
-}
-
-static void handle_rgb_bmp_stream(http_context_t http_ctx, void *ctx)
-{
-    http_response_begin(http_ctx, 200, STREAM_CONTENT_TYPE, HTTP_RESPONSE_SIZE_UNKNOWN);
-    bitmap_header_t *header = bmp_create_header(camera_get_fb_width(), camera_get_fb_height());
-    if (header == NULL)
-    {
-        return;
-    }
-    http_buffer_t bmp_header = {
-        .data = header,
-        .size = sizeof(*header)};
-
-    while (true)
-    {
-        esp_err_t err = esp_camera_fb_get();
-        if (err != ESP_OK)
-        {
-            printf("Camera capture failed with error = %d", err);
-            return;
-        }
-
-        err = http_response_begin_multipart(http_ctx, "image/bitmap",
-                                            camera_get_data_size() + sizeof(*header));
-        if (err != ESP_OK)
-        {
-            break;
-        }
-        err = http_response_write(http_ctx, &bmp_header);
-        if (err != ESP_OK)
-        {
-            break;
-        }
-        err = write_frame(http_ctx);
-        if (err != ESP_OK)
-        {
-            break;
-        }
-        err = http_response_end_multipart(http_ctx, STREAM_BOUNDARY);
-        if (err != ESP_OK)
-        {
-            break;
-        }
-    }
-
-    free(header);
-    http_response_end(http_ctx);
-}
-
-static void handle_jpg_stream(http_context_t http_ctx, void *ctx)
-{
-    http_response_begin(http_ctx, 200, STREAM_CONTENT_TYPE, HTTP_RESPONSE_SIZE_UNKNOWN);
-    while (true)
-    {
-        esp_err_t err = esp_camera_fb_get();
-        if (err != ESP_OK)
-        {
-            printf("Camera capture failed with error = %d", err);
-            return;
-        }
-        err = http_response_begin_multipart(http_ctx, "image/jpg",
-                                            camera_get_data_size());
-        if (err != ESP_OK)
-        {
-            break;
-        }
-        err = write_frame(http_ctx);
-        if (err != ESP_OK)
-        {
-            break;
-        }
-        err = http_response_end_multipart(http_ctx, STREAM_BOUNDARY);
-        if (err != ESP_OK)
-        {
-            break;
-        }
-    }
-    http_response_end(http_ctx);
-}
-
-static esp_err_t event_handler(void *ctx, system_event_t *event)
-{
-    switch (event->event_id)
-    {
-    case SYSTEM_EVENT_STA_START:
-        esp_wifi_connect();
-        break;
-    case SYSTEM_EVENT_STA_GOT_IP:
-        xEventGroupSetBits(s_wifi_event_group, CONNECTED_BIT);
-        //s_ip_addr = event->event_info.got_ip.ip_info.ip;
-        break;
-    case SYSTEM_EVENT_STA_DISCONNECTED:
-        esp_wifi_connect();
-        xEventGroupClearBits(s_wifi_event_group, CONNECTED_BIT);
-        break;
-    default:
-        break;
-    }
-    return ESP_OK;
-}
-*/
 namespace Hal
 {
 
@@ -268,7 +50,7 @@ Camera::Camera(Gpio *IoPins)
     _cameraConfig.xclk_freq_hz = 10000000;
     _cameraConfig.jpeg_quality = 10;
     _cameraConfig.fb_count = 1;
-    _cameraConfig.frame_size = static_cast<framesize_t>(CameraFrameSize::CameraFrameSizeVGA);
+    _cameraConfig.frame_size = static_cast<framesize_t>(CameraFrameSize::CameraFrameSizeSXGA);
     _cameraConfig.pixel_format = static_cast<pixformat_t>(CameraPixelFormat::CameraPixelFormatJPEG);
 }
 
@@ -297,14 +79,269 @@ void Camera::DeInit()
     }
 }
 
-void Camera::SetResolution(CameraFrameSize frameSize)
+int Camera::SetImageAutoExposureLevel(int level)
 {
-    _cameraConfig.frame_size = static_cast<framesize_t>(frameSize);
+    if (level < -2 || level > 2)
+        return -1;
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_wb_mode(s, static_cast<int>(level));
+    }
+    return 0;
 }
 
-void Camera::SetImageFormat(CameraPixelFormat format)
+int Camera::SetImageWhiteBalanceMode(CameraWhiteBalanceMode mode)
 {
-    _cameraConfig.pixel_format = static_cast<pixformat_t>(format);
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_wb_mode(s, static_cast<int>(mode));
+    }
+    return 0;
+}
+
+int Camera::SetImageSpecialEffect(CameraSpecialEffect effect)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_raw_gma(s, static_cast<int>(effect));
+    }
+    return 0;
+}
+
+int Camera::SetImageLensCorrection(bool lensCorrection)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_raw_gma(s, lensCorrection);
+    }
+    return 0;
+}
+
+int Camera::SetImageRawGma(bool RawGma)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_raw_gma(s, RawGma);
+    }
+    return 0;
+}
+
+int Camera::SetImageWPC(bool wpc)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_wpc(s, wpc);
+    }
+    return 0;
+}
+
+int Camera::SetImageBPC(bool bpc)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_bpc(s, bpc);
+    }
+    return 0;
+}
+
+
+int Camera::SetImageDownsizeEn(bool downsize)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_dcw(s, downsize);
+    }
+    return 0;
+}
+
+int Camera::SetImageAutoExposureDsp(bool exposureDsp)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_aec2(s, exposureDsp);
+    }
+    return 0;
+}
+
+int Camera::SetImageExposureTime(int exposureTime)
+{
+    if(exposureTime < 0 || exposureTime > 1200)
+        return -1;
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_aec_value(s, exposureTime);
+    }
+    return 0;
+}
+
+int Camera::SetImageAutoGainCeiling(int autoGainCeiling)
+{
+    if(autoGainCeiling < 0 || autoGainCeiling > 30)
+        return -1;
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_agc_gain(s, autoGainCeiling);
+    }
+    return 0;
+}
+
+int Camera::SetImageAutoWhiteBalanceGain(bool autoBalanceGain)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_awb_gain(s, static_cast<int>(autoBalanceGain));
+    }
+    return 0;
+}
+
+int Camera::SetImageVerticalMirror(bool verticalMirror)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_vflip(s, static_cast<int>(verticalMirror));
+    }
+    return 0;
+}
+
+int Camera::SetImageHorizontalMirror(bool horizontalMirror)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_hmirror(s, static_cast<int>(horizontalMirror));
+    }
+    return 0;
+}
+
+int Camera::SetImageAutoExposureControl(bool autoExposure)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_exposure_ctrl(s, static_cast<int>(autoExposure));
+    }
+    return 0;
+}
+
+int Camera::SetImageAutoGainControl(bool autoGain)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_gain_ctrl(s, static_cast<int>(autoGain));
+    }
+    return 0;
+}
+
+int Camera::SetImageAutoWhiteBalance(bool autoBalance)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_whitebal(s, static_cast<int>(autoBalance));
+    }
+    return 0;
+}
+
+int Camera::SetImageColourBar(bool colourBar)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_colorbar(s, static_cast<int>(colourBar));
+    }
+    return 0;
+}
+
+int Camera::SetImageGainCeiling(CameraGainCeiling gain)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_gainceiling(s, static_cast<gainceiling_t>(gain));
+    }
+    return 0;
+}
+
+int Camera::SetImageSaturation(int saturation)
+{
+    if (saturation < -2 || saturation > 2)
+        return -1;
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_saturation(s, saturation);
+    }
+    return 0;
+}
+
+int Camera::SetImageBrightness(int brightness)
+{
+    if (brightness < -2 || brightness > 2)
+        return -1;
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_brightness(s, brightness);
+    }
+    return 0;
+}
+
+int Camera::SetImageContrast(int contrast)
+{
+    if (contrast < -2 || contrast > 2)
+        return -1;
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_contrast(s, contrast);
+    }
+    return 0;
+}
+
+int Camera::SetImageQuality(int quality)
+{
+    if (quality < 10 || quality > 63)
+        return -1;
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_quality(s, quality);
+    }
+    return 0;
+}
+
+int Camera::SetResolution(CameraFrameSize frameSize)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_framesize(s, static_cast<framesize_t>(frameSize));
+    }
+    return 0;
+}
+
+int Camera::SetImageFormat(CameraPixelFormat format)
+{
+    if (initialized)
+    {
+        sensor_t *s = esp_camera_sensor_get();
+        return s->set_pixformat(s, static_cast<pixformat_t>(format));
+    }
+    return 0;
 }
 
 void Camera::Init()

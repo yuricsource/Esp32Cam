@@ -471,15 +471,6 @@ void CameraMenu()
 			mode = ReadKey();
 			if (mode == '0')
 			{
-				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeQQVGA);
-			}
-			if (mode == '1')
-			{
-				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeQVGA);
-			}
-			else if (mode == '2')
-			{
-				Hal::Hardware::Instance()->GetCamera().SetResolution(Hal::CameraFrameSize::CameraFrameSizeVGA);
 			}
 			else if (mode == '3')
 			{

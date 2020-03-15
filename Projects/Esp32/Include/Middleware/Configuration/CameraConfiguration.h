@@ -34,7 +34,7 @@ struct CameraConfigurationData
 
     GeneralConfiguration GeneralConfig = {};
     CameraPixelFormat PixelFormat = CameraPixelFormat::CameraPixelFormatJPEG;
-    CameraFrameSize FrameSize = CameraFrameSize::CameraFrameSizeVGA;
+    CameraFrameSize FrameSize = CameraFrameSize::CameraFrameSizeSVGA;
     CameraModelType ModelType = CameraModelType::CameraNone;
 
     CameraConfigurationData() :

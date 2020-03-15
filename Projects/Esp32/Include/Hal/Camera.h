@@ -39,18 +39,63 @@ public:
 	
 	bool Capture();
 
-	void SetResolution(CameraFrameSize frameSize);
+	int SetResolution(CameraFrameSize frameSize);
 
-	void SetImageFormat(CameraPixelFormat format);
+	int SetImageFormat(CameraPixelFormat format);
 
-	bool initialized = false;
+	int SetImageQuality(int quality);
+	
+	int SetImageContrast(int contrast);
+
+	int SetImageBrightness(int brightness);
+
+	int SetImageSaturation(int saturation);
+
+	int SetImageGainCeiling (CameraGainCeiling gain);
+
+	int SetImageColourBar(bool colourBar);
+	
+	int SetImageAutoWhiteBalance(bool autoBalance);
+
+	int SetImageAutoGainControl(bool autoGain);
+
+	int SetImageAutoExposureControl(bool autoExposure);
+
+	int SetImageHorizontalMirror(bool horizontalMirror);
+	
+	int SetImageVerticalMirror(bool verticalMirror);
+
+	int SetImageAutoWhiteBalanceGain(bool autoBalanceGain);
+
+	int SetImageAutoGainCeiling(int autoGainCeiling);
+
+	int SetImageExposureTime(int exposureTime);
+
+	int SetImageAutoExposureDsp(bool exposureDsp);
+
+	int SetImageDownsizeEn(bool downsize);
+
+	int SetImageBPC(bool bpc);
+
+	int SetImageWPC(bool wpc);
+
+	int SetImageRawGma(bool RawGma);
+
+	int SetImageLensCorrection(bool lensCorrection);
+	
+	int SetImageSpecialEffect(CameraSpecialEffect effect);
+
+	int SetImageWhiteBalanceMode(CameraWhiteBalanceMode mode);
+
+	int SetImageAutoExposureLevel(int level);
 
 	~Camera();
 	
 private:
 
-camera_config_t _cameraConfig = {};
-camera_fb_t *_frameBuffer = nullptr;
+	bool initialized = false;
+	camera_fb_t *_frameBuffer = nullptr;
+    camera_config_t _cameraConfig = {};
 
 };
 } // namespace Hal
