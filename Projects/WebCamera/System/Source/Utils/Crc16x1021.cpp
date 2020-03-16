@@ -1,7 +1,5 @@
 #include "Crc16x1021.h"
 
-namespace Middleware
-{
 namespace Utilities
 {
 
@@ -20,4 +18,3 @@ uint16_t Crc16x1021::GetCrc(uint8_t *data, uint16_t len)
 }
 
 } // namespace Utilities
-} // namespace Middleware

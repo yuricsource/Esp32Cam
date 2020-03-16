@@ -28,7 +28,7 @@
 		int __err_rc = (int)function;                                     \
 		if (__err_rc != result)                                           \
 		{                                                                 \
-			Middleware::Utilities::DebugAssert::Assert(__err_rc, __FILE__, __LINE__, \
+			Utilities::DebugAssert::Assert(__err_rc, __FILE__, __LINE__, \
 											__ASSERT_FUNC, #function);    \
 		}                                                                 \
 	} while (0)
@@ -42,7 +42,7 @@
 	esp_err_t __err_rc = (int)function;                                              \
 	if (__err_rc != result)                                                          \
 	{                                                                                \
-		Middleware::Utilities::DebugAssert::AssertWithoutBreaking(__err_rc, __FILE__, __LINE__, \
+		Utilities::DebugAssert::AssertWithoutBreaking(__err_rc, __FILE__, __LINE__, \
 													   __ASSERT_FUNC, #function);    \
 	}                                                                                \
 	__err_rc;                                                                        \
@@ -51,9 +51,6 @@
 #define DebugAssert(function) function
 #define DebugAssertWithoutAbort(x) function
 #endif
-
-namespace Middleware
-{
 
 namespace Utilities
 {
@@ -73,4 +70,3 @@ private:
 };
 
 } // namespace Utilities
-} // namespace Middleware

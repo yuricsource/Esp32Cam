@@ -7,8 +7,6 @@
 #include "BoardConfiguration.h"
 #include "CameraConfiguration.h"
 
-namespace Middleware
-{
 namespace Configuration
 {
 
@@ -56,4 +54,3 @@ private:
 };
 
 } // namespace Configuration
-} // namespace Middleware

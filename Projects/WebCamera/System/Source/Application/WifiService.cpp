@@ -7,9 +7,9 @@ namespace Applications
 {
 
 using Hal::Hardware;
-using Middleware::Utilities::Logger;
-using Middleware::Configuration::BoardConfiguration;
-using Middleware::Configuration::ConfigurationAgent;
+using Utilities::Logger;
+using Configuration::BoardConfiguration;
+using Configuration::ConfigurationAgent;
 
 void WifiService::ConfigurationUpdated()
 {

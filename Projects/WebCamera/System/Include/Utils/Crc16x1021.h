@@ -2,9 +2,6 @@
 
 #include <cstdint>
 
-namespace Middleware
-{
-
 namespace Utilities
 {
 /// @brief CRC16 class.
@@ -23,4 +20,3 @@ public:
 };
 
 } // namespace Utilities
-} // namespace Middleware

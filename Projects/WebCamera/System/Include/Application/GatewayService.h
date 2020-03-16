@@ -15,13 +15,13 @@ namespace Applications
 {
 
 using Hal::TimeLimit;
-using Middleware::Common::ProtocolType;
-using Middleware::Common::TransportLayerType;
-using Middleware::Protocol::BaseConnection;
-using Middleware::Protocol::BaseRouteHandler;
-using Middleware::Protocol::RemoteConnection;
-using Middleware::Protocol::TcpConnection;
-using Middleware::Utilities::Logger;
+using Common::ProtocolType;
+using Common::TransportLayerType;
+using Protocol::BaseConnection;
+using Protocol::BaseRouteHandler;
+using Protocol::RemoteConnection;
+using Protocol::TcpConnection;
+using Utilities::Logger;
 
 class GatewayService : public cpp_freertos::Thread
 {

@@ -1,8 +1,6 @@
 #include "ConfigurationAgent.h"
 // #include "ApplicationAgent.h"
 
-namespace Middleware
-{
 namespace Configuration
 {
 
@@ -40,4 +38,3 @@ void ConfigurationAgent::DefaulAllConfigurations()
 }
 
 } // namespace Configuration
-} // namespace Middleware

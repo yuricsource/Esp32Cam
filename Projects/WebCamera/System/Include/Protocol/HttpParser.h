@@ -5,8 +5,6 @@
 #include <cstring>
 #include "FastDelegate.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -211,4 +209,3 @@ private:
 };
 
 } // namespace Protocol
-} // namespace Middleware

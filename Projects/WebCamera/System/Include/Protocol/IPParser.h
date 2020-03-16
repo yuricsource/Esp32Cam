@@ -3,8 +3,6 @@
 #include <cstdint>
 #include "lwip/ip_addr.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -22,4 +20,3 @@ public:
 };
 
 } // namespace Protocol
-}

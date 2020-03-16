@@ -5,13 +5,11 @@
 #include "ConfigurationCommon.h"
 #include "TimeLimit.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
 using Hal::TimeLimit;
-using Middleware::Utilities::CircularBuffer;
+using Utilities::CircularBuffer;
 
 class RouteDataTransferHandler
 {
@@ -35,4 +33,3 @@ private:
 };
 
 } // namespace Protocol
-} // namespace Middleware

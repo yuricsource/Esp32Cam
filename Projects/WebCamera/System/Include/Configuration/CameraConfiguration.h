@@ -6,8 +6,6 @@
 #include "HalCommon.h"
 #include "BaseConfiguration.h"
 
-namespace Middleware
-{
 namespace Configuration
 {
 
@@ -26,9 +24,9 @@ struct CameraConfigurationData
             struct
             {
                 bool CameraEnabled : 1;
-                uint8_t _NotUsed : 7;
+                uint32_t _NotUsed : 31;
             } Flags;
-            uint8_t AllFlags;
+            uint32_t AllFlags;
         } Settings;
     };
 
@@ -36,6 +34,8 @@ struct CameraConfigurationData
     CameraPixelFormat PixelFormat = CameraPixelFormat::CameraPixelFormatJPEG;
     CameraFrameSize FrameSize = CameraFrameSize::CameraFrameSizeSVGA;
     CameraModelType ModelType = CameraModelType::CameraNone;
+
+    uint8_t FrameBufferCount = 1;
 
     CameraConfigurationData() :
     GeneralConfig()
@@ -55,7 +55,7 @@ public:
     CameraConfiguration();
     ~CameraConfiguration();
 
-    CameraConfigurationData *GetConfiguration() {return &_configuration;}
+    const CameraConfigurationData *GetConfiguration() {return &_configuration;}
     void DefaultConfiguration();
 
 private:
@@ -76,4 +76,3 @@ private:
 };
 
 } // namespace Configuration
-} // namespace Middleware

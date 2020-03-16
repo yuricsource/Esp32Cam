@@ -61,24 +61,25 @@ void HttpServer::Run()
 		}
 		Logger::LogInfo(Logger::LogSource::HttpServer, "Socket accepted");
 
-		do{
-		int len = recv(sock, _rxBuffer.data(), _rxBufferSize, 0);
-		// Error occurred during receiving
-		if (len < 0)
+		do
 		{
-			Logger::LogError(Logger::LogSource::HttpServer, "recv failed: errno %d", errno);
-			break;
-		}
-		// Connection closed
-		else if (len == 0)
-		{
-			Logger::LogError(Logger::LogSource::HttpServer, "Connection closed");
-			break;
-		}
-		fwrite(_rxBuffer.data(), 1, len, stdout);
-		}while(true);
+			int len = recv(sock, _rxBuffer.data(), _rxBufferSize, 0);
+			// Error occurred during receiving
+			if (len < 0)
+			{
+				Logger::LogError(Logger::LogSource::HttpServer, "recv failed: errno %d", errno);
+				break;
+			}
+			// Connection closed
+			else if (len == 0)
+			{
+				Logger::LogError(Logger::LogSource::HttpServer, "Connection closed");
+				break;
+			}
+			fwrite(_rxBuffer.data(), 1, len, stdout);
+		} while (true);
 		close(sock);
 	}
 }
 
-} // namespace Middleware
+} // namespace Applications

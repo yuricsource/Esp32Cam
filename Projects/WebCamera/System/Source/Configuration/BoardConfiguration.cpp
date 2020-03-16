@@ -2,8 +2,6 @@
 
 //#define TEST_CLIENT
 
-namespace Middleware
-{
 namespace Configuration
 {
 
@@ -41,4 +39,3 @@ BoardConfiguration::~BoardConfiguration()
 }
 
 } // namespace Configuration
-} // namespace Middleware

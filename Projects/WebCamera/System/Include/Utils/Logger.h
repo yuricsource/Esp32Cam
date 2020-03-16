@@ -8,9 +8,6 @@
 using cpp_freertos::LockGuard;
 using cpp_freertos::MutexStandard;
 
-namespace Middleware
-{
-
 namespace Utilities
 {
 class Logger
@@ -46,4 +43,3 @@ public:
 };
 
 } // namespace Utilities
-} // namespace Middleware

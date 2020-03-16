@@ -2,8 +2,6 @@
 
 #include <cstdint>
 
-namespace Middleware
-{
 namespace Common
 {
 
@@ -27,4 +25,3 @@ enum class MessageIdIndex : uint16_t
 };
 
 } // namespace Common
-} // namespace Middleware

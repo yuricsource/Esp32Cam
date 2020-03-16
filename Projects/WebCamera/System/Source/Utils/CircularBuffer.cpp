@@ -1,8 +1,6 @@
 #include "CircularBuffer.h"
 #include <string>
 
-namespace Middleware
-{
 namespace Utilities
 {
 
@@ -145,4 +143,3 @@ template class CircularBuffer<char *>;
 template class CircularBuffer<uint64_t>;
 
 } // namespace Utilities
-} // namespace Middleware

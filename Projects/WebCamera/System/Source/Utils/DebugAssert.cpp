@@ -2,8 +2,6 @@
 #include <cstdio>
 #include <cstdarg>
 
-namespace Middleware
-{
 namespace Utilities
 {
 
@@ -61,4 +59,3 @@ const char *DebugAssert::GetLwipErrorName(int code)
 }
 
 } // namespace Utilities
-} // namespace Middleware

@@ -1,8 +1,6 @@
 #include "IPParser.h"
 #include "lwip/ip_addr.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -55,4 +53,3 @@ bool IPParser::ToString(const ip_addr_t &ipAddress, char *str, uint8_t len)
 	return true;
 }
 } // namespace Protocol
-} // namespace Middleware

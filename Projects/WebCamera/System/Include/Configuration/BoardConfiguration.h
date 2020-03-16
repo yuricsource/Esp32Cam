@@ -7,8 +7,6 @@
 #include "ConnectionTypes.h"
 #include "HalCommon.h"
 
-namespace Middleware
-{
 namespace Configuration
 {
 
@@ -17,7 +15,7 @@ using Hal::WifiAuthenticationMode;
 using Hal::WifiModeConfiguration;
 using Hal::WifiPassword;
 using Hal::WifiSsid;
-using Middleware::Protocol::RemoteConnection;
+using Protocol::RemoteConnection;
 using Utilities::Crc32xZlib;
 
 struct BoardConfigurationData
@@ -120,4 +118,3 @@ private:
 };
 
 } // namespace Configuration
-} // namespace Middleware

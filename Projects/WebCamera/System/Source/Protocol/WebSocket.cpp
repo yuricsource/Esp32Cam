@@ -1,7 +1,5 @@
 #include "WebSocket.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -46,4 +44,3 @@ void process()
 }
 
 } // namespace Protocol
-} // namespace Middleware

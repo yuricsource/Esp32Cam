@@ -19,8 +19,8 @@
 #include "ConfigurationAgent.h"
 
 using Applications::ApplicationAgent;
-using Middleware::Configuration::ConfigurationAgent;
-using Middleware::Utilities::Logger;
+using Configuration::ConfigurationAgent;
+using Utilities::Logger;
 using Hal::Hardware;
 
 extern "C" void app_main(void)
@@ -28,6 +28,7 @@ extern "C" void app_main(void)
 	Hardware::Instance();
 	ConfigurationAgent::Instance();
 	ApplicationAgent::Instance();
+
 	ApplicationAgent::Instance()->Initialize();
 	ApplicationAgent::Instance()->GetWifi().Start();
 	// ApplicationAgent::Instance()->GetHttpServer().Start();

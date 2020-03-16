@@ -6,8 +6,6 @@
 #include "lwip/ip_addr.h"
 #include "CommonTypes.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -42,4 +40,3 @@ struct RemoteConnection
 };
 
 } // namespace Protocol
-} // namespace Middleware

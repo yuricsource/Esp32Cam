@@ -1,7 +1,5 @@
 #include "CameraConfiguration.h"
 
-namespace Middleware
-{
 namespace Configuration
 {
 
@@ -24,4 +22,3 @@ void CameraConfiguration::DefaultConfiguration()
 
 
 } // namespace Configuration
-} // namespace Middleware

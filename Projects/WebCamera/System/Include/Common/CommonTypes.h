@@ -6,8 +6,6 @@
 #include <bitset>
 #include "HalCommon.h"
 
-namespace Middleware
-{
 namespace Common
 {
     
@@ -41,5 +39,4 @@ static_assert(sizeof(IpAddress) == 64, "Array has invalid size.");
 using IpAddress = array<char, IpLength>;
 static_assert(sizeof(IpAddress) == 64, "Array has invalid size.");
 
-
-}} // namespace Common
+}

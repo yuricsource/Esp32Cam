@@ -3,8 +3,6 @@
 #include "TimeLimit.h"
 #include "BaseConnection.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -126,4 +124,3 @@ private:
 };
 
 } // namespace Protocol
-} // namespace Middleware

@@ -7,8 +7,6 @@
 #include <cctype>
 #include <cstring>
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -415,4 +413,3 @@ int HttpParser::HttpProcessData(struct HttpParserRoundtripper *rt, const char *d
 }
 
 } // namespace Protocol
-} // namespace Middleware

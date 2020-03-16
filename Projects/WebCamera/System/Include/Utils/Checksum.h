@@ -2,8 +2,6 @@
 
 #include <cstdint>
 
-namespace Middleware
-{
 namespace Utilities
 {
 /// @brief	A class for calculating an 8bit checksum for an array of bytes.
@@ -17,4 +15,3 @@ public:
 	static uint8_t GetChecksum(uint8_t *data, uint16_t len);
 };
 } // namespace Utilities
-} // namespace Middleware

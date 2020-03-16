@@ -4,8 +4,6 @@
 #include "HttpParser.h"
 #include "CommonConnection.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -50,4 +48,3 @@ private:
     WebsocketPath &operator=(WebsocketPath &&) = delete;
 };
 } // namespace Protocol
-} // namespace Middleware

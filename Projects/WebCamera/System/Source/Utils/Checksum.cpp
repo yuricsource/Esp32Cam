@@ -1,7 +1,5 @@
 #include "Checksum.h"
 
-namespace Middleware
-{
 namespace Utilities
 {
 
@@ -18,4 +16,3 @@ uint8_t Checksum::GetChecksum(uint8_t *data, uint16_t len)
 }
 
 } // namespace Utilities
-} // namespace Middleware

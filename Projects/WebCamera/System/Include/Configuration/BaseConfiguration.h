@@ -1,7 +1,9 @@
 #pragma once
+#include <stdio.h>
+#include <cstdint>
+#include <cstring>
+#include <cctype>
 
-namespace Middleware
-{
 namespace Configuration
 {
 
@@ -18,6 +20,9 @@ public:
     {
     }
 
+protected:
+    bool enabled = false;
+
 private:
 
     /// @brief	Hide Copy constructor.
@@ -33,4 +38,3 @@ private:
     BaseConfiguration &operator=(BaseConfiguration &&) = delete;
 };
 } // namespace Configuration
-} // namespace Middleware

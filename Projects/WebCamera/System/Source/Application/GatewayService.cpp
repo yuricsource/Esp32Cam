@@ -4,7 +4,7 @@
 namespace Applications
 {
 
-using Middleware::Configuration::ConfigurationAgent;
+using Configuration::ConfigurationAgent;
 // using Applications::GatewayService;
 
 GatewayService::GatewayService() : cpp_freertos::Thread("GWSVC", configGATEWAYSVC_STACK_DEPTH, 3),

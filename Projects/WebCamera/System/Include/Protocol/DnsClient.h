@@ -13,14 +13,12 @@
 #include "semaphore.hpp"
 #include "TimeLimit.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
 using cpp_freertos::BinarySemaphore;
 using Hal::TimeLimit;
-using Middleware::Protocol::IPParser;
+using Protocol::IPParser;
 
 extern "C" void dns_callback(const char *name, const ip_addr_t *ipaddr, void *callback_arg);
 
@@ -93,4 +91,3 @@ private:
 };
 
 } // namespace Protocol
-} // namespace Middleware

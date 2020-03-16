@@ -6,24 +6,22 @@
 #include "DnsClient.h"
 #include "Logger.h"
 
-namespace Middleware 
+namespace Protocol
 {
-namespace Protocol {
 
-using Hal::TimeLimit;
 using Hal::Hardware;
-// using Middleware::BaseConnection::ConnectStatus;
+using Hal::TimeLimit;
+// using BaseConnection::ConnectStatus;
 using Utilities::Logger;
 
 class TcpConnection : public BaseConnection
 {
 public:
-	TcpConnection() : 
-		BaseConnection(),
-		_port(0),_isConnected(false), _pcb(nullptr)
+	TcpConnection() : BaseConnection(),
+					  _port(0), _isConnected(false), _pcb(nullptr)
 	{
 	}
-	
+
 	~TcpConnection()
 	{
 		Close();
@@ -32,13 +30,12 @@ public:
 	uint16_t GetPort();
 
 private:
-
 	uint16_t _port;
 	bool _isConnected;
 	tcp_pcb *_pcb;
 
 	static err_t receiveHandler(void *arg, struct tcp_pcb *pcb, struct pbuf *p, err_t err);
-	static void clearPcbHandler(TcpConnection* conn, tcp_pcb *pcb);
+	static void clearPcbHandler(TcpConnection *conn, tcp_pcb *pcb);
 	static err_t pollHandler(void *arg, struct tcp_pcb *pcb);
 	static void errorHandler(void *arg, err_t err);
 	static err_t sentHandler(void *arg, struct tcp_pcb *pcb, u16_t len);
@@ -53,20 +50,19 @@ private:
 	void DoReset() override;
 
 	bool IsConnected() override;
-	
+
 private:
 	/// @brief	Hide Copy constructor.
-	TcpConnection(const TcpConnection&) = delete;
-	
+	TcpConnection(const TcpConnection &) = delete;
+
 	/// @brief	Hide Assignment operator.
-	TcpConnection& operator=(const TcpConnection&) = delete;
-	
+	TcpConnection &operator=(const TcpConnection &) = delete;
+
 	/// @brief	Hide Move constructor.
-	TcpConnection(TcpConnection&&) = delete;
-	
+	TcpConnection(TcpConnection &&) = delete;
+
 	/// @brief	Hide Move assignment operator.
-	TcpConnection& operator=(TcpConnection&&) = delete;	
+	TcpConnection &operator=(TcpConnection &&) = delete;
 };
 
-}
-}
+} // namespace Protocol

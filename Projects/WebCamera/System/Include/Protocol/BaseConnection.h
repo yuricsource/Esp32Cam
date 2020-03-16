@@ -8,8 +8,6 @@
 #include "ConnectionTypes.h"
 #include "ConfigurationCommon.h"
 
-namespace Middleware
-{
 namespace Protocol
 {
 
@@ -171,4 +169,3 @@ private:
 };
 
 } // namespace Protocol
-} // namespace Middleware

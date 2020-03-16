@@ -4,9 +4,6 @@
 #include <cstring>
 #include <atomic>
 
-namespace Middleware
-{
-
 namespace Utilities
 {
 template <typename T>
@@ -109,4 +106,3 @@ protected:
 };
 
 } // namespace Utilities
-} // namespace Middleware
