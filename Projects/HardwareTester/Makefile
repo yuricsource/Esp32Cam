@@ -3,6 +3,8 @@
 # project subdirectory.
 #
 
+CXXFLAGS:=-DHARDWARE_TESTER=1
+
 PROJECT_NAME := app-hardware-tester
 include $(IDF_PATH)/make/project.mk
 
