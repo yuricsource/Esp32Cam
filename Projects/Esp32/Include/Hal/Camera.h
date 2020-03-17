@@ -43,51 +43,51 @@ public:
 
 	int SetImageFormat(CameraPixelFormat format);
 
-	int SetImageQuality(uint8_t quality);
+	int SetQuality(uint8_t quality);
 	
-	int SetImageContrast(int contrast);
+	int SetContrast(int contrast);
 
-	int SetImageBrightness(int brightness);
+	int SetBrightness(int brightness);
 
 	int SetImageSaturation(int saturation);
 
-	int SetImageGainCeiling (CameraGainCeiling gain);
+	int SetGainCeiling (CameraGainCeiling gain);
 
 	int SetImageColourBar(bool colourBar);
 	
-	int SetImageAutoWhiteBalance(bool autoBalance);
+	int SetAutoWhiteBalance(bool autoBalance);
 
-	int SetImageAutoGainControl(bool autoGain);
+	int SetAutoGainControl(bool autoGain);
 
-	int SetImageAutoExposureControl(bool autoExposure);
+	int SetAutoExposureControl(bool autoExposure);
 
-	int SetImageHorizontalMirror(bool horizontalMirror);
+	int SetHorizontalMirror(bool horizontalMirror);
 	
-	int SetImageVerticalMirror(bool verticalMirror);
+	int SetVerticalMirror(bool verticalMirror);
 
-	int SetImageAutoWhiteBalanceGain(bool autoBalanceGain);
+	int SetAutoWhiteBalanceGain(bool autoBalanceGain);
 
-	int SetImageManualGainCeiling(int autoGainCeiling);
+	int SetManualGainCeiling(int autoGainCeiling);
 
-	int SetImageExposureTime(int exposureTime);
+	int SetExposureTime(int exposureTime);
 
-	int SetImageAutoExposureDsp(bool exposureDsp);
+	int SetAutoExposureDsp(bool exposureDsp);
 
-	int SetImageDownsizeEn(bool downsize);
+	int SetDownsizeEn(bool downsize);
 
-	int SetImageBPC(bool bpc);
+	int SetBPC(bool bpc);
 
-	int SetImageWPC(bool wpc);
+	int SetWPC(bool wpc);
 
-	int SetImageRawGma(bool RawGma);
+	int SetRawGma(bool RawGma);
 
-	int SetImageLensCorrection(bool lensCorrection);
+	int SetLensCorrection(bool lensCorrection);
 	
-	int SetImageSpecialEffect(CameraSpecialEffect effect);
+	int SetSpecialEffect(CameraSpecialEffect effect);
 
-	int SetImageWhiteBalanceMode(CameraWhiteBalanceMode mode);
+	int SetWhiteBalanceMode(CameraWhiteBalanceMode mode);
 
-	int SetImageAutoExposureLevel(int level);
+	int SetAutoExposureLevel(int level);
 
 	~Camera();
 	

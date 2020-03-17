@@ -79,7 +79,7 @@ void Camera::DeInit()
     }
 }
 
-int Camera::SetImageAutoExposureLevel(int level)
+int Camera::SetAutoExposureLevel(int level)
 {
     if (level < -2 || level > 2)
         return -1;
@@ -91,7 +91,7 @@ int Camera::SetImageAutoExposureLevel(int level)
     return 0;
 }
 
-int Camera::SetImageWhiteBalanceMode(CameraWhiteBalanceMode mode)
+int Camera::SetWhiteBalanceMode(CameraWhiteBalanceMode mode)
 {
     if (initialized)
     {
@@ -101,7 +101,7 @@ int Camera::SetImageWhiteBalanceMode(CameraWhiteBalanceMode mode)
     return 0;
 }
 
-int Camera::SetImageSpecialEffect(CameraSpecialEffect effect)
+int Camera::SetSpecialEffect(CameraSpecialEffect effect)
 {
     if (initialized)
     {
@@ -111,7 +111,7 @@ int Camera::SetImageSpecialEffect(CameraSpecialEffect effect)
     return 0;
 }
 
-int Camera::SetImageLensCorrection(bool lensCorrection)
+int Camera::SetLensCorrection(bool lensCorrection)
 {
     if (initialized)
     {
@@ -121,7 +121,7 @@ int Camera::SetImageLensCorrection(bool lensCorrection)
     return 0;
 }
 
-int Camera::SetImageRawGma(bool rawGma)
+int Camera::SetRawGma(bool rawGma)
 {
     if (initialized)
     {
@@ -131,7 +131,7 @@ int Camera::SetImageRawGma(bool rawGma)
     return 0;
 }
 
-int Camera::SetImageWPC(bool wpc)
+int Camera::SetWPC(bool wpc)
 {
     if (initialized)
     {
@@ -141,7 +141,7 @@ int Camera::SetImageWPC(bool wpc)
     return 0;
 }
 
-int Camera::SetImageBPC(bool bpc)
+int Camera::SetBPC(bool bpc)
 {
     if (initialized)
     {
@@ -152,7 +152,7 @@ int Camera::SetImageBPC(bool bpc)
 }
 
 
-int Camera::SetImageDownsizeEn(bool downsize)
+int Camera::SetDownsizeEn(bool downsize)
 {
     if (initialized)
     {
@@ -162,7 +162,7 @@ int Camera::SetImageDownsizeEn(bool downsize)
     return 0;
 }
 
-int Camera::SetImageAutoExposureDsp(bool exposureDsp)
+int Camera::SetAutoExposureDsp(bool exposureDsp)
 {
     if (initialized)
     {
@@ -172,7 +172,7 @@ int Camera::SetImageAutoExposureDsp(bool exposureDsp)
     return 0;
 }
 
-int Camera::SetImageExposureTime(int exposureTime)
+int Camera::SetExposureTime(int exposureTime)
 {
     if(exposureTime < 0 || exposureTime > 1200)
         return -1;
@@ -184,7 +184,7 @@ int Camera::SetImageExposureTime(int exposureTime)
     return 0;
 }
 
-int Camera::SetImageManualGainCeiling(int manualGainCeiling)
+int Camera::SetManualGainCeiling(int manualGainCeiling)
 {
     if(manualGainCeiling < 0 || manualGainCeiling > 30)
         return -1;
@@ -196,7 +196,7 @@ int Camera::SetImageManualGainCeiling(int manualGainCeiling)
     return 0;
 }
 
-int Camera::SetImageAutoWhiteBalanceGain(bool autoBalanceGain)
+int Camera::SetAutoWhiteBalanceGain(bool autoBalanceGain)
 {
     if (initialized)
     {
@@ -206,7 +206,7 @@ int Camera::SetImageAutoWhiteBalanceGain(bool autoBalanceGain)
     return 0;
 }
 
-int Camera::SetImageVerticalMirror(bool verticalMirror)
+int Camera::SetVerticalMirror(bool verticalMirror)
 {
     if (initialized)
     {
@@ -216,7 +216,7 @@ int Camera::SetImageVerticalMirror(bool verticalMirror)
     return 0;
 }
 
-int Camera::SetImageHorizontalMirror(bool horizontalMirror)
+int Camera::SetHorizontalMirror(bool horizontalMirror)
 {
     if (initialized)
     {
@@ -226,7 +226,7 @@ int Camera::SetImageHorizontalMirror(bool horizontalMirror)
     return 0;
 }
 
-int Camera::SetImageAutoExposureControl(bool autoExposure)
+int Camera::SetAutoExposureControl(bool autoExposure)
 {
     if (initialized)
     {
@@ -236,7 +236,7 @@ int Camera::SetImageAutoExposureControl(bool autoExposure)
     return 0;
 }
 
-int Camera::SetImageAutoGainControl(bool autoGain)
+int Camera::SetAutoGainControl(bool autoGain)
 {
     if (initialized)
     {
@@ -246,7 +246,7 @@ int Camera::SetImageAutoGainControl(bool autoGain)
     return 0;
 }
 
-int Camera::SetImageAutoWhiteBalance(bool autoBalance)
+int Camera::SetAutoWhiteBalance(bool autoBalance)
 {
     if (initialized)
     {
@@ -266,7 +266,7 @@ int Camera::SetImageColourBar(bool colourBar)
     return 0;
 }
 
-int Camera::SetImageGainCeiling(CameraGainCeiling gain)
+int Camera::SetGainCeiling(CameraGainCeiling gain)
 {
     if (initialized)
     {
@@ -288,7 +288,7 @@ int Camera::SetImageSaturation(int saturation)
     return 0;
 }
 
-int Camera::SetImageBrightness(int brightness)
+int Camera::SetBrightness(int brightness)
 {
     if (brightness < -2 || brightness > 2)
         return -1;
@@ -300,7 +300,7 @@ int Camera::SetImageBrightness(int brightness)
     return 0;
 }
 
-int Camera::SetImageContrast(int contrast)
+int Camera::SetContrast(int contrast)
 {
     if (contrast < -2 || contrast > 2)
         return -1;
@@ -312,7 +312,7 @@ int Camera::SetImageContrast(int contrast)
     return 0;
 }
 
-int Camera::SetImageQuality(uint8_t quality)
+int Camera::SetQuality(uint8_t quality)
 {
     if (quality < 10 || quality > 63)
         return -1;

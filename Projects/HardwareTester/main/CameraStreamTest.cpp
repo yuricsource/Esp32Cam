@@ -351,51 +351,51 @@ static esp_err_t cmd_handler(httpd_req_t *req)
             res = camera.SetResolution(static_cast<Hal::CameraFrameSize>(val));
     }
     else if (!strcmp(variable, "quality"))
-        res = camera.SetImageQuality(val);
+        res = camera.SetQuality(val);
     else if (!strcmp(variable, "contrast"))
-        res = camera.SetImageContrast(val);
+        res = camera.SetContrast(val);
     else if (!strcmp(variable, "brightness"))
-        res = camera.SetImageBrightness(val);
+        res = camera.SetBrightness(val);
     else if (!strcmp(variable, "saturation"))
         res = camera.SetImageSaturation(val);
     else if (!strcmp(variable, "gainceiling"))
-        res = camera.SetImageGainCeiling(static_cast<Hal::CameraGainCeiling>(val));
+        res = camera.SetGainCeiling(static_cast<Hal::CameraGainCeiling>(val));
     else if (!strcmp(variable, "colorbar"))
         res = camera.SetImageColourBar(static_cast<bool>(val));
     else if (!strcmp(variable, "awb"))
-        res = camera.SetImageAutoWhiteBalance(static_cast<bool>(val));
+        res = camera.SetAutoWhiteBalance(static_cast<bool>(val));
     else if (!strcmp(variable, "agc"))
-        res = camera.SetImageAutoGainControl(static_cast<bool>(val));
+        res = camera.SetAutoGainControl(static_cast<bool>(val));
     else if (!strcmp(variable, "aec"))
-        res = camera.SetImageAutoExposureControl(static_cast<bool>(val));
+        res = camera.SetAutoExposureControl(static_cast<bool>(val));
     else if (!strcmp(variable, "hmirror"))
-        res = camera.SetImageHorizontalMirror(static_cast<bool>(val));
+        res = camera.SetHorizontalMirror(static_cast<bool>(val));
     else if (!strcmp(variable, "vflip"))
-        res = camera.SetImageVerticalMirror(static_cast<bool>(val));
+        res = camera.SetVerticalMirror(static_cast<bool>(val));
     else if (!strcmp(variable, "awb_gain"))
-        res = camera.SetImageAutoWhiteBalanceGain(static_cast<bool>(val));
+        res = camera.SetAutoWhiteBalanceGain(static_cast<bool>(val));
     else if (!strcmp(variable, "agc_gain"))
-        res = camera.SetImageAutoGainCeiling(val);
+        res = camera.SetManualGainCeiling(val);
     else if (!strcmp(variable, "aec_value"))
-        res = camera.SetImageExposureTime(val);
+        res = camera.SetExposureTime(val);
     else if (!strcmp(variable, "aec2"))
-        res = camera.SetImageAutoExposureDsp(static_cast<bool>(val));
+        res = camera.SetAutoExposureDsp(static_cast<bool>(val));
     else if (!strcmp(variable, "dcw"))
-        res = camera.SetImageDownsizeEn(static_cast<bool>(val));
+        res = camera.SetDownsizeEn(static_cast<bool>(val));
     else if (!strcmp(variable, "bpc"))
-        res = camera.SetImageBPC(static_cast<bool>(val));
+        res = camera.SetBPC(static_cast<bool>(val));
     else if (!strcmp(variable, "wpc"))
-        res = camera.SetImageWPC(static_cast<bool>(val));
+        res = camera.SetWPC(static_cast<bool>(val));
     else if (!strcmp(variable, "raw_gma"))
-        res = camera.SetImageRawGma(static_cast<bool>(val));
+        res = camera.SetRawGma(static_cast<bool>(val));
     else if (!strcmp(variable, "lenc"))
-        res = camera.SetImageLensCorrection(static_cast<bool>(val));
+        res = camera.SetLensCorrection(static_cast<bool>(val));
     else if (!strcmp(variable, "special_effect"))
-        res = camera.SetImageSpecialEffect(static_cast<Hal::CameraSpecialEffect>(val));
+        res = camera.SetSpecialEffect(static_cast<Hal::CameraSpecialEffect>(val));
     else if (!strcmp(variable, "wb_mode"))
-        res = camera.SetImageWhiteBalanceMode(static_cast<Hal::CameraWhiteBalanceMode>(val));
+        res = camera.SetWhiteBalanceMode(static_cast<Hal::CameraWhiteBalanceMode>(val));
     else if (!strcmp(variable, "ae_level"))
-        res = camera.SetImageAutoExposureLevel(val);
+        res = camera.SetAutoExposureLevel(val);
     else
     {
         res = -1;
