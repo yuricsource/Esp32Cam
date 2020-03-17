@@ -13,6 +13,9 @@ using Utilities::Crc32xZlib;
 using Hal::CameraPixelFormat;
 using Hal::CameraFrameSize;
 using Hal::CameraModelType;
+using Hal::CameraGainCeiling;
+using Hal::CameraSpecialEffect;
+using Hal::CameraWhiteBalanceMode;
 
 struct CameraConfigurationData
 {
@@ -23,7 +26,7 @@ struct CameraConfigurationData
         union _Settings {
             struct
             {
-                bool CameraEnabled : 1;
+                bool StreamEnabled : 1;
                 uint32_t _NotUsed : 31;
             } Flags;
             uint32_t AllFlags;
@@ -34,8 +37,30 @@ struct CameraConfigurationData
     CameraPixelFormat PixelFormat = CameraPixelFormat::CameraPixelFormatJPEG;
     CameraFrameSize FrameSize = CameraFrameSize::CameraFrameSizeSVGA;
     CameraModelType ModelType = CameraModelType::CameraNone;
-
     uint8_t FrameBufferCount = 1;
+    uint8_t Quality = 10;
+    int Contrast = 0;
+    int Brightness = 0;
+    int Saturation = 0;
+    CameraGainCeiling GainCeiling = CameraGainCeiling::Gain2; 
+    bool ColourBar = false;
+    bool AutoBalance = false;
+    bool AutoGain = true;
+    bool AutoExposure = true;
+    bool HorizontalMirror = true;
+    bool VerticalMirror = true;
+    bool AutoBalanceGain = true;
+    int ManualGainCeiling = true;
+    int ExposureTime = 204;
+    bool ExposureDsp = true;
+    bool DownsizeEN = true;
+    bool Bpc = false;
+    bool Wpc = true;
+    bool RawGma = true;
+    bool LensCorrection = true;
+    CameraSpecialEffect SpecialEffect = CameraSpecialEffect::None;
+    CameraWhiteBalanceMode WhiteBalanceMode = CameraWhiteBalanceMode::Auto;
+    int AutoExposureLevel = 0;
 
     CameraConfigurationData() :
     GeneralConfig()

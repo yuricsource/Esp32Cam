@@ -43,7 +43,7 @@ public:
 
 	int SetImageFormat(CameraPixelFormat format);
 
-	int SetImageQuality(int quality);
+	int SetImageQuality(uint8_t quality);
 	
 	int SetImageContrast(int contrast);
 
@@ -67,7 +67,7 @@ public:
 
 	int SetImageAutoWhiteBalanceGain(bool autoBalanceGain);
 
-	int SetImageAutoGainCeiling(int autoGainCeiling);
+	int SetImageManualGainCeiling(int autoGainCeiling);
 
 	int SetImageExposureTime(int exposureTime);
 

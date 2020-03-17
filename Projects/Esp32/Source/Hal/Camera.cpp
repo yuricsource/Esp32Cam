@@ -121,12 +121,12 @@ int Camera::SetImageLensCorrection(bool lensCorrection)
     return 0;
 }
 
-int Camera::SetImageRawGma(bool RawGma)
+int Camera::SetImageRawGma(bool rawGma)
 {
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
-        return s->set_raw_gma(s, RawGma);
+        return s->set_raw_gma(s, rawGma);
     }
     return 0;
 }
@@ -184,14 +184,14 @@ int Camera::SetImageExposureTime(int exposureTime)
     return 0;
 }
 
-int Camera::SetImageAutoGainCeiling(int autoGainCeiling)
+int Camera::SetImageManualGainCeiling(int manualGainCeiling)
 {
-    if(autoGainCeiling < 0 || autoGainCeiling > 30)
+    if(manualGainCeiling < 0 || manualGainCeiling > 30)
         return -1;
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
-        return s->set_agc_gain(s, autoGainCeiling);
+        return s->set_agc_gain(s, manualGainCeiling);
     }
     return 0;
 }
@@ -312,7 +312,7 @@ int Camera::SetImageContrast(int contrast)
     return 0;
 }
 
-int Camera::SetImageQuality(int quality)
+int Camera::SetImageQuality(uint8_t quality)
 {
     if (quality < 10 || quality > 63)
         return -1;
