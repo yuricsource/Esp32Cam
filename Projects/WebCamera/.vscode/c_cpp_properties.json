@@ -27,6 +27,7 @@
                 "${workspaceFolder}/System/Include/Protocol",
                 "${workspaceFolder}/System/Include/Application/",
                 "${workspaceFolder}/System/Libraries/freertos-addons/Source/include",
+                "${workspaceFolder}/System/Libraries/JsonParser",
                 "${IDF_TOOLS}/xtensa-esp32-elf/esp32-2019r1-8.2.0/xtensa-esp32-elf/lib/gcc/xtensa-esp32-elf/8.2.0/include/",
                 "${IDF_TOOLS}/xtensa-esp32-elf/esp32-2019r1-8.2.0/xtensa-esp32-elf/xtensa-esp32-elf/include/",
                 "${IDF_PATH}/components/newlib/include/",

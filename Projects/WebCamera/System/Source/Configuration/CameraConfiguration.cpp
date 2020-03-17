@@ -1,5 +1,8 @@
 #include "CameraConfiguration.h"
 #include "Hardware.h"
+#include "ArduinoJson.h"
+#include <array>
+
 
 using Hal::Camera;
 using Hal::Hardware;

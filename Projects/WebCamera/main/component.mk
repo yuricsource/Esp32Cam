@@ -18,7 +18,8 @@ COMPONENT_SRCDIRS           +=  ../../Esp32/Source/Hal                          
                                 ../System/Source/Configuration                             \
                                 ../System/Source/Protocol                                  \
                                 ../System/Source/Application                               \
-                                ../System/Libraries/freertos-addons/Source
+                                ../System/Libraries/freertos-addons/Source                 \
+                                ../System/Libraries/JsonParser
 COMPONENT_ADD_INCLUDEDIRS   +=  ${IDF_PATH}/components/                                    \
                                 ../../Esp32/Include/Hal                                    \
                                 ../../Esp32/Include/Hal/Camera/Conversions                 \
@@ -30,4 +31,5 @@ COMPONENT_ADD_INCLUDEDIRS   +=  ${IDF_PATH}/components/                         
                                 ../System/Include/Common                                   \
                                 ../System/Include/Protocol                                 \
                                 ../System/Include/Application                              \
-                                ../System/Libraries/freertos-addons/Source/include
+                                ../System/Libraries/freertos-addons/Source/include         \
+                                ../System/Libraries/JsonParser

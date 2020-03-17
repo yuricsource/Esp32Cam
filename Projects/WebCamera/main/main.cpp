@@ -20,8 +20,8 @@
 
 using Applications::ApplicationAgent;
 using Configuration::ConfigurationAgent;
-using Utilities::Logger;
 using Hal::Hardware;
+using Utilities::Logger;
 
 extern "C" void app_main(void)
 {
@@ -33,12 +33,11 @@ extern "C" void app_main(void)
 	ApplicationAgent::Instance()->GetWifi().Start();
 	// ApplicationAgent::Instance()->GetHttpServer().Start();
 	// ApplicationAgent::Instance()->GetGatewayService().Start();
- 	
+
 	ConfigurationAgent::Instance()->UseDefaultConfiguration();
 	Logger::LogInfo("WebCamera using ESP32\n");
 
-
-	for(;;)
+	for (;;)
 	{
 		vTaskDelay(1000);
 	}
