@@ -11,16 +11,27 @@ namespace Configuration
 class BaseConfiguration
 {
 public:
+    template <class T>
+    bool UpdateConfig(T& config, T newConfig)
+    {
+       if (config != newConfig)
+       {
+           config = newConfig;
+           return true;
+       }
+       return false;
+    }
+
     virtual void DefaultConfiguration() = 0;
-    BaseConfiguration(const char * name) : _enabled(false)
+    BaseConfiguration(const char *name) : _enabled(false)
     {
         if (name == nullptr)
-			return;
-		size_t size = strlen(name);
-		if (size < _name.size())
-		{
-			memcpy(_name.data(), name, size + 1);
-		}
+            return;
+        size_t size = strlen(name);
+        if (size < _name.size())
+        {
+            memcpy(_name.data(), name, size + 1);
+        }
     }
 
     ~BaseConfiguration()

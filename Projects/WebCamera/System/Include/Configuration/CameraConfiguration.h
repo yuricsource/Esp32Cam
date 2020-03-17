@@ -9,13 +9,13 @@
 namespace Configuration
 {
 
-using Utilities::Crc32xZlib;
-using Hal::CameraPixelFormat;
 using Hal::CameraFrameSize;
-using Hal::CameraModelType;
 using Hal::CameraGainCeiling;
+using Hal::CameraModelType;
+using Hal::CameraPixelFormat;
 using Hal::CameraSpecialEffect;
 using Hal::CameraWhiteBalanceMode;
+using Utilities::Crc32xZlib;
 
 struct CameraConfigurationData
 {
@@ -27,10 +27,50 @@ struct CameraConfigurationData
             struct
             {
                 bool StreamEnabled : 1;
-                uint32_t _NotUsed : 31;
+                bool FaceRecognition : 1;
+                bool MovementDetection : 1;
+                uint32_t _NotUsed : 29;
             } Flags;
             uint32_t AllFlags;
         } Settings;
+        /// @brief	Configuration flags
+        union _Changes {
+            struct
+            {
+                bool StreamEnabled : 1;
+                bool FaceRecognition : 1;
+                bool MovementDetection : 1;
+                bool PixelFormat : 1;
+                bool FrameSize : 1;
+                bool ModelType : 1;
+                bool FrameBufferCount : 1;
+                bool Quality : 1;
+                bool Contrast : 1;
+                bool Brightness : 1;
+                bool Saturation : 1;
+                bool GainCeiling : 1;
+                bool ColourBar : 1;
+                bool AutoWhiteBalance : 1;
+                bool AutoGainControl : 1;
+                bool AutoExposure : 1;
+                bool HorizontalMirror : 1;
+                bool VerticalMirror : 1;
+                bool AutoBalanceGain : 1;
+                bool ManualGainCeiling : 1;
+                bool ExposureTime : 1;
+                bool ExposureDsp : 1;
+                bool DownsizeEN : 1;
+                bool Bpc : 1;
+                bool Wpc : 1;
+                bool RawGma : 1;
+                bool LensCorrection : 1;
+                bool SpecialEffect : 1;
+                bool WhiteBalanceMode : 1;
+                bool AutoExposureLevel : 1;
+                uint64_t _NotUsed : 29;
+            } Flags;
+            uint64_t AllChanges;
+        } Changes;
     };
 
     GeneralConfiguration GeneralConfig = {};
@@ -42,16 +82,16 @@ struct CameraConfigurationData
     int Contrast = 0;
     int Brightness = 0;
     int Saturation = 0;
-    CameraGainCeiling GainCeiling = CameraGainCeiling::Gain2; 
+    CameraGainCeiling GainCeiling = CameraGainCeiling::Gain2;
     bool ColourBar = false;
-    bool AutoBalance = false;
-    bool AutoGain = true;
+    bool AutoWhiteBalance = false;
+    bool AutoGainControl = true;
     bool AutoExposure = true;
     bool HorizontalMirror = true;
     bool VerticalMirror = true;
     bool AutoBalanceGain = true;
-    int ManualGainCeiling = true;
-    int ExposureTime = 204;
+    uint8_t ManualGainCeiling = true;
+    uint16_t ExposureTime = 204;
     bool ExposureDsp = true;
     bool DownsizeEN = true;
     bool Bpc = false;
@@ -62,10 +102,8 @@ struct CameraConfigurationData
     CameraWhiteBalanceMode WhiteBalanceMode = CameraWhiteBalanceMode::Auto;
     int AutoExposureLevel = 0;
 
-    CameraConfigurationData() :
-    GeneralConfig()
+    CameraConfigurationData() : GeneralConfig()
     {
-
     }
 
     uint32_t GetCRC() const
@@ -80,8 +118,9 @@ public:
     CameraConfiguration();
     ~CameraConfiguration();
 
-    const CameraConfigurationData *GetConfiguration() {return &_configuration;}
+    const CameraConfigurationData *GetConfiguration() { return &_configuration; }
     void DefaultConfiguration();
+    void ApplyConfiguration();
 
 private:
     CameraConfigurationData _configuration = {};
