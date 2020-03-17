@@ -81,8 +81,6 @@ void Camera::DeInit()
 
 int Camera::SetAutoExposureLevel(int level)
 {
-    if (level < -2 || level > 2)
-        return -1;
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
@@ -256,7 +254,7 @@ int Camera::SetAutoWhiteBalance(bool autoBalance)
     return 0;
 }
 
-int Camera::SetImageColourBar(bool colourBar)
+int Camera::SetColourBar(bool colourBar)
 {
     if (initialized)
     {
@@ -276,10 +274,8 @@ int Camera::SetGainCeiling(CameraGainCeiling gain)
     return 0;
 }
 
-int Camera::SetImageSaturation(int saturation)
+int Camera::SetSaturation(int saturation)
 {
-    if (saturation < -2 || saturation > 2)
-        return -1;
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
@@ -302,8 +298,6 @@ int Camera::SetBrightness(int brightness)
 
 int Camera::SetContrast(int contrast)
 {
-    if (contrast < -2 || contrast > 2)
-        return -1;
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();
@@ -314,8 +308,6 @@ int Camera::SetContrast(int contrast)
 
 int Camera::SetQuality(uint8_t quality)
 {
-    if (quality < 10 || quality > 63)
-        return -1;
     if (initialized)
     {
         sensor_t *s = esp_camera_sensor_get();

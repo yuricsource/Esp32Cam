@@ -357,11 +357,11 @@ static esp_err_t cmd_handler(httpd_req_t *req)
     else if (!strcmp(variable, "brightness"))
         res = camera.SetBrightness(val);
     else if (!strcmp(variable, "saturation"))
-        res = camera.SetImageSaturation(val);
+        res = camera.SetSaturation(val);
     else if (!strcmp(variable, "gainceiling"))
         res = camera.SetGainCeiling(static_cast<Hal::CameraGainCeiling>(val));
     else if (!strcmp(variable, "colorbar"))
-        res = camera.SetImageColourBar(static_cast<bool>(val));
+        res = camera.SetColourBar(static_cast<bool>(val));
     else if (!strcmp(variable, "awb"))
         res = camera.SetAutoWhiteBalance(static_cast<bool>(val));
     else if (!strcmp(variable, "agc"))

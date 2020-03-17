@@ -49,11 +49,11 @@ public:
 
 	int SetBrightness(int brightness);
 
-	int SetImageSaturation(int saturation);
+	int SetSaturation(int saturation);
 
 	int SetGainCeiling (CameraGainCeiling gain);
 
-	int SetImageColourBar(bool colourBar);
+	int SetColourBar(bool colourBar);
 	
 	int SetAutoWhiteBalance(bool autoBalance);
 
