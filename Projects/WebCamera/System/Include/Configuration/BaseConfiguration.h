@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <cstring>
 #include <cctype>
+#include "ConfigurationCommon.h"
 
 namespace Configuration
 {
@@ -10,21 +11,43 @@ namespace Configuration
 class BaseConfiguration
 {
 public:
-
     virtual void DefaultConfiguration() = 0;
-    BaseConfiguration()
+    BaseConfiguration(const char * name) : _enabled(false)
     {
+        if (name == nullptr)
+			return;
+		size_t size = strlen(name);
+		if (size < _name.size())
+		{
+			memcpy(_name.data(), name, size + 1);
+		}
     }
-    
+
     ~BaseConfiguration()
     {
     }
 
+    void Default()
+    {
+        _enabled = false;
+        _name = {};
+    }
+
+    bool IsEnabled()
+    {
+        return _enabled;
+    }
+
+    const DeviceName GetName() const
+    {
+        return _name;
+    }
+
 protected:
-    bool enabled = false;
+    DeviceName _name = {};
+    bool _enabled = false;
 
 private:
-
     /// @brief	Hide Copy constructor.
     BaseConfiguration(const BaseConfiguration &) = delete;
 

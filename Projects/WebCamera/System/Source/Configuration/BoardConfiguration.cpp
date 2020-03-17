@@ -28,7 +28,8 @@ void BoardConfiguration::DefaultConfiguration()
 #endif
 }
 
-BoardConfiguration::BoardConfiguration()
+BoardConfiguration::BoardConfiguration():
+BaseConfiguration("Board Config")
 {
     
 }

@@ -3,7 +3,8 @@
 namespace Configuration
 {
 
-CameraConfiguration::CameraConfiguration()
+CameraConfiguration::CameraConfiguration():
+BaseConfiguration("Camera Config")
 {
 
 }

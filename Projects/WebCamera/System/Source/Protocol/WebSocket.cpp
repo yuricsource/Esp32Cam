@@ -5,12 +5,10 @@ namespace Protocol
 
 void WebsocketPath::receivedData(const uint8_t *data, uint16_t length)
 {
-    
 }
 
 void WebsocketPath::connectionStateChanged(ConnectionState state, ConnectionChangeReason reason)
 {
-
 }
 
 bool WebsocketPath::sendFrame(const uint8_t *data, uint16_t length)
@@ -20,7 +18,6 @@ bool WebsocketPath::sendFrame(const uint8_t *data, uint16_t length)
 
 void setConnection()
 {
-
 }
 
 bool isTerminated()
@@ -35,12 +32,10 @@ bool start(BaseRouteHandler::ConnectionMode connectionMode, RemoteConnection *ad
 
 void terminate()
 {
-
 }
 
 void process()
 {
-
 }
 
 } // namespace Protocol
