@@ -97,6 +97,8 @@ public:
     BoardConfiguration();
     ~BoardConfiguration();
 
+    bool Deserialize(const char * json);
+    bool Serialize(char * json, int length);
     BoardConfigurationData *GetConfiguration() { return &_configuration; }
     void DefaultConfiguration();
 

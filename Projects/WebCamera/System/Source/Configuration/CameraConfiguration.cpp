@@ -2,10 +2,12 @@
 #include "Hardware.h"
 #include "ArduinoJson.h"
 #include <array>
-
+#include "Logger.h"
 
 using Hal::Camera;
 using Hal::Hardware;
+using Hal::CameraFrameSize;
+using Utilities::Logger;
 
 namespace Configuration
 {
@@ -18,6 +20,104 @@ CameraConfiguration::~CameraConfiguration()
 {
 }
 
+bool CameraConfiguration::Deserialize(const char *json)
+{
+    StaticJsonDocument<1024> doc;
+    DeserializationError error = deserializeJson(doc, json);
+    auto &changes = _configuration.GeneralConfig.Changes.Flags;
+
+    if (error)
+    {
+        Logger::LogError(Logger::LogSource::Configuration,"Deserialize error: %s\n",error.c_str());
+        return false;
+    }
+
+    if (doc["framesize"].isNull() == false)
+        changes.FrameSize = UpdateConfig(_configuration.FrameSize, (CameraFrameSize) doc["framesize"].as<uint8_t>());
+
+    if (doc["pixelformat"].isNull() == false)
+        changes.PixelFormat = UpdateConfig(_configuration.PixelFormat, (CameraPixelFormat) doc["pixelformat"].as<uint8_t>());
+
+    if (doc["framecount"].isNull() == false)
+        changes.FrameBufferCount = UpdateConfig(_configuration.FrameBufferCount, doc["framecount"].as<uint8_t>());
+
+    if (doc["quality"].isNull() == false)
+        changes.Quality = UpdateConfig(_configuration.Quality, doc["quality"].as<uint8_t>());
+
+    if (doc["contrast"].isNull() == false)
+        changes.Contrast = UpdateConfig(_configuration.Contrast, doc["contrast"].as<int>());
+
+    if (doc["brightness"].isNull() == false)
+        changes.Brightness = UpdateConfig(_configuration.Brightness, doc["brightness"].as<int>());
+
+    if (doc["saturation"].isNull() == false)
+        changes.Saturation = UpdateConfig(_configuration.Saturation, doc["saturation"].as<int>());
+
+    if (doc["gainceiling"].isNull() == false)
+        changes.GainCeiling = UpdateConfig(_configuration.GainCeiling, (CameraGainCeiling) doc["gainceiling"].as<uint8_t>());
+
+    if (doc["colorbar"].isNull() == false)
+        changes.ColourBar = UpdateConfig(_configuration.ColourBar, doc["colorbar"].as<bool>());
+
+    if (doc["awb"].isNull() == false)
+        changes.AutoWhiteBalance = UpdateConfig(_configuration.AutoWhiteBalance, doc["awb"].as<bool>());
+
+    if (doc["agc"].isNull() == false)
+        changes.AutoGainControl = UpdateConfig(_configuration.AutoGainControl, doc["agc"].as<bool>());
+
+    if (doc["aec"].isNull() == false)
+        changes.AutoExposure = UpdateConfig(_configuration.AutoExposure, doc["aec"].as<bool>());
+
+    if (doc["hmirror"].isNull() == false)
+        changes.HorizontalMirror = UpdateConfig(_configuration.HorizontalMirror, doc["hmirror"].as<bool>());
+
+    if (doc["vflip"].isNull() == false)
+        changes.VerticalMirror = UpdateConfig(_configuration.VerticalMirror, doc["vflip"].as<bool>());
+
+    if (doc["awb_gain"].isNull() == false)
+        changes.AutoBalanceGain = UpdateConfig(_configuration.AutoBalanceGain, doc["awb_gain"].as<bool>());
+
+    if (doc["agc_gain"].isNull() == false)
+        changes.ManualGainCeiling = UpdateConfig(_configuration.ManualGainCeiling, doc["agc_gain"].as<uint8_t>());
+
+    if (doc["aec_value"].isNull() == false)
+        changes.ExposureTime = UpdateConfig(_configuration.ExposureTime, doc["aec_value"].as<uint16_t>());
+
+    if (doc["aec2"].isNull() == false)
+        changes.ExposureDsp = UpdateConfig(_configuration.ExposureDsp, doc["aec2"].as<bool>());
+
+    if (doc["dcw"].isNull() == false)
+        changes.DownsizeEN = UpdateConfig(_configuration.DownsizeEN, doc["dcw"].as<bool>());
+
+    if (doc["bpc"].isNull() == false)
+        changes.Bpc = UpdateConfig(_configuration.Bpc, doc["bpc"].as<bool>());
+
+    if (doc["wpc"].isNull() == false)
+        changes.Wpc = UpdateConfig(_configuration.Wpc, doc["wpc"].as<bool>());
+
+    if (doc["raw_gma"].isNull() == false)
+        changes.RawGma = UpdateConfig(_configuration.RawGma, doc["raw_gma"].as<bool>());
+
+    if (doc["lenc"].isNull() == false)
+        changes.LensCorrection = UpdateConfig(_configuration.LensCorrection, doc["lenc"].as<bool>());
+
+    if (doc["special_effect"].isNull() == false)
+        changes.SpecialEffect = UpdateConfig(_configuration.SpecialEffect, (CameraSpecialEffect)doc["special_effect"].as<uint8_t>());
+
+    if (doc["wb_mode"].isNull() == false)
+        changes.WhiteBalanceMode = UpdateConfig(_configuration.WhiteBalanceMode, (CameraWhiteBalanceMode)doc["wb_mode"].as<uint8_t>());
+
+    if (doc["ae_level"].isNull() == false)
+        changes.AutoExposureLevel = UpdateConfig(_configuration.AutoExposureLevel, doc["ae_level"].as<int>());
+
+    return true;
+}
+
+bool CameraConfiguration::Serialize(char *json, int length)
+{
+    return false;
+}
+
 void CameraConfiguration::ApplyConfiguration()
 {
     Camera &camera = Hardware::Instance()->GetCamera();
@@ -27,8 +127,8 @@ void CameraConfiguration::ApplyConfiguration()
     if (_configuration.GeneralConfig.Changes.Flags.PixelFormat)
         camera.SetImageFormat(_configuration.PixelFormat);
 
-    // if (_configuration.GeneralConfig.Changes.Flags.FrameBufferCount)
-    //     camera.SetFrameBufferCount(_configuration.FrameBufferCount);
+    if (_configuration.GeneralConfig.Changes.Flags.FrameBufferCount)
+        camera.SetFrameBufferCount(_configuration.FrameBufferCount);
 
     if (_configuration.GeneralConfig.Changes.Flags.Quality)
         camera.SetQuality(_configuration.Quality);
@@ -104,36 +204,39 @@ void CameraConfiguration::ApplyConfiguration()
 
 void CameraConfiguration::DefaultConfiguration()
 {
+    auto &changes = _configuration.GeneralConfig.Changes.Flags;
     // Camera Driver Settings
-    _configuration.GeneralConfig.Changes.Flags.FrameSize = UpdateConfig(_configuration.FrameSize, CameraFrameSize::CameraFrameSizeXGA);
-    _configuration.GeneralConfig.Changes.Flags.ModelType = UpdateConfig(_configuration.ModelType, CameraModelType::CameraOV2640);
-    _configuration.GeneralConfig.Changes.Flags.PixelFormat = UpdateConfig(_configuration.PixelFormat, CameraPixelFormat::CameraPixelFormatJPEG);
+    changes.FrameSize = UpdateConfig(_configuration.FrameSize, CameraFrameSize::CameraFrameSizeXGA);
+    changes.ModelType = UpdateConfig(_configuration.ModelType, CameraModelType::CameraOV2640);
+    changes.PixelFormat = UpdateConfig(_configuration.PixelFormat, CameraPixelFormat::CameraPixelFormatJPEG);
 
     // Sensor Settings
-    _configuration.GeneralConfig.Changes.Flags.FrameBufferCount = UpdateConfig(_configuration.FrameBufferCount, static_cast<uint8_t>(1));
-    _configuration.GeneralConfig.Changes.Flags.Quality = UpdateConfig(_configuration.Quality, static_cast<uint8_t>(10));
-    _configuration.GeneralConfig.Changes.Flags.Contrast = UpdateConfig(_configuration.Contrast, 0);
-    _configuration.GeneralConfig.Changes.Flags.Brightness = UpdateConfig(_configuration.Brightness, 0);
-    _configuration.GeneralConfig.Changes.Flags.Saturation = UpdateConfig(_configuration.Saturation, 0);
-    _configuration.GeneralConfig.Changes.Flags.GainCeiling = UpdateConfig(_configuration.GainCeiling, CameraGainCeiling::Gain2);
-    _configuration.GeneralConfig.Changes.Flags.ColourBar = UpdateConfig(_configuration.ColourBar, false);
-    _configuration.GeneralConfig.Changes.Flags.AutoWhiteBalance = UpdateConfig(_configuration.AutoWhiteBalance, false);
-    _configuration.GeneralConfig.Changes.Flags.AutoGainControl = UpdateConfig(_configuration.AutoGainControl, true);
-    _configuration.GeneralConfig.Changes.Flags.AutoExposure = UpdateConfig(_configuration.AutoExposure, true);
-    _configuration.GeneralConfig.Changes.Flags.HorizontalMirror = UpdateConfig(_configuration.HorizontalMirror, true);
-    _configuration.GeneralConfig.Changes.Flags.VerticalMirror = UpdateConfig(_configuration.VerticalMirror, true);
-    _configuration.GeneralConfig.Changes.Flags.AutoBalanceGain = UpdateConfig(_configuration.AutoBalanceGain, true);
-    _configuration.GeneralConfig.Changes.Flags.ManualGainCeiling = UpdateConfig(_configuration.ManualGainCeiling, static_cast<uint8_t>(5));
-    _configuration.GeneralConfig.Changes.Flags.ExposureTime = UpdateConfig(_configuration.ExposureTime, static_cast<uint16_t>(204));
-    _configuration.GeneralConfig.Changes.Flags.ExposureDsp = UpdateConfig(_configuration.ExposureDsp, true);
-    _configuration.GeneralConfig.Changes.Flags.DownsizeEN = UpdateConfig(_configuration.DownsizeEN, true);
-    _configuration.GeneralConfig.Changes.Flags.Bpc = UpdateConfig(_configuration.Bpc, false);
-    _configuration.GeneralConfig.Changes.Flags.Wpc = UpdateConfig(_configuration.Wpc, false);
-    _configuration.GeneralConfig.Changes.Flags.RawGma = UpdateConfig(_configuration.RawGma, false);
-    _configuration.GeneralConfig.Changes.Flags.LensCorrection = UpdateConfig(_configuration.LensCorrection, true);
-    _configuration.GeneralConfig.Changes.Flags.SpecialEffect = UpdateConfig(_configuration.SpecialEffect, CameraSpecialEffect::None);
-    _configuration.GeneralConfig.Changes.Flags.WhiteBalanceMode = UpdateConfig(_configuration.WhiteBalanceMode, CameraWhiteBalanceMode::Auto);
-    _configuration.GeneralConfig.Changes.Flags.AutoExposureLevel = UpdateConfig(_configuration.AutoExposureLevel, 0);
+    changes.FrameBufferCount = UpdateConfig(_configuration.FrameBufferCount, static_cast<uint8_t>(1));
+    changes.Quality = UpdateConfig(_configuration.Quality, static_cast<uint8_t>(10));
+    changes.Contrast = UpdateConfig(_configuration.Contrast, 0);
+    changes.Brightness = UpdateConfig(_configuration.Brightness, 0);
+    changes.Saturation = UpdateConfig(_configuration.Saturation, 0);
+    changes.GainCeiling = UpdateConfig(_configuration.GainCeiling, CameraGainCeiling::Gain2);
+    changes.ColourBar = UpdateConfig(_configuration.ColourBar, false);
+    changes.AutoWhiteBalance = UpdateConfig(_configuration.AutoWhiteBalance, false);
+    changes.AutoGainControl = UpdateConfig(_configuration.AutoGainControl, true);
+    changes.AutoExposure = UpdateConfig(_configuration.AutoExposure, true);
+    changes.HorizontalMirror = UpdateConfig(_configuration.HorizontalMirror, true);
+    changes.VerticalMirror = UpdateConfig(_configuration.VerticalMirror, true);
+    changes.AutoBalanceGain = UpdateConfig(_configuration.AutoBalanceGain, true);
+    changes.ManualGainCeiling = UpdateConfig(_configuration.ManualGainCeiling, static_cast<uint8_t>(5));
+    changes.ExposureTime = UpdateConfig(_configuration.ExposureTime, static_cast<uint16_t>(204));
+    changes.ExposureDsp = UpdateConfig(_configuration.ExposureDsp, true);
+    changes.DownsizeEN = UpdateConfig(_configuration.DownsizeEN, true);
+    changes.Bpc = UpdateConfig(_configuration.Bpc, false);
+    changes.Wpc = UpdateConfig(_configuration.Wpc, false);
+    changes.RawGma = UpdateConfig(_configuration.RawGma, false);
+    changes.LensCorrection = UpdateConfig(_configuration.LensCorrection, true);
+    changes.SpecialEffect = UpdateConfig(_configuration.SpecialEffect, CameraSpecialEffect::None);
+    changes.WhiteBalanceMode = UpdateConfig(_configuration.WhiteBalanceMode, CameraWhiteBalanceMode::Auto);
+    changes.AutoExposureLevel = UpdateConfig(_configuration.AutoExposureLevel, 0);
+
+    ApplyConfiguration();
 }
 
 } // namespace Configuration

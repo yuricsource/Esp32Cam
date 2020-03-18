@@ -90,7 +90,7 @@ struct CameraConfigurationData
     bool HorizontalMirror = true;
     bool VerticalMirror = true;
     bool AutoBalanceGain = true;
-    uint8_t ManualGainCeiling = true;
+    uint8_t ManualGainCeiling = 0;
     uint16_t ExposureTime = 204;
     bool ExposureDsp = true;
     bool DownsizeEN = true;
@@ -117,7 +117,8 @@ class CameraConfiguration : public BaseConfiguration
 public:
     CameraConfiguration();
     ~CameraConfiguration();
-
+    bool Deserialize(const char * json);
+    bool Serialize(char * json, int length);
     const CameraConfigurationData *GetConfiguration() { return &_configuration; }
     void DefaultConfiguration();
     void ApplyConfiguration();

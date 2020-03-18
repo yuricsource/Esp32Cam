@@ -39,6 +39,8 @@ public:
 	
 	bool Capture();
 
+	bool SetFrameBufferCount(uint8_t frameCount);
+
 	int SetResolution(CameraFrameSize frameSize);
 
 	int SetImageFormat(CameraPixelFormat format);
@@ -67,9 +69,9 @@ public:
 
 	int SetAutoWhiteBalanceGain(bool autoBalanceGain);
 
-	int SetManualGainCeiling(int autoGainCeiling);
+	int SetManualGainCeiling(uint8_t autoGainCeiling);
 
-	int SetExposureTime(int exposureTime);
+	int SetExposureTime(uint16_t exposureTime);
 
 	int SetAutoExposureDsp(bool exposureDsp);
 

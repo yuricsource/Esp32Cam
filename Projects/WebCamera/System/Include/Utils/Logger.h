@@ -16,11 +16,12 @@ public:
 	enum class LogSource : uint8_t
 	{
 		Hal,
+		Configuration,
 		Camera,
 		Ble,
 		Wifi,
 		HttpServer,
-		FirstGateway,
+		Gateway,
 		Unknown = 255
 	};
 

@@ -47,7 +47,7 @@ Camera::Camera(Gpio *IoPins)
     _cameraConfig.pin_sscb_scl = 27;
     _cameraConfig.pin_reset = -1;
     _cameraConfig.pin_pwdn = 32;
-    _cameraConfig.xclk_freq_hz = 10000000;
+    _cameraConfig.xclk_freq_hz = 20000000;
     _cameraConfig.jpeg_quality = 10;
     _cameraConfig.fb_count = 1;
     _cameraConfig.frame_size = static_cast<framesize_t>(CameraFrameSize::CameraFrameSizeSXGA);
@@ -57,6 +57,15 @@ Camera::Camera(Gpio *IoPins)
 const camera_fb_t *Camera::GetFrameBuffer()
 {
     return _frameBuffer;
+}
+
+bool Camera::SetFrameBufferCount(uint8_t frameCount)
+{
+    if (initialized || frameCount == 0 || frameCount > 10)
+        return false;
+
+    _cameraConfig.fb_count = frameCount;
+    return true;
 }
 
 bool Camera::Capture()
@@ -170,9 +179,9 @@ int Camera::SetAutoExposureDsp(bool exposureDsp)
     return 0;
 }
 
-int Camera::SetExposureTime(int exposureTime)
+int Camera::SetExposureTime(uint16_t exposureTime)
 {
-    if(exposureTime < 0 || exposureTime > 1200)
+    if(exposureTime > 1200)
         return -1;
     if (initialized)
     {
@@ -182,9 +191,9 @@ int Camera::SetExposureTime(int exposureTime)
     return 0;
 }
 
-int Camera::SetManualGainCeiling(int manualGainCeiling)
+int Camera::SetManualGainCeiling(uint8_t manualGainCeiling)
 {
-    if(manualGainCeiling < 0 || manualGainCeiling > 30)
+    if(manualGainCeiling > 30)
         return -1;
     if (initialized)
     {

@@ -12,6 +12,7 @@ class BaseConfiguration
 {
 public:
     template <class T>
+    /// @brief Update configuration, if there is a change returns true.
     bool UpdateConfig(T& config, T newConfig)
     {
        if (config != newConfig)
@@ -22,7 +23,16 @@ public:
        return false;
     }
 
+    /// @brief Set to default configuraiton
     virtual void DefaultConfiguration() = 0;
+    
+    /// @brief Deserialize the confguration
+    virtual bool Deserialize(const char * json) = 0;
+    
+    /// @brief Serialize the configuration
+    virtual bool Serialize(char * json, int length) = 0;
+    
+    /// @brief Constructor
     BaseConfiguration(const char *name) : _enabled(false)
     {
         if (name == nullptr)
@@ -34,21 +44,25 @@ public:
         }
     }
 
+    /// @brief Destructor
     ~BaseConfiguration()
     {
     }
 
+    /// @brief Reset base variables
     void Default()
     {
         _enabled = false;
         _name = {};
     }
 
+    /// @brief Check if the configuration is enabled
     bool IsEnabled()
     {
         return _enabled;
     }
 
+    /// @brief Get the configuration name
     const DeviceName GetName() const
     {
         return _name;

@@ -28,8 +28,16 @@ void BoardConfiguration::DefaultConfiguration()
 #endif
 }
 
-BoardConfiguration::BoardConfiguration():
-BaseConfiguration("Board Config")
+bool BoardConfiguration::Deserialize(const char * json)
+{
+    return false;
+}
+bool BoardConfiguration::Serialize(char * json, int length)
+{
+    return false;
+}
+
+BoardConfiguration::BoardConfiguration() : BaseConfiguration("Board Config")
 {
     
 }
