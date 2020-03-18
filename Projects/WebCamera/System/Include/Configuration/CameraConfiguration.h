@@ -90,7 +90,7 @@ struct CameraConfigurationData
     bool HorizontalMirror = true;
     bool VerticalMirror = true;
     bool AutoBalanceGain = true;
-    uint8_t ManualGainCeiling = 0;
+    uint8_t ManualGainCeiling = 5;
     uint16_t ExposureTime = 204;
     bool ExposureDsp = true;
     bool DownsizeEN = true;
