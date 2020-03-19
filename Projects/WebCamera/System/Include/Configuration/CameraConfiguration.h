@@ -125,6 +125,7 @@ public:
 
 private:
     CameraConfigurationData _configuration = {};
+    static constexpr uint16_t JsonConversionLength = 1024;
 
 private:
     /// @brief	Hide Copy constructor.

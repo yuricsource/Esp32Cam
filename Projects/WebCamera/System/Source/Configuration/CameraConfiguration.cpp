@@ -22,7 +22,7 @@ CameraConfiguration::~CameraConfiguration()
 
 bool CameraConfiguration::Deserialize(const char *json)
 {
-    StaticJsonDocument<1024> doc;
+    StaticJsonDocument<JsonConversionLength> doc;
     DeserializationError error = deserializeJson(doc, json);
     auto &changes = _configuration.GeneralConfig.Changes.Flags;
 
@@ -115,7 +115,51 @@ bool CameraConfiguration::Deserialize(const char *json)
 
 bool CameraConfiguration::Serialize(char *json, int length)
 {
-    return false;
+
+    if (json == nullptr)
+        return false;
+
+    StaticJsonDocument<JsonConversionLength> doc;
+
+    doc["framesize"] = static_cast<uint8_t>(_configuration.FrameSize);
+    doc["pixelformat"] = static_cast<uint8_t>(_configuration.PixelFormat);
+    doc["framecount"] = _configuration.FrameBufferCount;
+    doc["quality"] = _configuration.Quality;
+    doc["contrast"] = _configuration.Contrast;
+    doc["brightness"] = _configuration.Brightness;
+    doc["saturation"] = _configuration.Saturation;
+    doc["gainceiling"] = static_cast<uint8_t>(_configuration.GainCeiling);
+    doc["colorbar"] = _configuration.ColourBar;
+    doc["awb"] = _configuration.AutoWhiteBalance;
+    doc["agc"] = _configuration.AutoGainControl;
+    doc["aec"] = _configuration.AutoExposure;
+    doc["hmirror"] = _configuration.HorizontalMirror;
+    doc["vflip"] = _configuration.VerticalMirror;
+    doc["awb_gain"] = _configuration.AutoBalanceGain;
+    doc["agc_gain"] = _configuration.ManualGainCeiling;
+    doc["aec_value"] = _configuration.ExposureTime;
+    doc["aec2"] = _configuration.ExposureDsp;
+    doc["dcw"] = _configuration.DownsizeEN;
+    doc["bpc"] = _configuration.Bpc;
+    doc["wpc"] = _configuration.Wpc;
+    doc["raw_gma"] = _configuration.RawGma;
+    doc["lenc"] = _configuration.LensCorrection;
+    doc["special_effect"] = static_cast<uint8_t>(_configuration.SpecialEffect);
+    doc["wb_mode"] = static_cast<uint8_t>(_configuration.WhiteBalanceMode);
+    doc["ae_level"] = static_cast<uint8_t>(_configuration.AutoExposureLevel);
+    
+    uint16_t jsonLength = measureJson(doc) + 1;
+
+    if (length < jsonLength)
+        return false;
+
+    char temp[JsonConversionLength];
+
+    serializeJson(doc, temp);
+
+    memcpy(json, temp, jsonLength + 1);
+
+    return true;
 }
 
 void CameraConfiguration::ApplyConfiguration()
