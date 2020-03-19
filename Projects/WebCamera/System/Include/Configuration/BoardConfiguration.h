@@ -28,10 +28,23 @@ struct BoardConfigurationData
             struct
             {
                 bool WifiEnabled : 1;
-                uint8_t _NotUsed : 7;
+                bool BluetoothEnabled : 1;
+                bool WebServerEnebled : 1;
+                uint32_t _NotUsed : 29;
             } Flags;
-            uint8_t AllFlags;
+            uint32_t AllFlags;
         } Settings;
+        /// @brief	Configuration flags
+        union _Changes {
+            struct
+            {
+                bool WifiEnabled : 1;
+                bool BluetoothEnabled : 1;
+                bool WebServerEnebled : 1;
+                uint64_t _NotUsed : 61;
+            } Flags;
+            uint64_t AllChanges;
+        } Changes;
     };
 
     /// @brief	Wifi configuration.
@@ -52,11 +65,21 @@ struct BoardConfigurationData
             struct
             {
                 bool DhcpEnabled : 1;
-                uint8_t _NotUsed : 7;
+                bool Encrypted : 1;
+                uint8_t _NotUsed : 6;
             } Flags;
             uint8_t AllFlags;
         } Settings;
-
+        /// @brief	Configuration flags
+        union _Changes {
+            struct
+            {
+                bool WifiEnabled : 1;
+                uint32_t _NotUsed : 31;
+            } Flags;
+            uint32_t AllChanges;
+        } Changes;
+        
         uint32_t GetCRC() const
         {
             return Crc32xZlib::GetCrc((unsigned char *)this, sizeof(WifiConfiguration), Crc32xZlib::Polynomial);
@@ -68,17 +91,33 @@ struct BoardConfigurationData
     {
         RemoteConnection connection = {};
 
+        union _Settings {
+            struct
+            {
+                uint8_t _NotUsed : 8;
+            } Flags;
+            uint8_t AllFlags;
+        } Settings;
+        /// @brief	Configuration flags
+        union _Changes {
+            struct
+            {
+                uint32_t _NotUsed : 32;
+            } Flags;
+            uint32_t AllChanges;
+        } Changes;
+
         uint32_t GetCRC() const
         {
             return Crc32xZlib::GetCrc((unsigned char *)this, sizeof(ServerConfiguration), Crc32xZlib::Polynomial);
         }
     };
 
-    GeneralConfiguration GeneralFlags;
+    GeneralConfiguration GeneralConfig;
     WifiConfiguration WifiConfig;
     ServerConfiguration ServerConfig;
 
-    BoardConfigurationData() : GeneralFlags(),
+    BoardConfigurationData() : GeneralConfig(),
                                WifiConfig(),
                                ServerConfig()
 
@@ -97,13 +136,14 @@ public:
     BoardConfiguration();
     ~BoardConfiguration();
 
-    bool Deserialize(const char * json);
-    bool Serialize(char * json, int length);
+    bool Deserialize(const char *json);
+    bool Serialize(char *json, int length);
     BoardConfigurationData *GetConfiguration() { return &_configuration; }
     void DefaultConfiguration();
 
 private:
     BoardConfigurationData _configuration = {};
+    static constexpr uint16_t JsonConversionLength = 512;
 
 private:
     /// @brief	Hide Copy constructor.
