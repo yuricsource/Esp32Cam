@@ -7,8 +7,6 @@
 #include <cstdio>
 #include <cstdarg>
 
-namespace Middleware
-{
 namespace Utilities
 {
 
@@ -26,13 +24,16 @@ unsigned char const severityInfoLen = 1;
 char const *severityError = "E";
 unsigned char const severityErrorLen = 1;
 
-Logger::LogInfos typeInfos[5] =
-	{
-		{"HAL", 3},
-		{"CAMERA", 6},
-		{"BLE", 3},
-		{"WIFI", 4},
-		{"WEBSERV", 7},
+Logger::LogInfos typeInfos[7] =
+{
+	{"HAL", 3},
+	{"CONFIG", 6},
+	{"CAMERA", 6},
+	{"BLE", 3},
+	{"WIFI", 4},
+	{"WEBSERV", 7},
+	{"GATEWAY", 7}
+	
 };
 
 void Logger::LogInfo(const char *format, ...)
@@ -157,4 +158,3 @@ bool Logger::createPrefix(const char *prefix, const char prefixLen, LogSource so
 MutexStandard *Logger::_logLock = new MutexStandard();
 
 } // namespace Utilities
-} // namespace Middleware
