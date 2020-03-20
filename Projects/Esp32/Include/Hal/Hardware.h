@@ -19,6 +19,7 @@
 #include "Camera.h"
 #include "Rng.h"
 #include "WifiDriver.h"
+#include "Flash.h"
 
 namespace Hal
 {
@@ -36,6 +37,7 @@ public:
 	DebugPort &GetDebugPort() { return _debugPort; };
 	Rng &GetRng() { return _rng; };
 	WifiDriver &GetWifi() { return _wifiDriver; };
+	Flash &GetFlash() { return _flash; };
 
 	uint32_t Milliseconds();
 	void TimerCallback();
@@ -43,6 +45,15 @@ public:
 	void SoftwareReset();
 	uint32_t GetRandomNumber();
 	uint32_t GetSystemClockBase();
+	uint32_t GetHeapSize();
+
+	uint32_t GetMinFreeHeap(void);
+	uint32_t GetMaxAllocHeap(void);
+	uint32_t GetPsramSize(void);
+	uint32_t GetFreePsram(void);
+	uint32_t GetMinFreePsram(void);
+	uint32_t GetMaxAllocPsram(void);
+	
 	void DeepSleep(uint32_t uSeconds);
 	char *GetResetReasonAsString(ResetReason reason);
 	
@@ -67,6 +78,7 @@ private:
 	Leds _leds;
 	Rng _rng;
 	WifiDriver _wifiDriver;
+	Flash _flash;
 };
 } // namespace Hal
 

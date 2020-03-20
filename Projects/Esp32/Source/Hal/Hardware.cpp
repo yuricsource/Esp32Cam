@@ -20,7 +20,8 @@ Hardware::Hardware() : _gpio(),
 					   _sdCard(&_gpio),
 					   _leds(&_gpio),
 					   _rng(),
-					   _wifiDriver()
+					   _wifiDriver(),
+					   _flash()
 {
 	esp_chip_info(&_mcuInfo);
 	esp_base_mac_addr_get(_macAdrress.data());
@@ -43,6 +44,7 @@ Hardware::Hardware() : _gpio(),
 #ifndef HARDWARE_TESTER
 	printf("MCU Project Heap Allocated	: %d\n", configTOTAL_PROJECT_HEAP_SIZE_ALLOCATED);
 #endif
+	printf("Firmware Image Size	        : %d\n", _flash.GetRunningPartitionSize());
 	printf("Reset Reason        		: %s\n", GetResetReasonAsString(GetResetReason()));
 	printf("\n");
 
@@ -106,6 +108,45 @@ char *Hardware::GetResetReasonAsString(ResetReason reason)
 	default:
 		return (char *)"";
 	}
+}
+
+uint32_t Hardware::GetHeapSize()
+{
+	multi_heap_info_t info;
+    heap_caps_get_info(&info, MALLOC_CAP_INTERNAL);
+    return info.total_free_bytes + info.total_allocated_bytes;
+}
+
+uint32_t Hardware::GetMinFreeHeap(void)
+{
+    return heap_caps_get_minimum_free_size(MALLOC_CAP_INTERNAL);
+}
+
+uint32_t Hardware::GetMaxAllocHeap(void)
+{
+    return heap_caps_get_largest_free_block(MALLOC_CAP_INTERNAL);
+}
+
+uint32_t Hardware::GetPsramSize(void)
+{
+    multi_heap_info_t info;
+    heap_caps_get_info(&info, MALLOC_CAP_SPIRAM);
+    return info.total_free_bytes + info.total_allocated_bytes;
+}
+
+uint32_t Hardware::GetFreePsram(void)
+{
+    return heap_caps_get_free_size(MALLOC_CAP_SPIRAM);
+}
+
+uint32_t Hardware::GetMinFreePsram(void)
+{
+    return heap_caps_get_minimum_free_size(MALLOC_CAP_SPIRAM);
+}
+
+uint32_t Hardware::GetMaxAllocPsram(void)
+{
+    return heap_caps_get_largest_free_block(MALLOC_CAP_SPIRAM);
 }
 
 Hardware::~Hardware()
