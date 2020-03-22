@@ -40,9 +40,9 @@ enum class I2sDacMode : uint8_t
 enum class I2sCommunicationStandardFormat : uint8_t
 {
 	CommunicationFormatI2s = 0x01,		   /*!< I2S communication format I2S*/
-	CommunicationFormatI2sMSB = 0x02,	  /*!< I2S format MSB*/
-	CommunicationFormatI2sLSB = 0x04,	  /*!< I2S format LSB*/
-	CommunicationFormatI2s_PCM = 0x08,	 /*!< I2S communication format PCM*/
+	CommunicationFormatI2sMSB = 0x02,	   /*!< I2S format MSB*/
+	CommunicationFormatI2sLSB = 0x04,	   /*!< I2S format LSB*/
+	CommunicationFormatI2s_PCM = 0x08,	   /*!< I2S communication format PCM*/
 	CommunicationFormatI2sPCMShort = 0x10, /*!< PCM Short*/
 	CommunicationFormatI2sPCMLong = 0x20,  /*!< PCM Long*/
 };
@@ -175,27 +175,11 @@ enum class CameraPixelFormat : uint8_t
 
 enum class CameraFrameSize : uint8_t
 {
-	CameraFrameSizeSVGA = 9, 	//800x600
-	CameraFrameSizeXGA = 10, 	//1024x768
-	CameraFrameSizeSXGA = 11, 	//1280x1024
-	CameraFrameSizeUXGA = 12, 	//1600x1200
+	CameraFrameSizeSVGA = 9,  //800x600
+	CameraFrameSizeXGA = 10,  //1024x768
+	CameraFrameSizeSXGA = 11, //1280x1024
+	CameraFrameSizeUXGA = 12, //1600x1200
 };
-
-    /*FRAMESIZE_96x96,    // 96x96		1
-    FRAMESIZE_QQVGA,    // 160x120		2
-    FRAMESIZE_QQVGA2,   // 128x160		3
-    FRAMESIZE_QCIF,     // 176x144		4
-    FRAMESIZE_HQVGA,    // 240x176		5
-    FRAMESIZE_240x240,  // 240x240		6
-    FRAMESIZE_QVGA,     // 320x240		7
-    FRAMESIZE_CIF,      // 400x296		8*/
-    // FRAMESIZE_VGA,      // 640x480		9
-    // FRAMESIZE_SVGA,     // 800x600		10
-    // FRAMESIZE_XGA,      // 1024x768		11
-    // FRAMESIZE_SXGA,     // 1280x1024	12
-    // FRAMESIZE_UXGA,     // 1600x1200	13
-    // FRAMESIZE_QXGA,     // 2048*1536	14
-    // FRAMESIZE_INVALID
 
 enum class CameraWhiteBalanceMode : uint8_t
 {
@@ -252,25 +236,29 @@ enum class WifiModeConfiguration : uint8_t
 
 enum class WifiAuthenticationMode : uint8_t
 {
-    Open,
-    Wep,
-    WpaPsk,
-    Wpa2Psk,
-    WpaWpa2Psk,
-    Wpa2Enterprise
+	Open,
+	Wep,
+	WpaPsk,
+	Wpa2Psk,
+	WpaWpa2Psk,
+	Wpa2Enterprise
 };
 
 static constexpr uint8_t MacAddressMaxLength = 6;
-using MacAddress = array<uint8_t,MacAddressMaxLength>;
+using MacAddress = array<uint8_t, MacAddressMaxLength>;
 static_assert(sizeof(MacAddress) == 6, "Array has invalid size.");
 
 static constexpr uint8_t WifiSsidMaxLength = 32;
-using WifiSsid = array<char,WifiSsidMaxLength>;
+using WifiSsid = array<char, WifiSsidMaxLength>;
 static_assert(sizeof(WifiSsid) == 32, "Array has invalid size.");
 
 static constexpr uint8_t WifiPasswordMaxLength = 64;
-using WifiPassword = array<char,WifiPasswordMaxLength>;
+using WifiPassword = array<char, WifiPasswordMaxLength>;
 static_assert(sizeof(WifiPassword) == 64, "Array has invalid size.");
+
+static constexpr uint8_t NameMaxLength = 20;
+using LabelName = array<char, NameMaxLength>;
+static_assert(sizeof(LabelName) == 20, "Array has invalid size.");
 
 static constexpr uint32_t TimeBaseClock = 80000000;
 
