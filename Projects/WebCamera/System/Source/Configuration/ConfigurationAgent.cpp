@@ -1,5 +1,5 @@
 #include "ConfigurationAgent.h"
-// #include "ApplicationAgent.h"
+#include "ApplicationAgent.h"
 
 namespace Configuration
 {
@@ -26,7 +26,7 @@ void ConfigurationAgent::UseDefaultConfiguration()
 {
     _boardConfiguration.DefaultConfiguration();
     _cameraConfiguration.DefaultConfiguration();
-    // Applications::ApplicationAgent::Instance()->GetWifi().ConfigurationUpdated();
+    Applications::ApplicationAgent::Instance()->GetWifi().ConfigurationUpdated();
 }
 
 void ConfigurationAgent::DefaulAllConfigurations()
