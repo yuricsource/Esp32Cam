@@ -36,7 +36,7 @@ BaseConnection::ConnectStatus TcpConnection::DoConnect(const RemoteConnection &r
 
     while (tcp_bind(_pcb, IP_ADDR_ANY, _port) != ERR_OK)
     {
-        vTaskDelay(2);
+        vTaskDelay(20);
     }
 
     tcp_arg(_pcb, this);

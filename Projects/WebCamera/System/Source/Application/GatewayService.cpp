@@ -18,7 +18,7 @@ GatewayService::GatewayService() : cpp_freertos::Thread("GWSVC", configGATEWAYSV
 
 void GatewayService::Run()
 {
-    vTaskDelay(600);
+    vTaskDelay(6000);
 
     RemoteConnection *connection = &ConfigurationAgent::Instance()->GetBoardConfiguration()->GetConfiguration()->ServerConfig.connection;
 
@@ -50,7 +50,7 @@ void GatewayService::Run()
         default:
             break;
         }
-        vTaskDelay(10);
+        vTaskDelay(100);
     }
 }
 

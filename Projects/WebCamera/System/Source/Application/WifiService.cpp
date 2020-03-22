@@ -44,13 +44,13 @@ void WifiService::Run()
     Logger::LogInfo(Logger::LogSource::Wifi, "Running Wifi.");
     for (;;)
     {
-        vTaskDelay(100);
+        vTaskDelay(1000);
         switch (_wifiState)
         {
         case WifiState::Idle:
         {
             _connected = false;
-            vTaskDelay(1000);
+            vTaskDelay(10000);
         }
         break;
         case WifiState::ResetAdapter:
