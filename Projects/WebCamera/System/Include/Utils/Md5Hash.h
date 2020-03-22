@@ -14,7 +14,7 @@ public:
 	~Md5Hash();
 	void Calculate();
 	bool GetBytesResult(uint8_t *result, size_t len);
-	bool GetCharsResult(char *result, size_t len);
+	const char* ToString();
 	void Add(const void *data, size_t size);
 	void Reset();
 	static constexpr uint8_t Md5Length = 16;
@@ -33,6 +33,7 @@ private:
 	};
 
 	uint8_t _hashResult[16] = {};
+	char _hashResultString[33] = {};
 
 	Md5Context _context = {};
 	const void *update(void *ctxBuf, const void *data, size_t size);

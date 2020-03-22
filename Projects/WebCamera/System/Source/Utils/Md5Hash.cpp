@@ -44,6 +44,7 @@ void Md5Hash::Reset()
 	memset(_context.buffer, 0, sizeof(_context.buffer));
 
 	memset(_hashResult, 0, sizeof(_hashResult));
+	memset(_hashResultString, 0, sizeof(_hashResultString));
 }
 
 Md5Hash::~Md5Hash()
@@ -59,17 +60,9 @@ bool Md5Hash::GetBytesResult(uint8_t *result, size_t len)
 	return true;
 }
 
-bool Md5Hash::GetCharsResult(char *result, size_t len)
+const char* Md5Hash::ToString()
 {
-	if (len < ((Md5Length * 2) + 1))
-		return false;
-
-	for (uint8_t i = 0; i < 16; i++)
-	{
-		sprintf(result + (i * 2), "%02x", _hashResult[i]);
-	}
-
-	return true;
+	return _hashResultString;
 }
 
 const void *Md5Hash::update(void *ctxBuf, const void *data, size_t size)
@@ -269,6 +262,11 @@ void Md5Hash::Calculate()
 	_hashResult[15] = ctx->d >> 24;
 
 	memset(ctx, 0, sizeof(*ctx));
+
+	for (uint8_t i = 0; i < 16; i++)
+	{
+		sprintf(_hashResultString + (i * 2), "%02x", _hashResult[i]);
+	}
 }
 
 }
