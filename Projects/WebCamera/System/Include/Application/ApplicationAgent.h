@@ -6,6 +6,7 @@
 #include "DnsClient.h"
 #include "GatewayService.h"
 #include "IPParser.h"
+#include "FirmwareUpdateService.h"
 
 namespace Applications
 {
@@ -29,12 +30,14 @@ public:
     WifiService& GetWifi() {return *_wifiService;};
     HttpServer& GetHttpServer(){return *_httpServer;};
     GatewayService& GetGatewayService(){ return *_gatewayService;};
+    FirmwareUpdateService& GetFirmwareUpdateService(){ return *_firmwareUpdateService;};
 
 private:
     static ApplicationAgent *_applications;
     WifiService *_wifiService;
     HttpServer *_httpServer;
     GatewayService *_gatewayService;
+    FirmwareUpdateService * _firmwareUpdateService;
 
 private:
     /// @brief	Hide Copy constructor.

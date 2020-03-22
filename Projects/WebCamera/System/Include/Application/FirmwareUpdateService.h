@@ -18,6 +18,7 @@ class FirmwareUpdateService : public cpp_freertos::Thread
 {
 public:
     FirmwareUpdateService();
+    ~FirmwareUpdateService();
 
 private:
   
