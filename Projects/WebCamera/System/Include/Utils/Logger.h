@@ -22,6 +22,7 @@ public:
 		Wifi,
 		HttpServer,
 		Gateway,
+		FirmwareUpdate,
 		Unknown = 255
 	};
 

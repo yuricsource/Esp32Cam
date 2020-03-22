@@ -24,15 +24,16 @@ unsigned char const severityInfoLen = 1;
 char const *severityError = "E";
 unsigned char const severityErrorLen = 1;
 
-Logger::LogInfos typeInfos[7] =
+Logger::LogInfos typeInfos[8] =
 {
-	{"HAL", 3},
+	{" HAL  ", 6},
 	{"CONFIG", 6},
 	{"CAMERA", 6},
-	{"BLE", 3},
-	{"WIFI", 4},
-	{"WEBSERV", 7},
-	{"GATEWAY", 7}
+	{" BLE  ", 6},
+	{" WIFI ", 6},
+	{"WEBSRV", 6},
+	{"GATEWY", 6},
+	{"FWUPDT", 6}
 	
 };
 
@@ -128,9 +129,9 @@ bool Logger::createPrefix(const char *prefix, const char prefixLen, LogSource so
 	char timeText[20];
 	uint8_t len = 0;
 	if (ms >= (1000 * 60 * 60 * 24))
-		len = std::snprintf(timeText, 20, "%d:%02d:%02d:%02d.%02d", days, hours, minutes, seconds, milliseconds);
+		len = std::snprintf(timeText, 20, "%d:%02d:%02d:%02d.%03d", days, hours, minutes, seconds, milliseconds);
 	else
-		len = std::snprintf(timeText, 20, "%02d:%02d:%02d.%02d", hours, minutes, seconds, milliseconds);
+		len = std::snprintf(timeText, 20, "%02d:%02d:%02d.%03d", hours, minutes, seconds, milliseconds);
 	fwrite(timeText, 1, len, stdout);
 	fwrite(seperator, 1, seperatorLen, stdout);
 
