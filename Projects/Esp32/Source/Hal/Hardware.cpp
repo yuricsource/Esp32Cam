@@ -21,14 +21,15 @@ Hardware::Hardware() : _gpio(),
 					   _leds(&_gpio),
 					   _rng(),
 					   _wifiDriver(),
-					   _flash()
+					   _flash(),
+					   _bankConfig()
 {
 	esp_chip_info(&_mcuInfo);
 	esp_base_mac_addr_get(_macAdrress.data());
 	printf("SDK Version         		: %s\n", (char *)esp_get_idf_version());
 	printf("CPU Cores           		: %d\n", _mcuInfo.cores);
 	// printf("CPU Clock           		: %d MHz\n", rtc_clk_cpu_freq_value(rtc_clk_cpu_freq_get()));
-	printf("APB Clock           		: %d MHz\n", GetSystemClockBase());
+	printf("APB Clock           		: %d Hz\n", GetSystemClockBase());
 	printf("CPU Revision        		: %d\n", _mcuInfo.revision);
 	printf("Embedded Flash      		: %s\n", (_mcuInfo.features & CHIP_FEATURE_EMB_FLASH) ? "YES" : "NO");
 	printf("Wi-Fi Modle         		: %s\n", (_mcuInfo.features & CHIP_FEATURE_WIFI_BGN) ? "YES" : "NO");
@@ -46,6 +47,8 @@ Hardware::Hardware() : _gpio(),
 #endif
 	printf("Firmware Image Size	        : %d\n", _flash.GetRunningPartitionSize());
 	printf("Reset Reason        		: %s\n", GetResetReasonAsString(GetResetReason()));
+	printf("Running On	                : %s\n", (_bankConfig.GetCurrentBank().BankRunning == BankConfiguration::Bank::Bank1) ?
+												"Bank 1" : "Bank 2");
 	printf("\n");
 
 	if (_pHardware == nullptr)

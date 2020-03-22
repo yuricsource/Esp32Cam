@@ -20,6 +20,7 @@
 #include "Rng.h"
 #include "WifiDriver.h"
 #include "Flash.h"
+#include "BankConfiguration.h"
 
 namespace Hal
 {
@@ -38,6 +39,7 @@ public:
 	Rng &GetRng() { return _rng; };
 	WifiDriver &GetWifi() { return _wifiDriver; };
 	Flash &GetFlash() { return _flash; };
+	BankConfiguration &GetBunkConfiguration() { return _bankConfig; };
 
 	uint32_t Milliseconds();
 	void TimerCallback();
@@ -79,6 +81,7 @@ private:
 	Rng _rng;
 	WifiDriver _wifiDriver;
 	Flash _flash;
+	BankConfiguration _bankConfig;
 };
 } // namespace Hal
 
