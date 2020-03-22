@@ -4,7 +4,7 @@
 namespace Applications
 {
 
-FirmwareUpdateService::FirmwareUpdateService() : cpp_freertos::Thread("GWSVC", configGATEWAYSVC_STACK_DEPTH, 3)
+FirmwareUpdateService::FirmwareUpdateService() : cpp_freertos::Thread("FWUSVC", configGATEWAYSVC_STACK_DEPTH, 3)
 {
 }
 
