@@ -21,7 +21,8 @@ public:
     ~FirmwareUpdateService();
 
 private:
-  
+    bool eraseOtherBank();
+
 
 protected:
     void Run() override;
