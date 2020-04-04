@@ -16,7 +16,7 @@ BankConfiguration::BankConfiguration()
 		printf("Error, Interator failed to fetch the partition information.\n");
 	else
 	{
-		const esp_partition_t *partition1 = esp_partition_get(pInterator);
+		const esp_partition_t *partition1 = esp_ota_get_running_partition();
 
 		currentBank.Address = partition1->address;
 		currentBank.BankRunning = ((uint8_t)partition1->subtype == 0) ? Bank::Bank1 : Bank::Bank2;
