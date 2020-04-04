@@ -244,6 +244,13 @@ enum class WifiAuthenticationMode : uint8_t
 	Wpa2Enterprise
 };
 
+enum class Bank : uint8_t
+{
+	Bank1,
+	Bank2,
+	Unknown = 255
+};
+
 static constexpr uint8_t MacAddressMaxLength = 6;
 using MacAddress = array<uint8_t, MacAddressMaxLength>;
 static_assert(sizeof(MacAddress) == 6, "Array has invalid size.");
@@ -259,6 +266,22 @@ static_assert(sizeof(WifiPassword) == 64, "Array has invalid size.");
 static constexpr uint8_t NameMaxLength = 20;
 using LabelName = array<char, NameMaxLength>;
 static_assert(sizeof(LabelName) == 20, "Array has invalid size.");
+
+static constexpr uint8_t VersionNameMaxLength = 32;
+using VersionName = array<char, VersionNameMaxLength>;
+static_assert(sizeof(VersionName) == 32, "Array has invalid size.");
+
+static constexpr uint8_t DateStringMaxLength = 16;
+using DateString = array<char, DateStringMaxLength>;
+static_assert(sizeof(DateString) == 16, "Array has invalid size.");
+
+static constexpr uint8_t TimeStringMaxLength = 16;
+using TimeString = array<char, TimeStringMaxLength>;
+static_assert(sizeof(TimeString) == 16, "Array has invalid size.");
+
+static constexpr uint8_t Sha256Length = 32;
+using Sha256Array = array<char, Sha256Length>;
+static_assert(sizeof(Sha256Array) == 32, "Array has invalid size.");
 
 static constexpr uint32_t TimeBaseClock = 80000000;
 
