@@ -45,10 +45,13 @@ Hardware::Hardware() : _gpio(),
 #ifndef HARDWARE_TESTER
 	printf("MCU Project Heap Allocated	: %d\n", configTOTAL_PROJECT_HEAP_SIZE_ALLOCATED);
 #endif
-	printf("Firmware Image Size	        : %d\n", _flash.GetRunningPartitionSize());
+	printf("Firmware Image Size	        : %d of %d\n", _bankConfig.GetCurrentBank().ImageSize, _bankConfig.GetCurrentBank().PartitionSize);
 	printf("Reset Reason        		: %s\n", GetResetReasonAsString(GetResetReason()));
-	printf("Running On	                : %s\n", (_bankConfig.GetCurrentBank().BankRunning == BankConfiguration::Bank::Bank1) ?
+	printf("Running On	                : %s\n", (_bankConfig.GetCurrentBank().BankRunning == Bank::Bank1) ?
 												"Bank 1" : "Bank 2");
+	printf("Bank Info	                : %s %s Version: %s\n",	_bankConfig.GetCurrentBank().Date.data(),
+									_bankConfig.GetCurrentBank().Time.data(),
+									_bankConfig.GetCurrentBank().Version.data());
 	printf("\n");
 
 	if (_pHardware == nullptr)

@@ -3,6 +3,7 @@
 #define INCLUDE_HAL_BANK_CONFIGURATION_H_
 
 #include "HalCommon.h"
+
 namespace Hal
 {
 
@@ -12,30 +13,29 @@ public:
 	BankConfiguration();
 	~BankConfiguration();
 
-	enum class Bank : uint8_t
+	struct BankDescription
 	{
-		Bank1,
-		Bank2,
-		Unknown = 255
+		VersionName Version;	 /*!< Application version */
+		VersionName ProjectName; /*!< Project name */
+		VersionName IdfVer;		 /*!< Version IDF */
+		TimeString Time;		 /*!< Compile time */
+		DateString Date;		 /*!< Compile date*/
+		Sha256Array Sha256;		 /*!< sha256 of elf file */
+		uint32_t ImageSize;		 /*!< Image Size*/
+		uint32_t PartitionSize;	 /*!< Partition Size*/
+		Bank BankRunning;		 /*!< Bank Running*/
+		uint32_t Address;		 /*!< Start address*/
 	};
 
-	struct BankInfo
-	{
-		LabelName Name;
-		Bank BankRunning;
-		uint32_t Address;
-		size_t Size; 
-	};
-	
-	const BankConfiguration::BankInfo GetCurrentBank();
-	const BankConfiguration::BankInfo GetOtherBank();
+	const BankConfiguration::BankDescription GetCurrentBank();
+	const BankConfiguration::BankDescription GetOtherBank();
 
-	bool SetRunningBank(BankConfiguration::Bank nextBank);
+	bool SetRunningBank(Bank nextBank);
 
 private:
-	BankInfo currentBank;
-	BankInfo otherBank;
-
+	BankDescription currentBank = { };
+	BankDescription otherBank = { };
+	uint32_t getImageSize(Bank bank);
 };
 } // namespace Hal
 
