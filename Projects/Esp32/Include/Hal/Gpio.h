@@ -107,6 +107,7 @@ public:
 
 	bool Get(GpioIndex index);
 	void Set(GpioIndex index);
+	void Set(GpioIndex index, bool state);
 	void Reset(GpioIndex index);
 	void Toggle(GpioIndex index);
 

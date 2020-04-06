@@ -43,6 +43,14 @@ void Gpio::Set(Gpio::GpioIndex index)
 	}
 }
 
+void Gpio::Set(Gpio::GpioIndex index, bool state)
+{
+	if (state)
+		Set(index);
+	else
+		Reset(index);
+}
+
 void Gpio::Reset(Gpio::GpioIndex index)
 {
 	uint8_t i = static_cast<uint8_t>(index);
